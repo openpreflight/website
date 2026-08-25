@@ -1,3 +1,17 @@
+<div align="center">
+  <picture>
+    <source
+      media="(prefers-color-scheme: dark)"
+      srcset="https://openpreflight.xyz/banner-dark.png"
+    />
+    <img
+      src="https://openpreflight.xyz/banner-light.png"
+      alt="openpreflight — a small CI provider for private repos. One Go binary, one SQLite file, one Check Run per commit."
+      width="880"
+    />
+  </picture>
+</div>
+
 # openpreflight website
 
 The marketing site, published at **https://openpreflight.xyz**. Astro +
@@ -24,7 +38,29 @@ npm run dev
 - `src/layouts/Layout.astro`: head, meta, OG tags, header/footer chrome
 - `src/styles/global.css`: product-green palette, JetBrains Mono, light/dark
   via `prefers-color-scheme`
-- `public/`: favicon set, `og.png`, `robots.txt`
+- `public/`: favicon set, `og.png`, the README banner pair, `robots.txt`
+- `scripts/`: `gen-icons.mjs` (favicons), `gen-banner.mjs` (README banner)
+
+## Brand images
+
+This repository generates the shared brand images the other repos link to, so
+there is one copy of each rather than a binary committed three times.
+
+```bash
+node scripts/gen-icons.mjs    # favicons -> website/public/ and ../docs/public/
+node scripts/gen-banner.mjs   # banner-light.png + banner-dark.png
+```
+
+`gen-banner.mjs` renders the banner through headless Chrome — the fonts are the
+same `@fontsource` woff2 files the site loads, which `sharp` cannot rasterise on
+its own. Set `CHROME_PATH` if Chrome is not at the macOS default location.
+
+The banner is served from `https://openpreflight.xyz/banner-{light,dark}.png`
+and embedded by the READMEs in
+[openpreflight](https://github.com/openpreflight/openpreflight),
+[docs](https://github.com/openpreflight/docs), and this repository. A change to
+the tagline or the mark means regenerating it here and redeploying — the other
+repos need no edit.
 
 ## Editing the copy
 

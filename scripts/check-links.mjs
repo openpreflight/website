@@ -19,6 +19,9 @@ const required = [
   'favicon-32.png',
   'apple-touch-icon.png',
   'og.png',
+  // Embedded by the READMEs in openpreflight/, docs/, and this repo.
+  'banner-light.png',
+  'banner-dark.png',
   'robots.txt',
   'llms.txt',
   'index.md',
