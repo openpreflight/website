@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   ArrowRight,
   Box,
+  Check,
   Code2,
   Database,
   FileCode2,
@@ -20,16 +21,10 @@ import { cn } from "@/lib/utils";
 const DOCS = "https://docs.openpreflight.xyz";
 const REPO = "https://github.com/openpreflight/openpreflight";
 
-const checkLines = [
-  { text: "openpreflight", tone: "brand" as const },
-  { text: "────────────────────", tone: "sep" as const },
-  { text: "✓ install    8s", tone: "pass" as const },
-  { text: "✓ test      21s", tone: "pass" as const },
-  { text: "✓ build     13s", tone: "pass" as const },
-  { text: "", tone: "muted" as const },
-  { text: "Passed in 42s", tone: "brand" as const },
-  { text: "", tone: "muted" as const },
-  { text: "View full logs →", tone: "link" as const },
+const checkSteps = [
+  { name: "install", command: "npm ci", duration: "8s", width: "19%" },
+  { name: "test", command: "go test ./...", duration: "21s", width: "50%" },
+  { name: "build", command: "go build ./...", duration: "13s", width: "31%" },
 ];
 
 const pillars = [
@@ -37,19 +32,19 @@ const pillars = [
     icon: Box,
     title: "One process",
     description:
-      "UI, JSON API, webhook receiver, and job runner in a single Go binary. No broker, no separate frontend.",
+      "UI, JSON API, webhook receiver, and job runner in a single Go binary. There is no message broker to operate and no separate frontend to deploy.",
   },
   {
     icon: Database,
     title: "One file of state",
     description:
-      "SQLite, with every secret column AES-256-GCM encrypted at rest. Apps and bindings live in the database.",
+      "State lives in one SQLite file, and every secret column is AES-256-GCM encrypted at rest. Apps and bindings are rows in that database.",
   },
   {
     icon: ShieldCheck,
     title: "Configured in a UI",
     description:
-      "Register GitHub Apps, bind repos, mint tokens — without a pile of env vars for every installation.",
+      "Register GitHub Apps, bind repos, and mint tokens from the web UI. You do not need a fresh block of env vars for every installation.",
   },
 ];
 
@@ -57,17 +52,17 @@ const runSteps = [
   {
     title: "Webhook validates and enqueues",
     detail:
-      "GitHub POSTs /webhook/{slug}. HMAC is verified; an enabled binding and allowed branch are required. Returns 202 within ten seconds.",
+      "GitHub POSTs /webhook/{slug}. openpreflight verifies the HMAC, checks that the binding is enabled and the branch is allowed, then answers 202 within ten seconds.",
   },
   {
     title: "Worker opens a Check Run",
     detail:
-      "An installation token is minted. The Check Run is created, then the exact commit is fetched, detached, and the remote is stripped before any step runs.",
+      "The worker mints an installation token and creates the Check Run. It then fetches the exact commit, detaches the checkout, and strips the remote before any step runs.",
   },
   {
     title: "Pipeline runs under a timeout",
     detail:
-      "Steps run in-process or via docker run when runtime: is set. The Check Run gets a truncated log tail; the full log stays on the details page.",
+      "Steps run in-process, or via docker run when runtime: is set. The Check Run carries a truncated log tail, and the full log stays on the details page.",
   },
 ];
 
@@ -118,8 +113,8 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                 <span className="text-primary">private repos.</span>
               </h1>
               <p className="mx-auto mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-                One Go binary. One SQLite file. One Check Run per commit on your
-                server, with full logs.
+                One Go binary and one SQLite file, on a server you already
+                run. Every commit gets a Check Run with full logs.
               </p>
               <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button asChild size="lg" variant="signature">
@@ -135,40 +130,91 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
               </div>
             </div>
 
-            <figure className="hero-panel relative mx-auto mt-14 max-w-2xl sm:mt-16">
+            <figure className="hero-panel relative mx-auto mt-14 w-full max-w-2xl sm:mt-16">
               <div aria-hidden="true" className="hero-panel-glow pointer-events-none absolute -inset-10 -z-10" />
-              <div className="overflow-hidden rounded-2xl border border-[#2a2f2a] bg-[#121412] text-left font-mono text-[0.8125rem] leading-[1.65] text-[#e8ebe6] shadow-[0_40px_100px_-60px_color-mix(in_srgb,var(--primary)_55%,transparent)] sm:text-sm">
+              <div className="overflow-hidden rounded-2xl border border-[#2a2f2a] bg-[#121412] text-left text-[#e8ebe6] shadow-[0_40px_100px_-60px_color-mix(in_srgb,var(--primary)_55%,transparent)]">
                 <div className="flex h-11 items-center gap-2.5 border-b border-white/10 bg-white/[0.03] px-4 sm:px-5">
                   <span
                     aria-hidden="true"
                     className="size-2 shrink-0 rounded-full bg-[#7cc79c]"
                   />
-                  <span className="truncate text-xs text-white/50">
+                  <span className="truncate font-mono text-xs text-white/50">
                     Check Run · pull request
                   </span>
                 </div>
+
                 <figcaption className="sr-only">
-                  Example Check Run output for a passing openpreflight job
+                  Example Check Run: three steps passed on a private pull request
+                  in 42 seconds
                 </figcaption>
-                <pre className="overflow-x-auto p-5 sm:p-7">
-                  {checkLines.map((line, i) => (
-                    <div
-                      aria-hidden={line.tone === "sep" ? true : undefined}
-                      className={cn(
-                        "hero-line",
-                        line.tone === "brand" && "font-medium text-[#7cc79c]",
-                        line.tone === "pass" && "text-[#9ad4b4]",
-                        line.tone === "sep" && "text-white/25",
-                        line.tone === "link" && "text-[#7cc79c]",
-                        line.tone === "muted" && "text-white/40",
-                      )}
-                      key={`${line.text}-${i}`}
-                      style={{ animationDelay: `${180 + i * 70}ms` }}
-                    >
-                      {line.text || "\u00a0"}
+
+                <div className="border-b border-white/10 px-4 py-4 sm:px-5">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-white/55">
+                    <span className="text-[#e8ebe6]">private/api</span>
+                    <span className="text-white/25">·</span>
+                    <span>#142</span>
+                    <span className="text-white/25">·</span>
+                    <span>c7e4a91</span>
+                    <span className="text-white/25">·</span>
+                    <span className="truncate">main ← fix/hmac-skew</span>
+                  </div>
+                  <div className="hero-line mt-3 flex items-center justify-between gap-3 rounded-xl border border-[#7cc79c]/22 bg-[#7cc79c]/10 px-3.5 py-2.5">
+                    <div className="flex items-center gap-2.5">
+                      <span className="grid size-5 place-items-center rounded-full bg-[#7cc79c] text-[#102018]">
+                        <Check className="size-3" strokeWidth={3} />
+                      </span>
+                      <span className="font-mono text-sm font-medium text-[#7cc79c]">
+                        Passed
+                      </span>
                     </div>
+                    <span className="font-mono text-xs text-[#9ad4b4]">42s</span>
+                  </div>
+                </div>
+
+                <ul className="divide-y divide-white/[0.06] px-2 py-1 sm:px-3">
+                  {checkSteps.map((step, i) => (
+                    <li
+                      className="hero-line flex items-center gap-3 px-2 py-3 sm:gap-4 sm:px-2.5"
+                      key={step.name}
+                      style={{ animationDelay: `${220 + i * 90}ms` }}
+                    >
+                      <span className="grid size-5 shrink-0 place-items-center rounded-full bg-[#7cc79c]/15 text-[#7cc79c]">
+                        <Check className="size-3" strokeWidth={3} />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-baseline justify-between gap-3">
+                          <span className="font-mono text-sm text-[#e8ebe6]">
+                            {step.name}
+                          </span>
+                          <span className="shrink-0 font-mono text-xs text-white/40">
+                            {step.duration}
+                          </span>
+                        </div>
+                        <div className="mt-1 flex items-center gap-3">
+                          <code className="min-w-0 truncate font-mono text-[0.7rem] text-white/35">
+                            {step.command}
+                          </code>
+                          <span
+                            aria-hidden="true"
+                            className="ml-auto hidden h-1 w-16 overflow-hidden rounded-full bg-white/10 sm:block sm:w-24"
+                          >
+                            <span
+                              className="block h-full rounded-full bg-[#7cc79c]/70"
+                              style={{ width: step.width }}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                    </li>
                   ))}
-                </pre>
+                </ul>
+
+                <div className="border-t border-white/10 px-4 py-3 sm:px-5">
+                  <span className="inline-flex items-center gap-1.5 font-mono text-xs text-[#7cc79c]">
+                    View full logs
+                    <ArrowRight className="size-3.5" />
+                  </span>
+                </div>
               </div>
             </figure>
           </div>
@@ -186,15 +232,16 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   <Box className="size-3.5" /> The smallest useful version
                 </Badge>
                 <h2 className="mt-6 text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                  GitHub-native CI without the platform.
+                  Where it fits
                 </h2>
               </div>
               <div className="lg:pb-2">
                 <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
                   Full platforms, hosted control planes, and Kubernetes-oriented
-                  runners already fill this slot. This one is a binary and a
-                  SQLite file on a box you already pay for — CI on your server,
-                  without Actions and without learning a pipeline DSL.
+                  runners already exist for teams that need them. openpreflight
+                  is for the case where you just want a private repo checked: a
+                  binary and a SQLite file on a box you already pay for, with no
+                  Actions workflow to write and no pipeline DSL to learn.
                 </p>
                 <Button asChild className="mt-6" variant="outline">
                   <a href={`${DOCS}/understanding/security-model/`}>
@@ -242,12 +289,12 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
             </Badge>
             <div className="mt-7 flex flex-col justify-between gap-5 md:flex-row md:items-end">
               <h2 className="max-w-3xl text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                Gated on the commit, not on the push.
+                From webhook to Check Run
               </h2>
               <p className="max-w-sm text-sm leading-relaxed text-background/60">
                 The webhook has ten seconds to answer, so it validates and
-                enqueues; the worker does the slow part. One live run per
-                commit.
+                enqueues while the worker does the slow part. Only one run is
+                ever live for a given commit.
               </p>
             </div>
             <ol className="mt-14 grid gap-4 lg:grid-cols-3">
@@ -288,17 +335,17 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   <FileCode2 className="size-3.5" /> Pipeline
                 </Badge>
                 <h2 className="mt-6 text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                  A <code className="font-mono text-[0.85em]">.ci.yml</code>, or
-                  nothing at all.
+                  A <code className="font-mono text-[0.85em]">.ci.yml</code>, if
+                  you want one
                 </h2>
                 <p className="mt-5 text-base leading-relaxed text-muted-foreground">
                   Set <code className="font-mono text-sm">runtime</code> to run
                   steps in a container, or omit it to run them in the worker
-                  process. With no file, commands fall back to binding overrides,
-                  then Node defaults from{" "}
-                  <code className="font-mono text-sm">package.json</code> — and if
-                  there is genuinely nothing to run, the check reports{" "}
-                  <strong className="text-foreground">skipped</strong> rather than
+                  process. If the repo has no file, commands come from the
+                  binding overrides first, then from Node defaults in{" "}
+                  <code className="font-mono text-sm">package.json</code>. When
+                  there is nothing to run at all, the check reports{" "}
+                  <strong className="text-foreground">skipped</strong> instead of
                   failed.
                 </p>
                 <Button asChild className="mt-8" variant="outline">
@@ -325,11 +372,11 @@ timeout: 15m`}</code>
                 <Terminal className="size-3.5" /> Run it
               </Badge>
               <h2 className="mt-5 text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                One secret key. One public URL.
+                Two variables and a compose file
               </h2>
               <p className="mt-4 text-muted-foreground">
-                Then open the UI, complete the first-boot wizard, register your
-                GitHub App, and enable the repos you want checks for.
+                Then open the UI, run the first-boot wizard, register your
+                GitHub App, and enable the repos you want checks on.
               </p>
             </div>
             <pre className="mx-auto mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-foreground/10 bg-muted/40 p-5 font-mono text-sm leading-relaxed sm:p-6">
@@ -350,11 +397,11 @@ docker compose up --build`}</code>
         <section className="px-5 py-24 sm:px-8 sm:py-32" id="scope">
           <div className="mx-auto max-w-7xl">
             <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-              What it isn’t
+              What it isn't
             </h2>
             <p className="mt-5 max-w-2xl text-muted-foreground">
-              Published so you can rule it out in a minute rather than an
-              afternoon. None of this is in v1:
+              If any of these are requirements for you, this is the wrong
+              tool. None of them are in v1:
             </p>
             <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {notInV1.map((item) => (
@@ -385,13 +432,13 @@ docker compose up --build`}</code>
                   Contributing
                 </Badge>
                 <h2 className="mt-7 text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                  Tests that need no network.
+                  The test suite runs offline
                 </h2>
                 <p className="mt-5 max-w-md text-sm leading-relaxed text-primary-foreground/75">
-                  <code className="font-mono">go test ./...</code> needs no
-                  credentials — Coolify and GitHub are faked. Bug fixes with a
-                  failing test, small v1 gaps, and docs that match the code are
-                  welcome.
+                  <code className="font-mono">go test ./...</code> runs without
+                  credentials because Coolify and GitHub are faked. The most
+                  useful contributions are bug fixes that come with a failing
+                  test, small gaps in v1, and docs corrected to match the code.
                 </p>
               </div>
             </div>
@@ -417,7 +464,7 @@ docker compose up --build`}</code>
       </main>
       <Footer01
         brand="openpreflight"
-        description="Self-hosted GitHub Check Runs CI for private repos. Your server, your logs, your repos."
+        description="Self-hosted GitHub Check Runs CI for private repos. It runs on a server you control."
         groups={[
           {
             title: "Product",
