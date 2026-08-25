@@ -1,0 +1,42 @@
+# openpreflight
+
+> Self-hosted GitHub Check Runs CI for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit with full logs.
+
+openpreflight is a small CI provider you run yourself. It is not GitHub Actions, does not use `actions/runner`, and does not create GitHub Apps for you. UI, JSON API, webhook receiver, and job runner live in a single process; secrets are AES-256-GCM encrypted at rest in SQLite.
+
+Marketing site: https://openpreflight.xyz  
+Docs: https://docs.openpreflight.xyz  
+Source: https://github.com/openpreflight/openpreflight  
+License: Apache-2.0
+
+## Product
+
+- [Product overview (Markdown)](https://openpreflight.xyz/index.md): Positioning, what it does, what is out of scope for v1
+- [Marketing home](https://openpreflight.xyz/): Human-facing landing page
+
+## Docs
+
+- [Quickstart](https://docs.openpreflight.xyz/start/quickstart/): Binary, first-boot wizard, ready for a GitHub App
+- [Configuration](https://docs.openpreflight.xyz/start/configuration/): Environment variables and settings
+- [FAQ](https://docs.openpreflight.xyz/start/faq/): Common questions
+- [Register a GitHub App](https://docs.openpreflight.xyz/setup/github-app/): Permissions and events
+- [Bindings](https://docs.openpreflight.xyz/setup/bindings/): Enable repos and branches
+- [Pipelines](https://docs.openpreflight.xyz/using/pipelines/): Job steps and `runtime:`
+- [API](https://docs.openpreflight.xyz/using/api/): JSON API surface
+- [Architecture](https://docs.openpreflight.xyz/understanding/architecture/): How the binary is structured
+- [Security model](https://docs.openpreflight.xyz/understanding/security-model/): HMAC, encryption, trust boundaries
+- [Deployment](https://docs.openpreflight.xyz/understanding/deployment/): Compose, volumes, reverse proxy
+
+## Source
+
+- [GitHub repository](https://github.com/openpreflight/openpreflight): Source, issues, releases
+- [SECURITY.md](https://github.com/openpreflight/openpreflight/blob/main/SECURITY.md): Vulnerability reporting
+- [License](https://github.com/openpreflight/openpreflight/blob/main/LICENSE): Apache-2.0
+
+## Optional
+
+- [Coolify setup](https://docs.openpreflight.xyz/setup/coolify/): Optional Coolify inventory / install-worker
+- [Logs](https://docs.openpreflight.xyz/using/logs/): Check Run tails vs full logs
+- [Troubleshooting](https://docs.openpreflight.xyz/using/troubleshooting/): Common failure modes
+- [ADRs](https://docs.openpreflight.xyz/adr/001-database/): Architecture decision records
+- [Design system](https://openpreflight.xyz/design.md): Shared brand tokens for the marketing and docs sites

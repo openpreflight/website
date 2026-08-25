@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   ArrowRight,
   Box,
-  Check,
   Code2,
   Database,
   FileCode2,
@@ -105,26 +104,24 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
       />
       <main id="content">
         <section
-          className="relative overflow-hidden px-5 pb-20 pt-16 sm:px-8 sm:pb-28 sm:pt-24"
+          className="hero relative overflow-hidden px-5 pb-16 pt-14 sm:px-8 sm:pb-24 sm:pt-20"
           id="top"
         >
-          <div className="absolute inset-x-0 top-0 -z-10 h-[720px] [background-image:radial-gradient(circle_at_50%_0%,color-mix(in_oklch,var(--primary)_28%,transparent),transparent_48%),linear-gradient(to_right,color-mix(in_oklch,var(--foreground)_5%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklch,var(--foreground)_5%,transparent)_1px,transparent_1px)] [background-size:auto,52px_52px,52px_52px] [mask-image:linear-gradient(to_bottom,black,transparent_90%)]" />
+          <div aria-hidden="true" className="hero-atmosphere pointer-events-none absolute inset-0 -z-10" />
           <div className="mx-auto max-w-7xl">
-            <div className="mx-auto max-w-4xl text-center">
-              <Badge className="font-mono tracking-wide" variant="secondary">
-                <Terminal className="size-3.5" /> openpreflight
-              </Badge>
-              <h1 className="mt-7 text-balance text-5xl font-semibold leading-[.97] tracking-[-.065em] sm:text-7xl lg:text-[5.2rem]">
+            <div className="hero-copy mx-auto max-w-3xl text-center">
+              <p className="hero-kicker font-mono text-sm font-medium tracking-wide text-primary">
+                openpreflight
+              </p>
+              <h1 className="mt-5 text-balance text-[2.75rem] font-semibold leading-[0.95] tracking-[-0.055em] sm:text-6xl lg:text-[4.75rem]">
                 A small CI provider for{" "}
                 <span className="text-primary">private repos.</span>
               </h1>
-              <p className="mx-auto mt-7 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
-                One Go binary that is both a configurator — add GitHub Apps and
-                repo bindings in a web UI — and a worker that receives webhooks,
-                runs install/test/build on the exact commit, and reports one
-                Check Run with full logs.
+              <p className="mx-auto mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+                One Go binary. One SQLite file. One Check Run per commit on your
+                server, with full logs.
               </p>
-              <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+              <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button asChild size="lg" variant="signature">
                   <a href={`${DOCS}/start/quickstart/`}>
                     Quickstart <ArrowRight />
@@ -136,30 +133,29 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   </a>
                 </Button>
               </div>
-              <p className="mt-5 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                <Check className="size-3.5 text-primary" /> Apache-2.0 · Self-hosted
-                · One SQLite file
-              </p>
             </div>
 
-            <div className="relative mx-auto mt-16 max-w-3xl rounded-[1.75rem] border border-foreground/10 bg-background/80 p-2 shadow-[0_50px_140px_-80px_var(--primary)] backdrop-blur-xl sm:p-3">
-              <figure className="overflow-hidden rounded-[1.25rem] border border-foreground/10 bg-[#121412] text-left font-mono text-sm leading-relaxed text-[#e8ebe6]">
-                <div className="flex h-11 items-center gap-2 border-b border-white/8 bg-white/[.04] px-4">
-                  <span className="size-2.5 rounded-full bg-rose-400/90" />
-                  <span className="size-2.5 rounded-full bg-amber-400/90" />
-                  <span className="size-2.5 rounded-full bg-emerald-400/90" />
-                  <span className="ml-3 text-xs text-white/45">
+            <figure className="hero-panel relative mx-auto mt-14 max-w-2xl sm:mt-16">
+              <div aria-hidden="true" className="hero-panel-glow pointer-events-none absolute -inset-10 -z-10" />
+              <div className="overflow-hidden rounded-2xl border border-[#2a2f2a] bg-[#121412] text-left font-mono text-[0.8125rem] leading-[1.65] text-[#e8ebe6] shadow-[0_40px_100px_-60px_color-mix(in_srgb,var(--primary)_55%,transparent)] sm:text-sm">
+                <div className="flex h-11 items-center gap-2.5 border-b border-white/10 bg-white/[0.03] px-4 sm:px-5">
+                  <span
+                    aria-hidden="true"
+                    className="size-2 shrink-0 rounded-full bg-[#7cc79c]"
+                  />
+                  <span className="truncate text-xs text-white/50">
                     Check Run · pull request
                   </span>
                 </div>
                 <figcaption className="sr-only">
                   Example Check Run output for a passing openpreflight job
                 </figcaption>
-                <pre className="space-y-0.5 overflow-x-auto p-5 sm:p-7">
+                <pre className="overflow-x-auto p-5 sm:p-7">
                   {checkLines.map((line, i) => (
                     <div
                       aria-hidden={line.tone === "sep" ? true : undefined}
                       className={cn(
+                        "hero-line",
                         line.tone === "brand" && "font-medium text-[#7cc79c]",
                         line.tone === "pass" && "text-[#9ad4b4]",
                         line.tone === "sep" && "text-white/25",
@@ -167,17 +163,14 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                         line.tone === "muted" && "text-white/40",
                       )}
                       key={`${line.text}-${i}`}
+                      style={{ animationDelay: `${180 + i * 70}ms` }}
                     >
                       {line.text || "\u00a0"}
                     </div>
                   ))}
                 </pre>
-              </figure>
-              <p className="mt-4 px-2 text-center text-sm text-muted-foreground">
-                That is the whole output surface: one check, per commit, in the
-                pull request.
-              </p>
-            </div>
+              </div>
+            </figure>
           </div>
         </section>
 

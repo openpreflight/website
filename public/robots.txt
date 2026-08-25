@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://openpreflight.xyz/sitemap-index.xml
+# LLM-oriented index (see https://llmstxt.org/)
+# https://openpreflight.xyz/llms.txt

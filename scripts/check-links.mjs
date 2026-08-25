@@ -20,6 +20,9 @@ const required = [
   'apple-touch-icon.png',
   'og.png',
   'robots.txt',
+  'llms.txt',
+  'index.md',
+  'design.md',
   'sitemap-index.xml',
 ];
 
