@@ -39,4 +39,3 @@ License: Apache-2.0
 - [Logs](https://docs.openpreflight.xyz/using/logs/): Check Run tails vs full logs
 - [Troubleshooting](https://docs.openpreflight.xyz/using/troubleshooting/): Common failure modes
 - [ADRs](https://docs.openpreflight.xyz/adr/001-database/): Architecture decision records
-- [Design system](https://openpreflight.xyz/design.md): Shared brand tokens for the marketing and docs sites

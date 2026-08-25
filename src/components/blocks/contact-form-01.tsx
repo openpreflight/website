@@ -21,7 +21,7 @@ function ContactForm01({
   eyebrow = "Let’s work together",
   heading = "Tell us what you want to build.",
   description = "Share a little context and our team will reply with useful next steps within two business days.",
-  email = "hello@northstar.dev",
+  email,
   responseNote = "Usually replies in one day",
   submitLabel = "Send inquiry",
   className,
@@ -57,12 +57,14 @@ function ContactForm01({
               {description}
             </p>
             <div className="mt-10 space-y-4 text-sm">
-              <a className="flex items-center gap-3" href={`mailto:${email}`}>
-                <span className="grid size-9 place-items-center rounded-xl bg-white/10">
-                  <Mail className="size-4" />
-                </span>
-                {email}
-              </a>
+              {email ? (
+                <a className="flex items-center gap-3" href={`mailto:${email}`}>
+                  <span className="grid size-9 place-items-center rounded-xl bg-white/10">
+                    <Mail className="size-4" />
+                  </span>
+                  {email}
+                </a>
+              ) : null}
               <p className="flex items-center gap-3">
                 <span className="grid size-9 place-items-center rounded-xl bg-white/10">
                   <MessageSquare className="size-4" />

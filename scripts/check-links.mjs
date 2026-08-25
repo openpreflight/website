@@ -25,7 +25,6 @@ const required = [
   'robots.txt',
   'llms.txt',
   'index.md',
-  'design.md',
   'sitemap-index.xml',
 ];
 

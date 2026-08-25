@@ -63,13 +63,13 @@ function SiteHeader01({
   links = defaultLinks,
   ctaLabel = "Quickstart",
   ctaHref = "https://docs.openpreflight.xyz/start/quickstart/",
-  profileName = "Maya Chen",
-  profileEmail = "maya@northstar.dev",
+  profileName,
+  profileEmail,
   showProfile = false,
   className,
   ...props
 }: SiteHeader01Props) {
-  const initials = profileName
+  const initials = (profileName ?? "")
     .split(" ")
     .map((part) => part[0])
     .join("")
@@ -113,7 +113,7 @@ function SiteHeader01({
               {ctaLabel} <ArrowRight />
             </a>
           </Button>
-          {showProfile ? (
+          {showProfile && profileName ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
