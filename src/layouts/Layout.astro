@@ -1,13 +1,13 @@
 ---
 import '../styles/global.css';
-import Header from '../components/Header.astro';
 
 interface Props {
   title: string;
   description: string;
+  bare?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, bare = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og.png', Astro.site);
 const DOCS = 'https://docs.openpreflight.xyz';
@@ -48,22 +48,35 @@ const ogAlt =
     <meta name="twitter:image:alt" content={ogAlt} />
   </head>
   <body class="font-sans antialiased">
-    <a class="skip-link" href="#content">Skip to content</a>
-    <Header />
-    <main id="content">
-      <slot />
-    </main>
-    <footer class="border-t border-[var(--edge)]">
-      <div class="mx-auto max-w-3xl px-6 py-10 text-sm text-[var(--ink-muted)]">
-        <nav aria-label="Footer" class="flex flex-wrap gap-x-6 gap-y-2">
-          <a href={DOCS} class="hover:text-[var(--ink)]">Documentation</a>
-          <a href={REPO} class="hover:text-[var(--ink)]">GitHub</a>
-          <a href={`${REPO}/releases`} class="hover:text-[var(--ink)]">Releases</a>
-          <a href={`${REPO}/blob/main/SECURITY.md`} class="hover:text-[var(--ink)]">Security</a>
-          <a href={`${REPO}/blob/main/LICENSE`} class="hover:text-[var(--ink)]">Apache-2.0</a>
-        </nav>
-        <p class="mt-6">Self-hosted. Your server, your logs, your repos.</p>
-      </div>
-    </footer>
+    {
+      bare ? (
+        <slot />
+      ) : (
+        <>
+          <a class="skip-link" href="#content">
+            Skip to content
+          </a>
+          <main id="content">
+            <slot />
+          </main>
+          <footer class="border-t border-border">
+            <div class="mx-auto max-w-3xl px-6 py-10 text-sm text-muted-foreground">
+              <nav aria-label="Footer" class="flex flex-wrap gap-x-6 gap-y-2">
+                <a href={DOCS} class="hover:text-foreground">Documentation</a>
+                <a href={REPO} class="hover:text-foreground">GitHub</a>
+                <a href={`${REPO}/releases`} class="hover:text-foreground">Releases</a>
+                <a href={`${REPO}/blob/main/SECURITY.md`} class="hover:text-foreground">
+                  Security
+                </a>
+                <a href={`${REPO}/blob/main/LICENSE`} class="hover:text-foreground">
+                  Apache-2.0
+                </a>
+              </nav>
+              <p class="mt-6">Self-hosted. Your server, your logs, your repos.</p>
+            </div>
+          </footer>
+        </>
+      )
+    }
   </body>
 </html>

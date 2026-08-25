@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "framework": "react",
+  "sourceRoot": "src",
+  "style": "nova",
+  "theme": {
+    "font": "inter",
+    "neutral": "olive",
+    "accent": "emerald",
+    "radius": "0.625rem"
+  }
+}
