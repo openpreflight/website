@@ -1,6 +1,6 @@
 # openpreflight
 
-A small CI provider for private GitHub repos.
+A small CI provider for private repos.
 
 Self-hosted. One Go binary and one SQLite file. Register a GitHub App you own, enable your repos, and every commit gets a Check Run with full logs on your server.
 
