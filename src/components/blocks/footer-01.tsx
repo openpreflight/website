@@ -117,10 +117,15 @@ function Footer01({
           </nav>
         </div>
         <div className="mt-14 flex flex-col gap-4 border-t border-foreground/8 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <p>Apache-2.0 · Self-hosted GitHub Check Runs CI</p>
+          <p>
+            openpreflight is Apache-2.0. This site is MIT.
+          </p>
           <div className="flex gap-5 sm:ml-auto">
             <a href="https://github.com/openpreflight/openpreflight/blob/main/LICENSE">
-              License
+              Apache-2.0
+            </a>
+            <a href="https://github.com/openpreflight/website/blob/main/LICENSE">
+              MIT
             </a>
             <a href="https://github.com/openpreflight/openpreflight/blob/main/SECURITY.md">
               Security

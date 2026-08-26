@@ -16,11 +16,53 @@ import { Footer01 } from "@/components/blocks/footer-01";
 import { SiteHeader01 } from "@/components/blocks/site-header-01";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import demoRuns from "@/data/demo-runs.json";
 import { cn } from "@/lib/utils";
 
 const DOCS = "https://docs.openpreflight.xyz";
 const REPO = "https://github.com/openpreflight/openpreflight";
+const DEMO_REPO = "https://github.com/openpreflight/demo";
 
+type DemoRun = {
+  outcome: string;
+  title: string;
+  description: string;
+  branch: string;
+  runId: string;
+  runUrl: string;
+  prUrl: string;
+};
+
+const demoEntries = demoRuns as DemoRun[];
+
+function outcomeLabel(outcome: string) {
+  switch (outcome) {
+    case "success":
+      return "passed";
+    case "failure":
+      return "failed";
+    case "timed_out":
+      return "timed out";
+    case "skipped":
+      return "skipped";
+    default:
+      return outcome;
+  }
+}
+
+function outcomeClass(outcome: string) {
+  switch (outcome) {
+    case "success":
+      return "text-[var(--pass,#2f6f4f)]";
+    case "failure":
+    case "timed_out":
+      return "text-red-700 dark:text-red-400";
+    case "skipped":
+      return "text-muted-foreground";
+    default:
+      return "text-muted-foreground";
+  }
+}
 const checkSteps = [
   { name: "install", command: "npm ci", duration: "8s", width: "19%" },
   { name: "test", command: "go test ./...", duration: "21s", width: "50%" },
@@ -66,6 +108,37 @@ const runSteps = [
   },
 ];
 
+const screenshots = [
+  {
+    src: "/screenshots/wizard.png",
+    title: "First boot",
+    caption:
+      "The setup wizard: an admin password and the public base URL. There is no configuration file to write.",
+    alt: "The openpreflight setup wizard, showing an admin password field and a public base URL field filled in with https://ci.example.com.",
+  },
+  {
+    src: "/screenshots/github-app.png",
+    title: "Register your App",
+    caption:
+      "Paste an App you own. The webhook URL to give GitHub is built from the slug you choose here.",
+    alt: "The GitHub Apps screen in openpreflight, showing the slug, App ID, API URL and check name fields alongside the generated webhook URL.",
+  },
+  {
+    src: "/screenshots/bindings.png",
+    title: "Enable repos",
+    caption:
+      "The bindings table is the allow-list. A signed webhook for a repo that is not enabled here is dropped.",
+    alt: "The repositories screen in openpreflight, listing repositories with checkboxes, some enabled and some not, and per-binding overrides on one row.",
+  },
+  {
+    src: "/screenshots/run.png",
+    title: "Read the log",
+    caption:
+      "Every Check Run links here. Steps, durations, and the full log, on your server rather than in a hosted dashboard.",
+    alt: "A run detail page in openpreflight, showing install, test and build steps with durations and a failing step's output in the log below.",
+  },
+];
+
 const notInV1 = [
   "GitHub Actions YAML",
   "actions/runner",
@@ -91,6 +164,8 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           { label: "Product", href: "#product" },
           { label: "How it runs", href: "#how" },
           { label: "Pipeline", href: "#pipeline" },
+          { label: "Demo", href: "#demo" },
+          { label: "Screens", href: "#screens" },
           { label: "Docs", href: DOCS },
         ]}
         ctaLabel="Quickstart"
@@ -365,6 +440,69 @@ timeout: 15m`}</code>
           </div>
         </section>
 
+        <section className="px-5 py-24 sm:px-8 sm:py-32" id="demo">
+          <div className="mx-auto max-w-7xl">
+            <Badge variant="secondary">
+              <Check className="size-3.5" /> Live demo
+            </Badge>
+            <h2 className="mt-6 max-w-3xl text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
+              Real Check Runs, public log pages
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
+              These are real Check Runs on{" "}
+              <a
+                className="font-mono text-sm text-foreground underline-offset-4 hover:underline"
+                href={DEMO_REPO}
+              >
+                openpreflight/demo
+              </a>
+              , produced by a self-hosted instance. The log pages are the same
+              pages you get behind auth — shareable logs on that one binding.
+            </p>
+            <ul className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {demoEntries.map((entry) => (
+                <li key={entry.branch}>
+                  <p
+                    className={cn(
+                      "font-mono text-xs font-medium uppercase tracking-wide",
+                      outcomeClass(entry.outcome),
+                    )}
+                  >
+                    {outcomeLabel(entry.outcome)}
+                  </p>
+                  <h3 className="mt-2 font-mono text-lg font-semibold tracking-tight">
+                    {entry.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {entry.description}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                    {entry.runUrl ? (
+                      <a
+                        className="text-foreground underline-offset-4 hover:underline"
+                        href={entry.runUrl}
+                      >
+                        run log
+                      </a>
+                    ) : null}
+                    <a
+                      className="text-muted-foreground underline-offset-4 hover:underline"
+                      href={entry.prUrl}
+                    >
+                      pull request
+                    </a>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-10 max-w-2xl text-sm text-muted-foreground">
+              The demo instance is a live box and may occasionally be down. If a
+              run link is missing, use the pull request — the Check Run on
+              GitHub still points at the details URL when the instance is up.
+            </p>
+          </div>
+        </section>
+
         <section className="px-5 pb-8 sm:px-8" id="run">
           <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-foreground/10 bg-background px-6 py-16 sm:px-10">
             <div className="mx-auto max-w-2xl text-center">
@@ -372,17 +510,18 @@ timeout: 15m`}</code>
                 <Terminal className="size-3.5" /> Run it
               </Badge>
               <h2 className="mt-5 text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                Two variables and a compose file
+                One variable and a compose file
               </h2>
               <p className="mt-4 text-muted-foreground">
-                Then open the UI, run the first-boot wizard, register your
-                GitHub App, and enable the repos you want checks on.
+                Nothing to clone: the file pulls the published image. Then open
+                the UI, run the first-boot wizard, register your GitHub App, and
+                enable the repos you want checks on.
               </p>
             </div>
             <pre className="mx-auto mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-foreground/10 bg-muted/40 p-5 font-mono text-sm leading-relaxed sm:p-6">
-              <code>{`export CI_SECRET_KEY="$(openssl rand -base64 48)"
-export CI_PUBLIC_BASE_URL="https://ci.example.com"
-docker compose up --build`}</code>
+              <code>{`curl -O https://raw.githubusercontent.com/openpreflight/openpreflight/main/compose.prod.yaml
+export CI_SECRET_KEY="$(openssl rand -base64 48)"
+docker compose -f compose.prod.yaml up -d`}</code>
             </pre>
             <div className="mt-8 flex justify-center">
               <Button asChild size="lg" variant="signature">
@@ -390,6 +529,41 @@ docker compose up --build`}</code>
                   Full quickstart <ArrowRight />
                 </a>
               </Button>
+            </div>
+          </div>
+        </section>
+
+        <section className="px-5 py-24 sm:px-8 sm:py-32" id="screens">
+          <div className="mx-auto max-w-7xl">
+            <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
+              What you actually operate
+            </h2>
+            <p className="mt-5 max-w-2xl text-muted-foreground">
+              Four screens, in the order you meet them. Configuration is a UI,
+              not a block of environment variables per installation.
+            </p>
+            <div className="mt-12 grid gap-8 lg:grid-cols-2">
+              {screenshots.map((shot) => (
+                <figure className="group" key={shot.src}>
+                  <div className="overflow-hidden rounded-2xl border border-foreground/10 bg-muted/30">
+                    <img
+                      alt={shot.alt}
+                      className="w-full"
+                      decoding="async"
+                      height={900}
+                      loading="lazy"
+                      src={shot.src}
+                      width={1440}
+                    />
+                  </div>
+                  <figcaption className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                    <span className="font-medium text-foreground">
+                      {shot.title}.
+                    </span>{" "}
+                    {shot.caption}
+                  </figcaption>
+                </figure>
+              ))}
             </div>
           </div>
         </section>
@@ -414,6 +588,20 @@ docker compose up --build`}</code>
                 </li>
               ))}
             </ul>
+            <p className="mt-8 max-w-2xl text-muted-foreground">
+              Woodpecker, Drone, a self-hosted{" "}
+              <code className="font-mono text-sm">actions/runner</code>, and
+              Jenkins all do more than this. The{" "}
+              <a className="underline underline-offset-4 hover:text-foreground" href={`${DOCS}/start/comparison/`}>
+                comparison
+              </a>{" "}
+              says when to pick one of them instead, and what running this
+              costs you day to day is in{" "}
+              <a className="underline underline-offset-4 hover:text-foreground" href={`${DOCS}/understanding/operations/`}>
+                operations
+              </a>{" "}
+              — backups, upgrades, and what a restart does to a running job.
+            </p>
           </div>
         </section>
 
