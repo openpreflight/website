@@ -1,6 +1,6 @@
 # openpreflight
 
-> Self-hosted GitHub Check Runs CI for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit with full logs.
+> A small CI provider for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit.
 
 openpreflight is a small CI provider you run yourself. It does not wrap GitHub Actions or `actions/runner`, and it does not create GitHub Apps on your behalf; you register your own. UI, JSON API, webhook receiver, and job runner live in a single process, and secrets are AES-256-GCM encrypted at rest in SQLite.
 

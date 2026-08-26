@@ -177,7 +177,7 @@ function SiteHeader01({
                   {brand}
                 </SheetTitle>
                 <SheetDescription>
-                  Self-hosted GitHub Check Runs CI for private repos.
+                  A small CI provider for private repos.
                 </SheetDescription>
               </SheetHeader>
               <nav className="mt-8 grid gap-1" aria-label="Mobile">

@@ -652,7 +652,7 @@ docker compose -f compose.prod.yaml up -d`}</code>
       </main>
       <Footer01
         brand="openpreflight"
-        description="Self-hosted GitHub Check Runs CI for private repos. It runs on a server you control."
+        description="A small CI provider for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit."
         groups={[
           {
             title: "Product",
