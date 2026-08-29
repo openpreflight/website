@@ -136,19 +136,21 @@ const outbound = [
       steps={panelSteps}
     />
   </PageHero>
-  <p class="mx-auto max-w-6xl px-5 text-sm leading-relaxed text-muted-foreground sm:px-8">
-    <strong class="text-foreground">v1.0.0</strong> is the tagged v1 release.{' '}
-    <a class="text-primary underline underline-offset-4" href={RELEASE}>GitHub Release</a>
-    {' · '}
-    <a class="text-primary underline underline-offset-4" href={`${REPO}/blob/v1.0.0/CHANGELOG.md`}>Changelog</a>.
-  </p>
 
   <Section
     badge="Fit"
     title="Where it fits"
     description="Full platforms, hosted control planes, and Kubernetes-oriented runners already fill a different slot. This one does not replace them — the worker is the product, not a mode."
   >
-    <div class="mt-12 grid gap-4 lg:grid-cols-2">
+    <Callout class="mt-12" title="v1.0.0 is out">
+      <p>
+        Tagged 29 August 2026.{' '}
+        <a class="text-primary underline underline-offset-4" href={RELEASE}>GitHub Release</a>
+        {' · '}
+        <a class="text-primary underline underline-offset-4" href={`${REPO}/blob/v1.0.0/CHANGELOG.md`}>Changelog</a>.
+      </p>
+    </Callout>
+    <div class="mt-10 grid gap-4 lg:grid-cols-2">
       <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
         <h3 class="text-lg font-semibold tracking-[-.03em]">Use it when</h3>
         <MarkList class="mt-5" cols={1} items={fit} mark="check" />

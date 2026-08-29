@@ -10,7 +10,7 @@ import CtaLink from '../components/marketing/CtaLink.astro';
 import Prose from '../components/marketing/Prose.astro';
 import Callout from '../components/marketing/Callout.astro';
 import Faq from '../components/marketing/Faq.astro';
-import { CTA, DOCS, REPO, RELEASE } from '../lib/site';
+import { DOCS, REPO, RELEASE } from '../lib/site';
 
 const positions = [
   {
@@ -293,6 +293,13 @@ const weaknesses = [
       class="mt-12"
       items={[
         {
+          question: 'Is v1 released?',
+          answer:
+            'Yes. <strong>v1.0.0</strong> was tagged 29 August 2026. Linux binaries are on the GitHub Release. What v1 still does not include is listed below — those things are out of scope, not unfinished.',
+          href: RELEASE,
+          linkLabel: 'GitHub Release',
+        },
+        {
           question: 'Why gate on the check suite instead of push?',
           answer:
             'Gate on the commit, not the push, without importing a second scheduler. Adding a <code>push</code> case would reverse that decision rather than extend it.',
@@ -316,7 +323,7 @@ const weaknesses = [
         {
           question: 'Does the project use itself for CI?',
           answer:
-            'No — <code>openpreflight/openpreflight</code> runs GitHub Actions. Dogfooding needs a permanently reachable HTTPS instance and an App registered against the org, and releases have to publish multi-arch images, which this tool does not do at all.',
+            'No — <code>openpreflight/openpreflight</code> runs GitHub Actions. A public demo instance runs Check Runs for openpreflight/demo; that is not CI for the product repo. Releases have to publish multi-arch images, which this tool does not do.',
           href: `${DOCS}/start/faq/`,
           linkLabel: 'FAQ',
         },
