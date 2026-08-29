@@ -8,6 +8,7 @@ Self-hosted. One Go binary and one SQLite file. Register a GitHub App you own, e
 - Docs: https://docs.openpreflight.xyz
 - Source: https://github.com/openpreflight/openpreflight
 - License: Apache-2.0
+- Release: https://github.com/openpreflight/openpreflight/releases/tag/v1.0.0 (v1.0.0, 29 August 2026)
 
 ## What it is
 
@@ -30,6 +31,8 @@ Outcomes: passing, failing test, failing build, timeout, skipped, container runt
 See https://openpreflight.xyz/#demo
 
 ## Not in v1
+
+These are out of scope for the shipped v1.0.0, not unfinished work:
 
 - GitHub Actions YAML
 - `actions/runner`
