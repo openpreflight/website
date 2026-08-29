@@ -1,0 +1,46 @@
+---
+/** Numbered rail. Vertical on every breakpoint; the connector is decorative. */
+interface Step {
+  title: string;
+  detail: string;
+}
+
+interface Props {
+  steps: Step[];
+  tone?: 'default' | 'dark';
+  class?: string;
+}
+
+const { steps, tone = 'default', class: className = '' } = Astro.props;
+
+const lineClass = tone === 'dark' ? 'bg-background/15' : 'bg-foreground/10';
+const dotClass =
+  tone === 'dark'
+    ? 'border-background/20 bg-foreground text-primary'
+    : 'border-foreground/12 bg-background text-primary';
+const detailClass = tone === 'dark' ? 'text-background/60' : 'text-muted-foreground';
+---
+
+<ol class={`mt-10 ${className}`.trim()}>
+  {
+    steps.map((step, i) => (
+      <li class="relative flex gap-5 pb-8 last:pb-0">
+        {i < steps.length - 1 && (
+          <span aria-hidden="true" class={`absolute bottom-0 left-[19px] top-10 w-px ${lineClass}`} />
+        )}
+        <span
+          class={`relative z-10 grid size-10 shrink-0 place-items-center rounded-full border font-mono text-xs ${dotClass}`}
+        >
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <div class="pt-1.5">
+          <h3 class="text-base font-semibold tracking-[-.02em]">{step.title}</h3>
+          <p
+            class={`mt-2 max-w-2xl text-sm leading-relaxed ${detailClass} [&_code]:font-mono [&_code]:text-[0.85em]`}
+            set:html={step.detail}
+          />
+        </div>
+      </li>
+    ))
+  }
+</ol>

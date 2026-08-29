@@ -1,46 +1,189 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
+import PageHero from '../../components/marketing/PageHero.astro';
+import Section from '../../components/marketing/Section.astro';
+import Grid from '../../components/marketing/Grid.astro';
+import Card from '../../components/marketing/Card.astro';
+import Actions from '../../components/marketing/Actions.astro';
+import CtaLink from '../../components/marketing/CtaLink.astro';
+import Callout from '../../components/marketing/Callout.astro';
+import NextSteps from '../../components/marketing/NextSteps.astro';
 import { CTA, DOCS, REPO } from '../../lib/site';
+
+const rows = [
+  {
+    label: 'What it is',
+    actions: 'An orchestration layer for workflows.',
+    op: 'A Check Runs worker for one commit at a time.',
+  },
+  {
+    label: 'Where jobs run',
+    actions: 'Hosted runners, or a self-hosted <code>actions/runner</code>.',
+    op: 'The server you installed the binary on.',
+  },
+  {
+    label: 'Configuration',
+    actions: 'Workflow YAML in <code>.github/workflows</code>.',
+    op: '<code>.ci.yml</code>, binding overrides, or <code>package.json</code> scripts.',
+  },
+  {
+    label: 'Reusable steps',
+    actions: 'Marketplace actions.',
+    op: 'Shell commands you write. There is no registry.',
+  },
+  {
+    label: 'Matrices, caches, artifacts',
+    actions: 'Yes.',
+    op: 'Not in v1.',
+  },
+  {
+    label: 'Where logs live',
+    actions: 'On GitHub.',
+    op: 'On your disk, behind <code>GET /runs/{id}</code>.',
+  },
+  {
+    label: 'What you operate',
+    actions: 'Nothing, or a runner fleet.',
+    op: 'One binary, one SQLite file, one GitHub App.',
+  },
+];
 ---
 
 <MarketingPage
   title="openpreflight and GitHub Actions"
   description="Actions orchestrates. openpreflight is a small self-hosted Check Runs worker. They can coexist; this does not replace workflow YAML."
 >
-  <p class="kicker">Compare</p>
-  <h1>Choose the right layer</h1>
-  <p class="lead">
-    GitHub Actions is orchestration: matrices, caches, artifacts, marketplace
-    actions, hosted or self-hosted <code>actions/runner</code>. openpreflight is
-    a Check Runs worker you host. Use them together when that matches the setup.
-    Do not treat this product as a replacement for Actions YAML.
-  </p>
+  <PageHero
+    kicker="Compare"
+    title="Choose the right layer"
+    lead="GitHub Actions is orchestration. openpreflight is a Check Runs worker you host. Use them together when that matches your setup — this is not a replacement for workflow YAML."
+    crumbs={[
+      { label: 'openpreflight', href: '/' },
+      { label: 'Compare' },
+      { label: 'GitHub Actions' },
+    ]}
+  >
+    <Actions slot="actions">
+      <CtaLink href="/product/" variant="primary" size="lg">What openpreflight does</CtaLink>
+      <CtaLink href={`${DOCS}/start/comparison/`} variant="outline" size="lg">
+        Full docs comparison
+      </CtaLink>
+    </Actions>
+  </PageHero>
 
-  <h2>What openpreflight is</h2>
-  <ul>
-    <li>One binary, one SQLite file, on your server</li>
-    <li>A GitHub App you register</li>
-    <li>install / test / build from <code>.ci.yml</code></li>
-    <li>One Check Run per commit, logs on your disk</li>
-  </ul>
+  <Section badge="Side by side" title="Same repository, different job">
+    <div class="mt-12 overflow-hidden rounded-[1.5rem] border border-foreground/10">
+      <div class="hidden grid-cols-2 border-b border-foreground/10 bg-foreground/[0.03] sm:grid">
+        <p class="px-5 py-4 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+          GitHub Actions
+        </p>
+        <p class="px-5 py-4 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-primary">
+          openpreflight
+        </p>
+      </div>
+      {
+        rows.map((row, i) => (
+          <div class={i > 0 ? 'border-t border-foreground/10' : ''}>
+            <p class="px-5 pt-4 font-mono text-[0.68rem] uppercase tracking-[0.06em] text-muted-foreground/70">
+              {row.label}
+            </p>
+            <div class="grid gap-x-5 gap-y-3 px-5 pb-5 pt-2 sm:grid-cols-2">
+              <div>
+                <p class="mb-1 font-mono text-[0.6rem] uppercase tracking-[0.06em] text-muted-foreground/60 sm:hidden">
+                  GitHub Actions
+                </p>
+                <p
+                  class="text-sm leading-relaxed text-muted-foreground [&_code]:font-mono [&_code]:text-[0.85em]"
+                  set:html={row.actions}
+                />
+              </div>
+              <div>
+                <p class="mb-1 font-mono text-[0.6rem] uppercase tracking-[0.06em] text-primary/70 sm:hidden">
+                  openpreflight
+                </p>
+                <p
+                  class="text-sm leading-relaxed text-foreground [&_code]:font-mono [&_code]:text-[0.85em]"
+                  set:html={row.op}
+                />
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
 
-  <h2>What it is not</h2>
-  <ul>
-    <li>GitHub Actions YAML or <code>actions/runner</code></li>
-    <li>Matrices, caches, or artifacts</li>
-    <li>A hosted runner fleet</li>
-    <li>Creating GitHub Apps for you</li>
-  </ul>
-  <p>
-    Those sit on
-    <a href={`${REPO}#not-in-v1`}>Not in v1</a>.
-    Neighbors (Woodpecker, Drone, Jenkins) are compared in the
-    <a href={`${DOCS}/start/comparison/`}>docs</a>, not as fake “we replace
-    Actions” copy.
-  </p>
+  <Section badge="Together" title="They are not mutually exclusive" tone="dark">
+    <Grid class="mt-12" cols={2}>
+      <Card title="Keep Actions for what it is good at" tone="dark">
+        Release pipelines, matrices across versions, artifact publishing,
+        scheduled jobs, anything that needs the marketplace.
+      </Card>
+      <Card title="Add a worker you host" tone="dark">
+        Install, test, and build on a private repo, reported as a Check Run,
+        with the logs on hardware you already operate.
+      </Card>
+    </Grid>
+    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
+      Both can run on the same commit. GitHub shows every check that reports on
+      it, whoever produced them.
+    </p>
+  </Section>
 
-  <div class="cta-row">
-    <a class="primary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href="/why/">Why this shape</a>
-  </div>
+  <Section badge="Scope" title="What is not in v1">
+    <div class="grid gap-4 md:grid-cols-2">
+      <Card title="Not built, on purpose">
+        GitHub Actions YAML, <code>actions/runner</code>, matrices, caches,
+        artifacts, a hosted runner fleet, or creating GitHub Apps for you. The
+        list stays on <a class="text-primary underline underline-offset-4" href={`${REPO}#not-in-v1`}>Not in v1</a>.
+      </Card>
+      <Card title="Other neighbours">
+        Woodpecker, Drone, and Jenkins all do more than this. They are compared
+        in the <a class="text-primary underline underline-offset-4" href={`${DOCS}/start/comparison/`}>docs</a>,
+        not with fake “we replace Actions” copy.
+      </Card>
+    </div>
+    <Callout class="mt-8" title="Honest summary">
+      <p>
+        If you need orchestration, use Actions or one of its neighbours. If you
+        need a private commit checked by a worker you own, this is the smaller
+        answer.
+      </p>
+    </Callout>
+  </Section>
+
+  <NextSteps
+    links={[
+      {
+        label: 'Why this shape',
+        href: '/why/',
+        description: 'The gap this sits in, and why it stays small.',
+      },
+      {
+        label: 'Product',
+        href: '/product/',
+        description: 'The run loop, end to end.',
+      },
+      {
+        label: 'Pipeline',
+        href: '/pipeline/',
+        description: 'What replaces workflow YAML here.',
+      },
+      {
+        label: 'Self-hosted',
+        href: '/self-hosted/',
+        description: 'What you take on by hosting the worker.',
+      },
+      {
+        label: 'Docs comparison',
+        href: `${DOCS}/start/comparison/`,
+        description: 'Woodpecker, Drone, Jenkins, and when to pick them.',
+      },
+      {
+        label: 'Quickstart',
+        href: CTA.quickstart,
+        description: 'Try it next to your existing workflows.',
+      },
+    ]}
+  />
 </MarketingPage>

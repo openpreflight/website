@@ -1,0 +1,73 @@
+---
+/**
+ * A full-width page section. `tone="dark"` is the inverted band the landing
+ * page uses for "How a run happens"; keep it to one per page.
+ */
+interface Props {
+  id?: string;
+  tone?: 'default' | 'muted' | 'dark';
+  badge?: string;
+  title?: string;
+  description?: string;
+  align?: 'start' | 'center';
+  class?: string;
+}
+
+const {
+  id,
+  tone = 'default',
+  badge,
+  title,
+  description,
+  align = 'start',
+  class: className = '',
+} = Astro.props;
+
+const toneClass = {
+  default: '',
+  muted: 'bg-muted/35',
+  dark: 'on-dark bg-foreground text-background',
+}[tone];
+
+const badgeClass =
+  tone === 'dark'
+    ? 'border-background/20 bg-background/10 text-background'
+    : 'border-primary/12 bg-primary/10 text-primary';
+
+const descriptionClass =
+  tone === 'dark' ? 'text-background/60' : 'text-muted-foreground';
+---
+
+<section
+  id={id}
+  class={`px-5 py-20 sm:px-8 sm:py-24 ${toneClass} ${className}`.trim()}
+>
+  <div class="mx-auto max-w-6xl">
+    {
+      (badge || title || description) && (
+        <header class={align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-3xl'}>
+          {badge && (
+            <span
+              class={`inline-flex w-fit items-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-mono text-[0.68rem] font-semibold uppercase leading-none tracking-[0.045em] ${badgeClass}`}
+            >
+              {badge}
+            </span>
+          )}
+          {title && (
+            <h2
+              class={`text-balance text-3xl font-semibold tracking-[-.045em] sm:text-4xl ${badge ? 'mt-6' : ''}`}
+            >
+              {title}
+            </h2>
+          )}
+          {description && (
+            <p class={`mt-4 text-base leading-relaxed ${descriptionClass}`}>
+              {description}
+            </p>
+          )}
+        </header>
+      )
+    }
+    <slot />
+  </div>
+</section>

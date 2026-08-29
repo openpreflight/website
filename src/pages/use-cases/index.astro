@@ -1,36 +1,129 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
+import PageHero from '../../components/marketing/PageHero.astro';
+import Section from '../../components/marketing/Section.astro';
+import Actions from '../../components/marketing/Actions.astro';
+import CtaLink from '../../components/marketing/CtaLink.astro';
+import Callout from '../../components/marketing/Callout.astro';
+import NextSteps from '../../components/marketing/NextSteps.astro';
 import { CTA } from '../../lib/site';
+
+const cases = [
+  {
+    href: '/use-cases/private-repos/',
+    eyebrow: 'The common one',
+    title: 'Private GitHub repos',
+    body: 'You want a status on the commit without buying hosted Actions minutes or writing workflow YAML for install / test / build.',
+    points: ['A GitHub App you register', 'Clone via installation token', 'One Check Run per commit'],
+  },
+  {
+    href: '/use-cases/self-hosted-teams/',
+    eyebrow: 'Already have the box',
+    title: 'Self-hosted teams',
+    body: 'A VPS or home-lab machine is already paid for. openpreflight is a Compose stack on it: UI, webhook, runner, SQLite, logs.',
+    points: ['Runner on your hardware', 'Logs never leave the host', 'Shareable logs are opt-in'],
+  },
+  {
+    href: '/use-cases/open-source/',
+    eyebrow: 'Proof you can click',
+    title: 'Open-source contributors',
+    body: 'The public demo repo carries pull requests that produce real Check Runs from a self-hosted instance — pass, fail, timeout, skip.',
+    points: ['Six demo pull requests', 'Public run log pages', 'Same pages you get behind auth'],
+  },
+];
 ---
 
 <MarketingPage
   title="Use cases · openpreflight"
   description="Where self-hosted GitHub Check Runs CI actually fits: private repos, teams that keep the runner, open-source contributors."
 >
-  <p class="kicker">Use cases</p>
-  <h1>Who this is for</h1>
-  <p class="lead">
-    Three honest stories. Not a policy engine, and not one YAML across GitLab
-    and Jenkins.
-  </p>
+  <PageHero
+    kicker="Use cases"
+    title="Who this is for"
+    lead="Three honest stories. Not a policy engine, and not one YAML across GitLab and Jenkins."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Use cases' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href={CTA.quickstart} variant="primary" size="lg">Quickstart</CtaLink>
+      <CtaLink href="/product/" variant="outline" size="lg">How it works</CtaLink>
+    </Actions>
+  </PageHero>
 
-  <div class="card-grid cols-3">
-    <a href="/use-cases/private-repos/">
-      <h3>Private GitHub repos</h3>
-      <p>Check Runs on private code without Actions runners.</p>
-    </a>
-    <a href="/use-cases/self-hosted-teams/">
-      <h3>Self-hosted teams</h3>
-      <p>Keep the worker, the database, and the logs on your box.</p>
-    </a>
-    <a href="/use-cases/open-source/">
-      <h3>Open-source contributors</h3>
-      <p>Public demo PRs and the same log pages you get behind auth.</p>
-    </a>
-  </div>
+  <Section>
+    <div class="grid gap-4 lg:grid-cols-3">
+      {
+        cases.map((item) => (
+          <a
+            class="group flex flex-col rounded-[1.5rem] border border-foreground/10 p-6 transition-colors duration-300 hover:border-primary/45 hover:bg-primary/[.03] sm:p-7"
+            href={item.href}
+          >
+            <p class="font-mono text-xs uppercase tracking-[0.06em] text-muted-foreground">
+              {item.eyebrow}
+            </p>
+            <h2 class="mt-4 text-xl font-semibold tracking-[-.03em]">
+              {item.title}
+              <span
+                aria-hidden="true"
+                class="ml-1 inline-block text-primary opacity-0 transition-opacity group-hover:opacity-100"
+              >
+                →
+              </span>
+            </h2>
+            <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+            <ul class="mt-6 space-y-2 border-t border-foreground/10 pt-5">
+              {item.points.map((point) => (
+                <li class="flex items-start gap-2.5 text-sm text-muted-foreground">
+                  <span aria-hidden="true" class="mt-0.5 font-mono text-primary">✓</span>
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </a>
+        ))
+      }
+    </div>
+    <Callout class="mt-10" title="Not a use case">
+      <p>
+        Hosted CI for arbitrary public repos, cross-vendor pipeline portability,
+        and policy engines are all out of scope. See{' '}
+        <a href="/compare/github-actions/">the comparison</a> if orchestration is
+        what you are shopping for.
+      </p>
+    </Callout>
+  </Section>
 
-  <div class="cta-row">
-    <a class="primary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href="/product/">How it works</a>
-  </div>
+  <NextSteps
+    links={[
+      {
+        label: 'Private repos',
+        href: '/use-cases/private-repos/',
+        description: 'Check Runs on private code, without Actions.',
+      },
+      {
+        label: 'Self-hosted teams',
+        href: '/use-cases/self-hosted-teams/',
+        description: 'Runner, database, and logs on your box.',
+      },
+      {
+        label: 'Open-source contributors',
+        href: '/use-cases/open-source/',
+        description: 'Real pull requests you can inspect.',
+      },
+      {
+        label: 'Product',
+        href: '/product/',
+        description: 'The run loop behind all three.',
+      },
+      {
+        label: 'Why',
+        href: '/why/',
+        description: 'The gap these stories share.',
+      },
+      {
+        label: 'Live demo',
+        href: '/#demo',
+        description: 'Check Runs from a real instance.',
+      },
+    ]}
+  />
 </MarketingPage>

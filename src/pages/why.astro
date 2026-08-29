@@ -1,66 +1,195 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
+import PageHero from '../components/marketing/PageHero.astro';
+import Section from '../components/marketing/Section.astro';
+import Grid from '../components/marketing/Grid.astro';
+import Card from '../components/marketing/Card.astro';
+import MarkList from '../components/marketing/MarkList.astro';
+import Actions from '../components/marketing/Actions.astro';
+import CtaLink from '../components/marketing/CtaLink.astro';
+import Prose from '../components/marketing/Prose.astro';
+import Callout from '../components/marketing/Callout.astro';
+import NextSteps from '../components/marketing/NextSteps.astro';
 import { CTA, DOCS, REPO, RELEASE } from '../lib/site';
+
+const positions = [
+  {
+    eyebrow: 'One end',
+    title: 'Hosted Actions',
+    body: 'The default path. Workflow YAML, hosted minutes, and a lot of surface area.',
+  },
+  {
+    eyebrow: 'Other end',
+    title: 'A full platform',
+    body: 'Right when you need matrices, caches, and artifacts, with a control plane to operate.',
+  },
+  {
+    eyebrow: 'This',
+    title: 'In between',
+    body: 'The commit is gated, the logs stay here, and the operator is a binary.',
+  },
+];
+
+const shape = [
+  {
+    title: 'One process',
+    body: 'Configurator and worker are the same program. Nothing else to schedule.',
+  },
+  {
+    title: 'One SQLite file',
+    body: 'Apps, bindings, jobs, and encrypted secrets are rows in one file.',
+  },
+  {
+    title: 'An App you own',
+    body: 'You register the GitHub App. It is not brokered through anyone else.',
+  },
+  {
+    title: 'No new DSL',
+    body: 'Pipelines are install / test / build in <code>.ci.yml</code>.',
+  },
+];
+
+const ceiling = [
+  'GitHub Actions YAML',
+  '<code>actions/runner</code>',
+  'Creating GitHub Apps for you',
+  'Matrices',
+  'Caches',
+  'Artifacts',
+];
 ---
 
 <MarketingPage
   title="Why · openpreflight"
   description="Private-repo CI without Actions YAML or a pipeline DSL: a binary and a SQLite file on a server you already pay for."
 >
-  <p class="kicker">Why</p>
-  <h1>CI for private repos, small enough to host</h1>
-  <p class="lead">
-    The problem is not “we need another CI platform.” It is: we want a Check
-    Run on our private code, on our machine, without learning a second
-    workflow language.
-  </p>
+  <PageHero
+    kicker="Why"
+    title="CI for private repos, small enough to host"
+    lead="The problem is not “we need another CI platform.” It is: we want a Check Run on our private code, on our machine, without learning a second workflow language."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Why' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href="/product/" variant="primary" size="lg">See the product</CtaLink>
+      <CtaLink href={REPO} variant="outline" size="lg">View source</CtaLink>
+    </Actions>
+  </PageHero>
 
-  <h2>The problem</h2>
-  <p>
-    GitHub already knows how to show a Check Run. Hosted Actions is the default
-    path, and it brings YAML, hosted minutes, and a lot of surface area. Full
-    self-hosted platforms exist for teams that need matrices, caches, and
-    artifacts. Plenty of people want something in between: the commit is gated,
-    the logs stay here, and the operator is a binary.
-  </p>
-  <p>
-    <strong>v1.0.0</strong> is out. Linux binaries are on the{" "}
-    <a href={RELEASE}>GitHub Release</a>. The ceiling below is still the
-    product boundary, not a backlog.
-  </p>
+  <Section
+    badge="The problem"
+    title="Two good options, and a gap between them"
+    description="GitHub already knows how to show a Check Run. Getting one on a private repo usually means picking a side."
+  >
+    <Grid class="mt-12" cols={3}>
+      {positions.map((position) => (
+        <Card eyebrow={position.eyebrow} title={position.title}>{position.body}</Card>
+      ))}
+    </Grid>
+    <Prose class="mt-10">
+      <p>
+        Both ends are the right answer for someone. Plenty of people want
+        neither: no hosted minutes to buy, no orchestration layer to run — just
+        the commit checked, on hardware that is already theirs.
+      </p>
+      <p>
+        <strong>v1.0.0</strong> is out. Linux binaries are on the{' '}
+        <a href={RELEASE}>GitHub Release</a>. The ceiling below is still the
+        product boundary, not a backlog.
+      </p>
+    </Prose>
+  </Section>
 
-  <h2>The shape</h2>
-  <p>
-    One process is configurator and worker. One SQLite file holds Apps,
-    bindings, jobs, and encrypted secrets. You register a GitHub App you own.
-    Pipelines are install/test/build in <code>.ci.yml</code>, not a new DSL.
-    Runs are gated on the commit the way Zuul does it — trigger on the check
-    suite, build the immutable SHA, one live run per commit. The ceiling of
-    that model is in
-    <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a>.
-  </p>
+  <Section
+    badge="The shape"
+    title="What that answer looks like when you build it"
+    tone="dark"
+    description="Every piece here exists because removing it would mean adding something bigger."
+  >
+    <Grid class="mt-12" cols={4}>
+      {shape.map((item) => (
+        <Card title={item.title} tone="dark">
+          <span set:html={item.body} />
+        </Card>
+      ))}
+    </Grid>
+    <Prose class="mt-12">
+      <p>
+        Runs are gated on the commit the way Zuul does it — trigger on the
+        check suite, build the immutable SHA, one live run per commit. The
+        ceiling of that model is written down in ADR 005 rather than discovered
+        later.
+      </p>
+    </Prose>
+    <Actions>
+      <CtaLink href={`${DOCS}/adr/005-check-suite-gating/`} variant="onDark">Read ADR 005</CtaLink>
+    </Actions>
+  </Section>
 
-  <h2>Contrast</h2>
-  <p>
-    Hosted runners and full platforms solve orchestration. This product does
-    not. It reports Check Runs from a worker you host. GitHub Actions can still
-    orchestrate everything else. They can coexist; this does not replace
-    workflow YAML. See
-    <a href="/compare/github-actions/">openpreflight and GitHub Actions</a>.
-  </p>
+  <Section badge="Contrast" title="It is a layer, not a replacement">
+    <div class="mt-12 grid gap-4 md:grid-cols-2">
+      <Card eyebrow="Solves orchestration" title="Hosted runners and full platforms">
+        Matrices, caches, artifacts, a marketplace, and a scheduler. openpreflight
+        does none of that, and GitHub Actions can keep doing all of it.
+      </Card>
+      <Card eyebrow="Solves the report" title="A worker you host">
+        Clone the SHA, run install / test / build, report one Check Run. The two
+        can coexist on the same repository.
+      </Card>
+    </div>
+    <Actions>
+      <CtaLink href="/compare/github-actions/" variant="outline">
+        openpreflight and GitHub Actions
+      </CtaLink>
+    </Actions>
+  </Section>
 
-  <h2>The ceiling</h2>
-  <p>
-    Not in v1: Actions YAML, <code>actions/runner</code>, creating Apps for
-    you, matrices, caches, artifacts. Jobs on another machine use a Docker
-    engine (<code>CI_DOCKER_HOST</code>), not Coolify as a job runner. If those
-    are requirements, pick a different tool — the
-    <a href={`${DOCS}/start/comparison/`}>docs comparison</a> is honest about
-    that.
-  </p>
+  <Section
+    badge="The ceiling"
+    title="Where this is the wrong tool"
+    description="None of these are in v1. If one is a requirement, stop here and pick something else."
+  >
+    <MarkList class="mt-10" cols={3} items={ceiling} mark="cross" />
+    <Callout class="mt-8">
+      <p>
+        Jobs on another machine use a Docker engine (<code>CI_DOCKER_HOST</code>),
+        not Coolify as a job runner. The <a href={`${DOCS}/start/comparison/`}>docs comparison</a> is
+        honest about which neighbour to reach for instead.
+      </p>
+    </Callout>
+  </Section>
 
-  <div class="cta-row">
-    <a class="primary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href={REPO}>GitHub</a>
-  </div>
+  <NextSteps
+    links={[
+      {
+        label: 'Product',
+        href: '/product/',
+        description: 'The run loop, configuration, and where results land.',
+      },
+      {
+        label: 'vs GitHub Actions',
+        href: '/compare/github-actions/',
+        description: 'A side-by-side of the two layers.',
+      },
+      {
+        label: 'Self-hosted',
+        href: '/self-hosted/',
+        description: 'What running it actually costs you.',
+      },
+      {
+        label: 'Use cases',
+        href: '/use-cases/',
+        description: 'Three teams this shape is built for.',
+      },
+      {
+        label: 'Security',
+        href: '/security/',
+        description: 'What the worker is allowed to do.',
+      },
+      {
+        label: 'Quickstart',
+        href: CTA.quickstart,
+        description: 'One secret key and a compose file.',
+      },
+    ]}
+  />
 </MarketingPage>

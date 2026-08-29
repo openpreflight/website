@@ -1,30 +1,117 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
+import PageHero from '../../components/marketing/PageHero.astro';
+import Section from '../../components/marketing/Section.astro';
+import Grid from '../../components/marketing/Grid.astro';
+import Card from '../../components/marketing/Card.astro';
+import Actions from '../../components/marketing/Actions.astro';
+import CtaLink from '../../components/marketing/CtaLink.astro';
+import Callout from '../../components/marketing/Callout.astro';
+import MarkList from '../../components/marketing/MarkList.astro';
+import NextSteps from '../../components/marketing/NextSteps.astro';
 import { CTA, DOCS } from '../../lib/site';
+
+const stack = [
+  'UI and JSON API',
+  'Webhook receiver',
+  'Job runner',
+  'SQLite in <code>DATA_DIR</code>',
+  'Job logs on disk',
+  'Nothing else to schedule',
+];
 ---
 
 <MarketingPage
   title="Self-hosted teams · openpreflight"
   description="Keep the CI worker, SQLite file, and job logs on infrastructure you already operate."
 >
-  <p class="kicker"><a href="/use-cases/">Use cases</a> / Self-hosted teams</p>
-  <h1>Runner and logs stay on your box</h1>
-  <p class="lead">
-    The team already pays for a VPS or a home-lab machine. openpreflight is a
-    Compose stack on that machine: UI, webhook, runner, SQLite, logs.
-  </p>
-  <p>
-    GitHub only receives Check Run payloads and a details URL that points at
-    you. Shareable logs are opt-in per binding. Operations (backups, upgrades,
-    what a restart does to an in-flight job) are in
-    <a href={`${DOCS}/understanding/operations/`}>operations</a>.
-  </p>
-  <p>
-    Coolify can inventory servers and install the worker. It is not required,
-    and it does not execute jobs.
-  </p>
-  <div class="cta-row">
-    <a class="primary" href="/self-hosted/">Self-hosted</a>
-    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
-  </div>
+  <PageHero
+    kicker="Self-hosted teams"
+    title="Runner and logs stay on your box"
+    lead="The team already pays for a VPS or a home-lab machine. openpreflight is a Compose stack on that machine — and GitHub only ever receives a Check Run payload."
+    crumbs={[
+      { label: 'openpreflight', href: '/' },
+      { label: 'Use cases', href: '/use-cases/' },
+      { label: 'Self-hosted teams' },
+    ]}
+  >
+    <Actions slot="actions">
+      <CtaLink href="/self-hosted/" variant="primary" size="lg">Self-hosting details</CtaLink>
+      <CtaLink href={CTA.quickstart} variant="outline" size="lg">Quickstart</CtaLink>
+    </Actions>
+  </PageHero>
+
+  <Section badge="The stack" title="One Compose file, on hardware you already have">
+    <MarkList class="mt-10" cols={3} items={stack} mark="check" />
+  </Section>
+
+  <Section badge="What leaves the box" title="Only the result" tone="dark">
+    <Grid class="mt-12" cols={3}>
+      <Card title="A Check Run payload" tone="dark">
+        Conclusion plus a truncated log tail, written onto the commit through
+        your own GitHub App.
+      </Card>
+      <Card title="A details URL" tone="dark">
+        It points back at your host. The full log is served by your instance,
+        not copied anywhere.
+      </Card>
+      <Card title="Nothing else" tone="dark">
+        Shareable logs are opt-in per binding. There is no vendor telemetry
+        endpoint and no hosted control plane.
+      </Card>
+    </Grid>
+  </Section>
+
+  <Section badge="Day two" title="What running it involves">
+    <div class="grid gap-4 md:grid-cols-2">
+      <Card eyebrow="Docs" href={`${DOCS}/understanding/operations/`} title="Operations">
+        Backups, upgrades, and what a restart does to an in-flight job.
+      </Card>
+      <Card eyebrow="Docs" href={`${DOCS}/understanding/deployment/`} title="Deployment">
+        Reverse proxy, volumes, and the environment reference.
+      </Card>
+    </div>
+    <Callout class="mt-8" title="On Coolify">
+      <p>
+        Coolify can inventory servers and install the worker for you. It is
+        optional, and it does not execute jobs — see{' '}
+        <a href="/integrations/">integrations</a> for where it actually sits.
+      </p>
+    </Callout>
+  </Section>
+
+  <NextSteps
+    links={[
+      {
+        label: 'Self-hosted',
+        href: '/self-hosted/',
+        description: 'The four things you operate.',
+      },
+      {
+        label: 'Security',
+        href: '/security/',
+        description: 'Secrets at rest and job isolation.',
+      },
+      {
+        label: 'All use cases',
+        href: '/use-cases/',
+        description: 'The other two stories.',
+      },
+      {
+        label: 'Integrations',
+        href: '/integrations/',
+        description: 'Docker, Coolify, and the process executor.',
+      },
+      {
+        label: 'Operations',
+        href: `${DOCS}/understanding/operations/`,
+        description: 'The day-two reference.',
+      },
+      {
+        label: 'Quickstart',
+        href: CTA.quickstart,
+        description: 'Compose up and register an App.',
+      },
+    ]}
+  />
 </MarketingPage>

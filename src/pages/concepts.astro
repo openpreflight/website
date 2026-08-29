@@ -1,72 +1,177 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
+import PageHero from '../components/marketing/PageHero.astro';
+import Section from '../components/marketing/Section.astro';
+import Actions from '../components/marketing/Actions.astro';
+import CtaLink from '../components/marketing/CtaLink.astro';
+import Callout from '../components/marketing/Callout.astro';
+import NextSteps from '../components/marketing/NextSteps.astro';
 import { CTA, DOCS } from '../lib/site';
+
+const groups = [
+  {
+    heading: 'On GitHub',
+    terms: [
+      {
+        id: 'check-run',
+        term: 'Check Run',
+        body: 'GitHub’s status object on a commit. openpreflight creates one per job and writes the conclusion plus a log tail. It is the product’s hero artifact.',
+        links: [{ label: 'ADR 005', href: `${DOCS}/adr/005-check-suite-gating/` }],
+      },
+      {
+        id: 'github-app',
+        term: 'GitHub App',
+        body: 'An App you register. Webhooks, installation tokens, Check Runs. Not OAuth, and not Coolify’s GitHub connector.',
+        links: [
+          { label: 'Setup', href: `${DOCS}/setup/github-app/` },
+          { label: 'ADR 003', href: `${DOCS}/adr/003-github-app/` },
+        ],
+      },
+    ],
+  },
+  {
+    heading: 'What you configure',
+    terms: [
+      {
+        id: 'binding',
+        term: 'Binding',
+        body: 'A row that says: this App, this repo, these branches, these optional command overrides. No enabled binding, no job.',
+        links: [{ label: 'Bindings', href: `${DOCS}/setup/bindings/` }],
+      },
+      {
+        id: 'pipeline',
+        term: 'Pipeline (<code>.ci.yml</code>)',
+        body: 'Repo file with <code>install</code>, <code>test</code>, <code>build</code>, and optional <code>runtime</code> and <code>timeout</code>. Commands you write, not a marketplace of named checks.',
+        links: [
+          { label: 'Pipeline', href: '/pipeline/' },
+          { label: 'Docs', href: `${DOCS}/using/pipelines/` },
+        ],
+      },
+    ],
+  },
+  {
+    heading: 'What happens at run time',
+    terms: [
+      {
+        id: 'job',
+        term: 'Job',
+        body: 'One queued or running attempt for an <code>(app, repo, sha)</code>. Logs are files under <code>DATA_DIR</code>.',
+        links: [{ label: 'Logs', href: `${DOCS}/using/logs/` }],
+      },
+      {
+        id: 'executor',
+        term: 'Executor',
+        body: 'Process (default), or <code>docker run</code> when <code>runtime:</code> is set or the job is a fork PR.',
+        links: [{ label: 'ADR 004', href: `${DOCS}/adr/004-docker-executor/` }],
+      },
+      {
+        id: 'shareable-log',
+        term: 'Shareable log',
+        body: 'Per-binding opt-in so <code>GET /runs/{id}</code> works without a session. Treat the URL as a secret.',
+        links: [],
+      },
+    ],
+  },
+];
 ---
 
 <MarketingPage
   title="Concepts · openpreflight"
   description="Check Run, Binding, Pipeline, GitHub App, Job, Executor, Shareable log — nouns the product actually uses."
 >
-  <p class="kicker">Concepts</p>
-  <h1>Words the binary uses</h1>
-  <p class="lead">
-    A glossary that matches the docs. Each entry is the thing in v1, not a
-    metaphor for a future platform.
-  </p>
+  <PageHero
+    kicker="Concepts"
+    title="Words the binary uses"
+    lead="A glossary that matches the docs. Each entry is the thing in v1, not a metaphor for a future platform."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Concepts' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href={`${DOCS}/understanding/architecture/`} variant="primary" size="lg">
+        Architecture
+      </CtaLink>
+      <CtaLink href="/product/" variant="outline" size="lg">Product</CtaLink>
+    </Actions>
+  </PageHero>
 
-  <h2>Check Run</h2>
-  <p>
-    GitHub’s status object on a commit. openpreflight creates one per job and
-    writes conclusion plus a log tail. It is the product’s hero artifact.
-    <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a>.
-  </p>
+  <Section>
+    <Callout title="In one sentence">
+      <p>
+        A <strong>binding</strong> says which repo a <strong>GitHub App</strong> checks;
+        a matching push creates a <strong>job</strong>; the <strong>executor</strong> runs
+        the <strong>pipeline</strong>; the result is a <strong>Check Run</strong> whose
+        details URL is a log page.
+      </p>
+    </Callout>
 
-  <h2>Binding</h2>
-  <p>
-    A row that says this App, this repo, these branches, these optional command
-    overrides. No enabled binding, no job.
-    <a href={`${DOCS}/setup/bindings/`}>Bindings</a>.
-  </p>
+    <div class="mt-16 space-y-14">
+      {
+        groups.map((group) => (
+          <div>
+            <h2 class="font-mono text-xs font-semibold uppercase tracking-[0.06em] text-primary">
+              {group.heading}
+            </h2>
+            <dl class="mt-6 grid gap-4 md:grid-cols-2">
+              {group.terms.map((entry) => (
+                <div
+                  class="scroll-mt-24 rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7"
+                  id={entry.id}
+                >
+                  <dt class="text-lg font-semibold tracking-[-.03em] [&_code]:font-mono [&_code]:text-[0.85em]">
+                    <span set:html={entry.term} />
+                  </dt>
+                  <dd class="mt-3 text-sm leading-relaxed text-muted-foreground [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:text-foreground">
+                    <span set:html={entry.body} />
+                    {entry.links.length > 0 && (
+                      <span class="mt-4 flex flex-wrap gap-x-4 gap-y-1">
+                        {entry.links.map((link) => (
+                          <a class="text-primary underline underline-offset-4" href={link.href}>
+                            {link.label}
+                          </a>
+                        ))}
+                      </span>
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
 
-  <h2>Pipeline (<code>.ci.yml</code>)</h2>
-  <p>
-    Repo file with <code>install</code>, <code>test</code>, <code>build</code>,
-    optional <code>runtime</code> and <code>timeout</code>. Commands you write,
-    not a marketplace of named checks.
-    <a href="/pipeline/">Pipeline</a>,
-    <a href={`${DOCS}/using/pipelines/`}>docs</a>.
-  </p>
-
-  <h2>GitHub App</h2>
-  <p>
-    An App you register. Webhooks, installation tokens, Check Runs. Not OAuth,
-    not Coolify’s GitHub connector.
-    <a href={`${DOCS}/setup/github-app/`}>Setup</a>,
-    <a href={`${DOCS}/adr/003-github-app/`}>ADR 003</a>.
-  </p>
-
-  <h2>Job</h2>
-  <p>
-    One queued or running attempt for an <code>(app, repo, sha)</code>. Logs
-    are files under <code>DATA_DIR</code>.
-    <a href={`${DOCS}/using/logs/`}>Logs</a>.
-  </p>
-
-  <h2>Executor</h2>
-  <p>
-    Process (default) or <code>docker run</code> when <code>runtime:</code> is
-    set or the job is a fork PR.
-    <a href={`${DOCS}/adr/004-docker-executor/`}>ADR 004</a>.
-  </p>
-
-  <h2>Shareable log</h2>
-  <p>
-    Per-binding opt-in so <code>GET /runs/&#123;id&#125;</code> works without a
-    session. Treat the URL as a secret.
-  </p>
-
-  <div class="cta-row">
-    <a class="primary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href={`${DOCS}/understanding/architecture/`}>Architecture</a>
-  </div>
+  <NextSteps
+    links={[
+      {
+        label: 'Product',
+        href: '/product/',
+        description: 'These nouns assembled into one run.',
+      },
+      {
+        label: 'Pipeline',
+        href: '/pipeline/',
+        description: 'The file, its fields, and resolution order.',
+      },
+      {
+        label: 'Security',
+        href: '/security/',
+        description: 'What the executor is allowed to touch.',
+      },
+      {
+        label: 'GitHub App',
+        href: '/integrations/github-app/',
+        description: 'Register one and bind your first repo.',
+      },
+      {
+        label: 'Architecture',
+        href: `${DOCS}/understanding/architecture/`,
+        description: 'The same loop, at reference depth.',
+      },
+      {
+        label: 'Quickstart',
+        href: CTA.quickstart,
+        description: 'From zero to a first Check Run.',
+      },
+    ]}
+  />
 </MarketingPage>

@@ -1,32 +1,129 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
+import PageHero from '../../components/marketing/PageHero.astro';
+import Section from '../../components/marketing/Section.astro';
+import Grid from '../../components/marketing/Grid.astro';
+import Card from '../../components/marketing/Card.astro';
+import Steps from '../../components/marketing/Steps.astro';
+import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
+import Actions from '../../components/marketing/Actions.astro';
+import CtaLink from '../../components/marketing/CtaLink.astro';
+import NextSteps from '../../components/marketing/NextSteps.astro';
 import { CTA, DOCS } from '../../lib/site';
+
+const panelSteps = [
+  { name: 'install', command: 'go mod download', duration: '5s', width: '16%' },
+  { name: 'test', command: 'go test ./...', duration: '24s', width: '62%' },
+  { name: 'build', command: 'go build ./...', duration: '8s', width: '22%' },
+];
+
+const steps = [
+  {
+    title: 'Register a GitHub App against those repos',
+    detail: 'It lives in your org, with the permissions the docs list — nothing broader.',
+  },
+  {
+    title: 'Bind the repos in the UI',
+    detail: 'A binding names the App, the repo, the branches, and any command overrides.',
+  },
+  {
+    title: 'Push',
+    detail:
+      'The worker clones with an installation token that never lands in the remote URL, and strips the remote before your steps run.',
+  },
+];
 ---
 
 <MarketingPage
   title="Private repos · openpreflight"
   description="Self-hosted Check Runs on private GitHub repositories without Actions YAML."
 >
-  <p class="kicker"><a href="/use-cases/">Use cases</a> / Private repos</p>
-  <h1>Check Runs on private code, without Actions</h1>
-  <p class="lead">
-    GitHub already stores the repo. You want a status on the commit. You do not
-    want to put that work on hosted Actions minutes or write workflow YAML for
-    install/test/build.
-  </p>
-  <p>
-    Register a GitHub App against those private repos, bind them in the UI, and
-    the worker clones with an installation token that never lands in the remote
-    URL. The Check Run is the artifact GitHub already knows how to display.
-  </p>
-  <p>
-    Setup:
-    <a href={`${DOCS}/setup/github-app/`}>GitHub App</a>
-    and
-    <a href={`${DOCS}/setup/bindings/`}>bindings</a>.
-  </p>
-  <div class="cta-row">
-    <a class="primary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href="/use-cases/">All use cases</a>
-  </div>
+  <PageHero
+    kicker="Private repos"
+    title="Check Runs on private code, without Actions"
+    lead="GitHub already stores the repo. You want a status on the commit — without spending hosted Actions minutes or writing workflow YAML for install, test, and build."
+    crumbs={[
+      { label: 'openpreflight', href: '/' },
+      { label: 'Use cases', href: '/use-cases/' },
+      { label: 'Private repos' },
+    ]}
+  >
+    <Actions slot="actions">
+      <CtaLink href={CTA.quickstart} variant="primary" size="lg">Quickstart</CtaLink>
+      <CtaLink href="/product/" variant="outline" size="lg">How it works</CtaLink>
+    </Actions>
+    <CheckRunPanel
+      slot="visual"
+      repo="private/billing"
+      meta={['#87', '4b09de1', 'main']}
+      duration="37s"
+      steps={panelSteps}
+    />
+  </PageHero>
+
+  <Section badge="Setup" title="Three moves, then it is automatic">
+    <Steps steps={steps} />
+  </Section>
+
+  <Section badge="What you get" title="One artifact, in the place people already look" tone="dark">
+    <Grid class="mt-12" cols={3}>
+      <Card title="The Check Run" tone="dark">
+        GitHub already knows how to display it — on the commit, in the pull
+        request, and in branch protection.
+      </Card>
+      <Card title="Logs on your server" tone="dark">
+        The details URL is <code>GET /runs/{'{id}'}</code> on your instance, behind
+        a session unless that binding opted into shareable logs.
+      </Card>
+      <Card title="No workflow language" tone="dark">
+        <code>.ci.yml</code> holds the same commands you already run locally.
+      </Card>
+    </Grid>
+  </Section>
+
+  <Section>
+    <div class="grid gap-4 md:grid-cols-2">
+      <Card eyebrow="Docs" href={`${DOCS}/setup/github-app/`} title="Register the App">
+        Permissions, events, and the webhook URL to use.
+      </Card>
+      <Card eyebrow="Docs" href={`${DOCS}/setup/bindings/`} title="Enable the repos">
+        Bindings, branch filters, and command overrides.
+      </Card>
+    </div>
+  </Section>
+
+  <NextSteps
+    links={[
+      {
+        label: 'All use cases',
+        href: '/use-cases/',
+        description: 'The other two stories.',
+      },
+      {
+        label: 'Pipeline',
+        href: '/pipeline/',
+        description: 'What runs, and where the commands come from.',
+      },
+      {
+        label: 'Security',
+        href: '/security/',
+        description: 'How the clone token is handled.',
+      },
+      {
+        label: 'Self-hosted',
+        href: '/self-hosted/',
+        description: 'What you operate to keep this running.',
+      },
+      {
+        label: 'Product',
+        href: '/product/',
+        description: 'Webhook to Check Run, end to end.',
+      },
+      {
+        label: 'Quickstart',
+        href: CTA.quickstart,
+        description: 'Stand it up in a few minutes.',
+      },
+    ]}
+  />
 </MarketingPage>

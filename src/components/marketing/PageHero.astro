@@ -1,0 +1,78 @@
+---
+/**
+ * Inner-page hero. Same atmosphere and type scale as the landing hero, one
+ * step down. Pass a `visual` slot for the product panel or a diagram.
+ */
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  kicker: string;
+  title: string;
+  lead?: string;
+  crumbs?: Crumb[];
+}
+
+const { kicker, title, lead, crumbs = [] } = Astro.props;
+const hasVisual = Astro.slots.has('visual');
+---
+
+<section class="relative overflow-hidden px-5 pb-8 pt-12 sm:px-8 sm:pb-12 sm:pt-16">
+  <div
+    aria-hidden="true"
+    class="page-atmosphere pointer-events-none absolute inset-0 -z-10"
+  >
+  </div>
+  <div
+    class={`mx-auto max-w-6xl ${hasVisual ? 'grid gap-12 lg:grid-cols-[1.05fr_.95fr] lg:items-center' : ''}`}
+  >
+    <div class={hasVisual ? '' : 'max-w-3xl'}>
+      {
+        crumbs.length > 0 && (
+          <nav aria-label="Breadcrumb" class="mb-5">
+            <ol class="flex flex-wrap items-center gap-1.5 font-mono text-xs text-muted-foreground">
+              {crumbs.map((crumb, i) => (
+                <li class="flex items-center gap-1.5">
+                  {i > 0 && <span aria-hidden="true" class="text-muted-foreground/50">/</span>}
+                  {crumb.href ? (
+                    <a class="underline-offset-4 hover:text-foreground hover:underline" href={crumb.href}>
+                      {crumb.label}
+                    </a>
+                  ) : (
+                    <span>{crumb.label}</span>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+      <p class="hero-kicker font-mono text-sm font-medium tracking-wide text-primary">
+        {kicker}
+      </p>
+      <h1
+        class="hero-copy mt-4 text-balance text-[2.5rem] font-semibold leading-[1.02] tracking-[-.05em] sm:text-5xl lg:text-[3.5rem]"
+      >
+        {title}
+      </h1>
+      {
+        lead && (
+          <p class="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {lead}
+          </p>
+        )
+      }
+      <slot name="actions" />
+    </div>
+    {
+      hasVisual && (
+        <div class="hero-panel relative lg:pl-4">
+          <div aria-hidden="true" class="hero-panel-glow pointer-events-none absolute -inset-8 -z-10" />
+          <slot name="visual" />
+        </div>
+      )
+    }
+  </div>
+</section>

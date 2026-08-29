@@ -1,40 +1,148 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
+import PageHero from '../../components/marketing/PageHero.astro';
+import Section from '../../components/marketing/Section.astro';
+import Actions from '../../components/marketing/Actions.astro';
+import CtaLink from '../../components/marketing/CtaLink.astro';
+import MarkList from '../../components/marketing/MarkList.astro';
+import Callout from '../../components/marketing/Callout.astro';
+import NextSteps from '../../components/marketing/NextSteps.astro';
 import { CTA, DOCS } from '../../lib/site';
+
+const surfaces = [
+  {
+    status: 'Required',
+    title: 'GitHub App',
+    body: 'Webhooks in, installation tokens out, Check Runs on the commit. You register it; the worker never creates one for you.',
+    href: '/integrations/github-app/',
+    cta: 'How to set it up',
+    primary: true,
+  },
+  {
+    status: 'Default',
+    title: 'Process executor',
+    body: 'Used whenever <code>runtime</code> is empty. Steps run in the worker process, on the host — no extra daemon.',
+    href: null,
+    cta: null,
+    primary: false,
+  },
+  {
+    status: 'Optional',
+    title: 'Docker',
+    body: 'A reachable engine turns <code>runtime:</code> into <code>docker run</code>. Fork pull requests always use it.',
+    href: `${DOCS}/adr/004-docker-executor/`,
+    cta: 'ADR 004',
+    primary: false,
+  },
+  {
+    status: 'Optional',
+    title: 'Coolify',
+    body: 'Server inventory, a repo picker, and an install-worker API. It is not a job runner and is not required.',
+    href: `${DOCS}/setup/coolify/`,
+    cta: 'Coolify docs',
+    primary: false,
+  },
+];
+
+const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure DevOps'];
 ---
 
 <MarketingPage
   title="Integrations · openpreflight"
   description="What actually connects: GitHub App, optional Coolify, Docker runtime, process executor. Not a CI-provider catalog."
 >
-  <p class="kicker">Integrations</p>
-  <h1>Surfaces that exist in v1</h1>
-  <p class="lead">
-    This is not a grid of CI vendors. GitLab CI, Jenkins, CircleCI, Buildkite,
-    and Azure DevOps are not adapters here.
-  </p>
+  <PageHero
+    kicker="Integrations"
+    title="Surfaces that exist in v1"
+    lead="Four things connect to openpreflight. One is required, one is the default, and two are optional. That is the entire list."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Integrations' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href="/integrations/github-app/" variant="primary" size="lg">Start with the App</CtaLink>
+      <CtaLink href={CTA.quickstart} variant="outline" size="lg">Quickstart</CtaLink>
+    </Actions>
+  </PageHero>
 
-  <div class="card-grid cols-2">
-    <a href="/integrations/github-app/">
-      <h3>GitHub App</h3>
-      <p>Required. Webhooks, installation tokens, Check Runs.</p>
-    </a>
-    <a href={`${DOCS}/setup/coolify/`}>
-      <h3>Coolify</h3>
-      <p>Optional API: inventory, repo picker, install-worker. Not a job runner.</p>
-    </a>
-    <a href={`${DOCS}/adr/004-docker-executor/`}>
-      <h3>Docker</h3>
-      <p><code>runtime:</code> and fork jobs via <code>docker run</code>.</p>
-    </a>
-    <div>
-      <h3>Process executor</h3>
-      <p>Default when <code>runtime</code> is empty. Steps run in the worker.</p>
+  <Section>
+    <div class="grid gap-4 md:grid-cols-2">
+      {
+        surfaces.map((surface) => {
+          const Tag = surface.href ? 'a' : 'div';
+          return (
+            <Tag
+              class={`group flex flex-col rounded-[1.5rem] border p-6 transition-colors duration-300 sm:p-7 ${surface.primary ? 'border-primary/30 bg-primary/[.04]' : 'border-foreground/10'} ${surface.href ? 'hover:border-primary/50' : ''}`}
+              href={surface.href}
+            >
+              <span
+                class={`w-fit rounded-lg border px-2.5 py-1.5 font-mono text-[0.62rem] font-semibold uppercase leading-none tracking-[0.06em] ${surface.primary ? 'border-primary/20 bg-primary/10 text-primary' : 'border-foreground/12 text-muted-foreground'}`}
+              >
+                {surface.status}
+              </span>
+              <h2 class="mt-5 text-lg font-semibold tracking-[-.03em]">{surface.title}</h2>
+              <p
+                class="mt-3 text-sm leading-relaxed text-muted-foreground [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:text-foreground"
+                set:html={surface.body}
+              />
+              {surface.cta && (
+                <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs text-primary">
+                  {surface.cta}
+                  <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+                </span>
+              )}
+            </Tag>
+          );
+        })
+      }
     </div>
-  </div>
+  </Section>
 
-  <div class="cta-row">
-    <a class="primary" href="/integrations/github-app/">GitHub App</a>
-    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
-  </div>
+  <Section
+    badge="Not here"
+    title="This is not a grid of CI vendors"
+    description="No adapter exists for any of these, and none is planned for v1."
+  >
+    <MarkList class="mt-10" cols={3} items={notAdapters} mark="cross" />
+    <Callout class="mt-8">
+      <p>
+        “Portable” here means the same <code>.ci.yml</code> and the same worker
+        on your own host — not one config that targets every CI vendor. See{' '}
+        <a href="/product/">the product page</a> for what that does and does not buy you.
+      </p>
+    </Callout>
+  </Section>
+
+  <NextSteps
+    links={[
+      {
+        label: 'GitHub App',
+        href: '/integrations/github-app/',
+        description: 'Register, install, bind, first Check Run.',
+      },
+      {
+        label: 'Pipeline',
+        href: '/pipeline/',
+        description: 'When runtime turns a step into a container.',
+      },
+      {
+        label: 'Self-hosted',
+        href: '/self-hosted/',
+        description: 'Where Docker and Coolify fit in a deployment.',
+      },
+      {
+        label: 'Security',
+        href: '/security/',
+        description: 'What a container job is allowed to reach.',
+      },
+      {
+        label: 'Coolify setup',
+        href: `${DOCS}/setup/coolify/`,
+        description: 'The optional integration, documented.',
+      },
+      {
+        label: 'Quickstart',
+        href: CTA.quickstart,
+        description: 'Get the worker running first.',
+      },
+    ]}
+  />
 </MarketingPage>

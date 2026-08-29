@@ -1,17 +1,39 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
+import PageHero from '../components/marketing/PageHero.astro';
+import Actions from '../components/marketing/Actions.astro';
+import CtaLink from '../components/marketing/CtaLink.astro';
+import NextSteps from '../components/marketing/NextSteps.astro';
 import { CTA, DOCS, REPO } from '../lib/site';
 ---
 
 <MarketingPage title="Not found · openpreflight" description="That URL is not on this site.">
-  <p class="kicker">404</p>
-  <h1>Page not found</h1>
-  <p class="lead">That URL is not on this site. The links below cover everything that is.</p>
-  <div class="cta-row">
-    <a class="primary" href="/">Home</a>
-    <a class="secondary" href="/product/">Product</a>
-    <a class="secondary" href={DOCS}>Docs</a>
-    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href={REPO}>GitHub</a>
-  </div>
+  <PageHero
+    kicker="404"
+    title="Page not found"
+    lead="That URL is not on this site. Everything that is here is one click away below."
+  >
+    <Actions slot="actions">
+      <CtaLink href="/" variant="primary" size="lg">Home</CtaLink>
+      <CtaLink href={DOCS} variant="outline" size="lg">Documentation</CtaLink>
+    </Actions>
+  </PageHero>
+
+  <NextSteps
+    title="Everything on this site"
+    links={[
+      { label: 'Product', href: '/product/', description: 'How a run gets from webhook to Check Run.' },
+      { label: 'Why', href: '/why/', description: 'The gap this shape is built for.' },
+      { label: 'Pipeline', href: '/pipeline/', description: 'The .ci.yml and its resolution order.' },
+      { label: 'Concepts', href: '/concepts/', description: 'The nouns the binary uses.' },
+      { label: 'Integrations', href: '/integrations/', description: 'GitHub App, Docker, Coolify.' },
+      { label: 'Use cases', href: '/use-cases/', description: 'Who this is for.' },
+      { label: 'Self-hosted', href: '/self-hosted/', description: 'What you operate.' },
+      { label: 'Security', href: '/security/', description: 'What the worker may do.' },
+      { label: 'Open source', href: '/open-source/', description: 'Repos and licences.' },
+      { label: 'vs GitHub Actions', href: '/compare/github-actions/', description: 'Which layer is which.' },
+      { label: 'Quickstart', href: CTA.quickstart, description: 'Get a Check Run today.' },
+      { label: 'GitHub', href: REPO, description: 'The source of the binary.' },
+    ]}
+  />
 </MarketingPage>

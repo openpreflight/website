@@ -1,54 +1,169 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
+import PageHero from '../components/marketing/PageHero.astro';
+import Section from '../components/marketing/Section.astro';
+import Grid from '../components/marketing/Grid.astro';
+import Card from '../components/marketing/Card.astro';
+import Actions from '../components/marketing/Actions.astro';
+import CtaLink from '../components/marketing/CtaLink.astro';
+import Callout from '../components/marketing/Callout.astro';
+import NextSteps from '../components/marketing/NextSteps.astro';
 import { CTA, DOCS, DOCS_REPO, REPO, WEBSITE_REPO, RELEASE } from '../lib/site';
+
+const repos = [
+  {
+    name: 'openpreflight/openpreflight',
+    href: REPO,
+    detail: 'The Go binary — API, UI, webhook receiver, runner.',
+    licence: 'Apache-2.0',
+  },
+  {
+    name: 'openpreflight/docs',
+    href: DOCS_REPO,
+    detail: 'Reference documentation at docs.openpreflight.xyz.',
+    licence: 'MIT',
+  },
+  {
+    name: 'openpreflight/website',
+    href: WEBSITE_REPO,
+    detail: 'This site, plus the shared brand images.',
+    licence: 'MIT',
+  },
+  {
+    name: 'openpreflight/.github',
+    href: 'https://github.com/openpreflight/.github',
+    detail: 'The organisation profile.',
+    licence: '—',
+  },
+];
 ---
 
 <MarketingPage
   title="Open source · openpreflight"
   description="Apache-2.0 worker, public repos, how to contribute, where security reports go. No invented governance."
 >
-  <p class="kicker">Open source</p>
-  <h1>Inspectable worker, public repos</h1>
-  <p class="lead">
-    The worker holds GitHub App PEMs. Open source is how you can read what it
-    does with them. License is Apache-2.0 on the binary; the two sites are MIT.
-  </p>
+  <PageHero
+    kicker="Open source"
+    title="Inspectable worker, public repos"
+    lead="The worker holds GitHub App private keys. Open source is how you can read what it does with them."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Open source' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href={REPO} variant="primary" size="lg">View source</CtaLink>
+      <CtaLink href={`${REPO}/blob/main/LICENSE`} variant="outline" size="lg">Apache-2.0</CtaLink>
+    </Actions>
+  </PageHero>
 
-  <h2>Repositories</h2>
-  <ul>
-    <li><a href={REPO}>openpreflight/openpreflight</a> — the Go binary</li>
-    <li><a href={DOCS_REPO}>openpreflight/docs</a> — docs.openpreflight.xyz</li>
-    <li><a href={WEBSITE_REPO}>openpreflight/website</a> — this site</li>
-    <li>
-      <a href="https://github.com/openpreflight/.github">openpreflight/.github</a>
-      — org profile
-    </li>
-  </ul>
+  <Section
+    badge="Repositories"
+    title="Four repos, nothing hidden"
+    description="The binary is Apache-2.0. The two sites are MIT."
+  >
+    <div class="mt-12 grid gap-4 md:grid-cols-2">
+      {
+        repos.map((repo) => (
+          <a
+            class="group flex flex-col rounded-[1.5rem] border border-foreground/10 p-6 transition-colors duration-300 hover:border-primary/45 hover:bg-primary/[.03] sm:p-7"
+            href={repo.href}
+          >
+            <div class="flex items-start justify-between gap-4">
+              <span class="font-mono text-sm font-semibold text-foreground">{repo.name}</span>
+              <span class="shrink-0 rounded-lg border border-foreground/12 px-2 py-1 font-mono text-[0.62rem] uppercase tracking-[0.06em] text-muted-foreground">
+                {repo.licence}
+              </span>
+            </div>
+            <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{repo.detail}</p>
+            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs text-primary">
+              open on GitHub
+              <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </Section>
 
-  <h2>Contribute</h2>
-  <p>
-    Issues and pull requests on the code repo. Development loop:
-    <a href={`${DOCS}/contributing/development/`}>development</a>.
-    Website and docs have their own CONTRIBUTING files. There is no foundation,
-    board, or RFC process to join.
-  </p>
+  <Section badge="Contribute" title="What is actually useful" tone="dark">
+    <Grid class="mt-12" cols={3}>
+      <Card index={1} title="A failing test" tone="dark">
+        Bug fixes land fastest when they arrive with a test that fails without
+        the patch. <code>go test ./...</code> runs offline — GitHub and Coolify
+        are faked.
+      </Card>
+      <Card index={2} title="A gap in v1" tone="dark">
+        Small things the scope already covers but the code does not do yet. Not
+        features from the Not-in-v1 list.
+      </Card>
+      <Card index={3} title="Docs that match the code" tone="dark">
+        Corrections where the documentation drifted from behaviour. The website
+        and docs repos have their own CONTRIBUTING files.
+      </Card>
+    </Grid>
+    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
+      There is no foundation, board, or RFC process to join. Issues and pull
+      requests on the code repository are the whole process.
+    </p>
+    <Actions>
+      <CtaLink href={`${REPO}/blob/main/CONTRIBUTING.md`} variant="onDark">CONTRIBUTING.md</CtaLink>
+      <CtaLink href={`${DOCS}/contributing/development/`} variant="onDark">Development loop</CtaLink>
+      <CtaLink href={`${REPO}/issues/new/choose`} variant="onDark">Open an issue</CtaLink>
+    </Actions>
+  </Section>
 
-  <h2>Releases</h2>
-  <p>
-    <strong>v1.0.0</strong> is tagged (29 August 2026). The changelog lives in
-    the code repo. The <a href={RELEASE}>GitHub Release</a> has linux amd64 and
-    arm64 binaries. Pin the published image with{" "}
-    <code>OPENPREFLIGHT_VERSION=1.0.0</code>.
-  </p>
+  <Section>
+    <div class="grid gap-4 md:grid-cols-2">
+      <Card title="Releases">
+        <strong>v1.0.0</strong> is tagged (29 August 2026). The changelog lives
+        in the code repo. The <a class="text-primary underline underline-offset-4" href={RELEASE}>GitHub Release</a> has
+        linux amd64 and arm64 binaries. Pin the published image with{' '}
+        <code>OPENPREFLIGHT_VERSION=1.0.0</code>.
+      </Card>
+      <Card title="Security reports">
+        Vulnerabilities go through <a class="text-primary underline underline-offset-4" href={`${REPO}/blob/main/SECURITY.md`}>SECURITY.md</a>,
+        never the public issue tracker.
+      </Card>
+    </div>
+    <Callout class="mt-8" title="Why it matters here">
+      <p>
+        A CI worker with your App’s private key is a high-trust component. The{' '}
+        <a href="/security/">security page</a> lists what it is allowed to do; the
+        source is how you check that the list is true.
+      </p>
+    </Callout>
+  </Section>
 
-  <h2>Security reports</h2>
-  <p>
-    <a href={`${REPO}/blob/main/SECURITY.md`}>SECURITY.md</a>
-    — not the public issue tracker for vulnerabilities.
-  </p>
-
-  <div class="cta-row">
-    <a class="primary" href={REPO}>GitHub</a>
-    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
-  </div>
+  <NextSteps
+    links={[
+      {
+        label: 'Security',
+        href: '/security/',
+        description: 'The claims the source is there to verify.',
+      },
+      {
+        label: 'Open-source contributors',
+        href: '/use-cases/open-source/',
+        description: 'The public demo repo and its pull requests.',
+      },
+      {
+        label: 'Product',
+        href: '/product/',
+        description: 'What the code you are reading actually does.',
+      },
+      {
+        label: 'Releases',
+        href: `${REPO}/releases`,
+        description: 'v1.0.0 linux binaries and the changelog.',
+      },
+      {
+        label: 'Development',
+        href: `${DOCS}/contributing/development/`,
+        description: 'Clone, test offline, run it locally.',
+      },
+      {
+        label: 'Quickstart',
+        href: CTA.quickstart,
+        description: 'Run the thing before you patch it.',
+      },
+    ]}
+  />
 </MarketingPage>

@@ -1,89 +1,253 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
+import PageHero from '../../components/marketing/PageHero.astro';
+import Section from '../../components/marketing/Section.astro';
+import Grid from '../../components/marketing/Grid.astro';
+import Card from '../../components/marketing/Card.astro';
+import Steps from '../../components/marketing/Steps.astro';
+import MarkList from '../../components/marketing/MarkList.astro';
+import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
+import CodePanel from '../../components/marketing/CodePanel.astro';
+import Actions from '../../components/marketing/Actions.astro';
+import CtaLink from '../../components/marketing/CtaLink.astro';
+import Prose from '../../components/marketing/Prose.astro';
+import Callout from '../../components/marketing/Callout.astro';
+import NextSteps from '../../components/marketing/NextSteps.astro';
 import { CTA, DOCS, REPO, RELEASE } from '../../lib/site';
+
+const panelSteps = [
+  { name: 'install', command: 'npm ci', duration: '8s', width: '19%' },
+  { name: 'test', command: 'npm test', duration: '21s', width: '50%' },
+  { name: 'build', command: 'npm run build', duration: '13s', width: '31%' },
+];
+
+const fit = [
+  'You want CI on private GitHub repositories',
+  'You do not want GitHub Actions runners',
+  'You do not want to learn a pipeline DSL',
+  'You already have a machine to run it on',
+];
+
+const notInV1 = [
+  'GitHub Actions YAML',
+  '<code>actions/runner</code>',
+  'Matrices, caches, artifacts',
+  'Creating GitHub Apps for you',
+];
+
+const runSteps = [
+  {
+    title: 'GitHub POSTs the webhook',
+    detail:
+      'The check suite event arrives at <code>/webhook/{slug}</code>. The API validates it, confirms the binding is enabled, and enqueues.',
+  },
+  {
+    title: 'The runner takes the job',
+    detail:
+      'One live run per commit. The worker checks out the immutable SHA into a workspace, then reads the pipeline.',
+  },
+  {
+    title: 'install / test / build',
+    detail:
+      'Steps run through the executor — the worker process by default, or <code>docker run</code> when <code>runtime:</code> is set.',
+  },
+  {
+    title: 'One Check Run comes back',
+    detail:
+      'Conclusion plus a log tail land on the commit. The details URL points at your instance, where the full log lives.',
+  },
+];
+
+const inbound = [
+  { label: 'GitHub', detail: 'POST /webhook/{slug}' },
+  { label: 'Browser / CLI', detail: 'session or Bearer' },
+];
+
+const core = [
+  { label: 'api', detail: 'validate · enqueue · serve UI' },
+  { label: 'queue.Runner', detail: 'one live run per commit' },
+  { label: 'SQLite', detail: 'apps · bindings · jobs · secrets' },
+];
+
+const outbound = [
+  { label: 'GitHub App', detail: 'creates the Check Run' },
+  { label: 'workspace', detail: 'checkout of the exact SHA' },
+  { label: 'pipeline', detail: 'reads .ci.yml' },
+  { label: 'executor', detail: 'process or docker run' },
+];
 ---
 
 <MarketingPage
   title="Product · openpreflight"
   description="Self-hosted Check Runs for private repos — one binary, one database file, a GitHub App you register, and a .ci.yml you write."
 >
-  <p class="kicker">Product</p>
-  <h1>Self-hosted Check Runs for private repos</h1>
-  <p class="lead">
-    One Go binary and one SQLite file. You register a GitHub App, bind repos in
-    the UI, and every commit gets a Check Run with logs that live on your server.
-  </p>
-  <p>
-    <strong>v1.0.0</strong> is the tagged v1 release.{" "}
-    <a href={RELEASE}>GitHub Release</a> ·{" "}
-    <a href={`${REPO}/blob/v1.0.0/CHANGELOG.md`}>Changelog</a>.
-  </p>
-
-  <h2>Fit</h2>
-  <p>
-    You want CI on private GitHub repositories without GitHub Actions runners
-    and without a pipeline DSL. You already have a machine. The worker is the
-    product, not a mode.
-  </p>
-  <p>
-    Full platforms, hosted control planes, and Kubernetes-oriented runners
-    already fill a different slot. This one does not replace them. See
-    <a href="/why/">why it is this shape</a> and
-    <a href={`${DOCS}/start/faq/`}>the FAQ</a>.
-  </p>
-
-  <h2>What it is not</h2>
-  <p>v1 does not include GitHub Actions YAML, <code>actions/runner</code>, matrices, caches, artifacts, or creating GitHub Apps for you. Those stay on <a href={`${REPO}#not-in-v1`}>Not in v1</a>.</p>
-
-  <h2>How a run happens</h2>
-  <p>The same loop as the docs, in marketing nouns:</p>
-  <pre class="diagram">{`GitHub ──POST /webhook/{slug}──► api ──enqueue──► queue.Runner
-                                      │                │
-Browser / CLI ──session/Bearer──► api │                ├── GitHub App (Check Run)
-                                      │                ├── workspace (exact SHA)
-                                      └── SQLite       ├── pipeline (.ci.yml)
-                                                       └── executor (process or docker run)`}</pre>
-  <p>
-    Webhook → queue → checkout of the immutable SHA → install/test/build → one
-    Check Run. One live run per commit. Details:
-    <a href={`${DOCS}/understanding/architecture/`}>architecture</a>
-    and
-    <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a>.
+  <PageHero
+    kicker="Product"
+    title="Self-hosted Check Runs for private repos"
+    lead="One Go binary and one SQLite file. You register a GitHub App, bind repos in the UI, and every commit gets a Check Run with logs that live on your server."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Product' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href={CTA.quickstart} variant="primary" size="lg">Quickstart</CtaLink>
+      <CtaLink href="/#demo" variant="outline" size="lg">See a live run</CtaLink>
+    </Actions>
+    <CheckRunPanel
+      slot="visual"
+      repo="private/api"
+      meta={['#142', 'c7e4a91', 'main ← fix/hmac-skew']}
+      duration="42s"
+      steps={panelSteps}
+    />
+  </PageHero>
+  <p class="mx-auto max-w-6xl px-5 text-sm leading-relaxed text-muted-foreground sm:px-8">
+    <strong class="text-foreground">v1.0.0</strong> is the tagged v1 release.{' '}
+    <a class="text-primary underline underline-offset-4" href={RELEASE}>GitHub Release</a>
+    {' · '}
+    <a class="text-primary underline underline-offset-4" href={`${REPO}/blob/v1.0.0/CHANGELOG.md`}>Changelog</a>.
   </p>
 
-  <h2>Portable in the real sense</h2>
-  <p>
-    The same <code>.ci.yml</code> and the same worker run on <em>your</em> host.
-    That is not “any CI vendor.” There are no GitLab, Jenkins, or CircleCI
-    adapters.
-  </p>
+  <Section
+    badge="Fit"
+    title="Where it fits"
+    description="Full platforms, hosted control planes, and Kubernetes-oriented runners already fill a different slot. This one does not replace them — the worker is the product, not a mode."
+  >
+    <div class="mt-12 grid gap-4 lg:grid-cols-2">
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">Use it when</h3>
+        <MarkList class="mt-5" cols={1} items={fit} mark="check" />
+        <p class="mt-5 text-sm leading-relaxed text-muted-foreground">
+          Three concrete versions of that are written up as{' '}
+          <a class="text-primary underline underline-offset-4" href="/use-cases/">use cases</a>.
+        </p>
+      </div>
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">Not in v1</h3>
+        <MarkList class="mt-5" cols={1} items={notInV1} mark="cross" />
+        <p class="mt-5 text-sm leading-relaxed text-muted-foreground">
+          The full list stays on <a class="text-primary underline underline-offset-4" href={`${REPO}#not-in-v1`}>Not in v1</a>.
+          If one of those is a requirement, <a class="text-primary underline underline-offset-4" href={`${DOCS}/start/comparison/`}>the docs comparison</a> names a better tool.
+        </p>
+      </div>
+    </div>
+  </Section>
 
-  <h2>Configuration</h2>
-  <p>
-    Bindings and Apps are rows in SQLite, edited in the web UI. Optional
-    <code>.ci.yml</code> in the repo supplies commands; binding overrides and
-    <code>package.json</code> scripts fill gaps. Resolution order lives in
-    <a href={`${DOCS}/using/pipelines/`}>pipelines</a>. Marketing summary:
-    <a href="/pipeline/">/pipeline</a>.
-  </p>
+  <Section
+    badge="How a run happens"
+    id="how"
+    title="From webhook to Check Run"
+    tone="dark"
+    description="The webhook answers fast and the worker does the slow part. Only one run is ever live for a given commit."
+  >
+    <div class="mt-12 grid gap-4 lg:grid-cols-[.85fr_1fr_1.15fr]">
+      {
+        [
+          { heading: 'In', nodes: inbound },
+          { heading: 'One process', nodes: core },
+          { heading: 'Out', nodes: outbound },
+        ].map((group) => (
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.06em] text-primary">{group.heading}</p>
+            <ul class="mt-4 space-y-3">
+              {group.nodes.map((node) => (
+                <li class="wire-node px-4 py-3">
+                  <p class="text-sm font-medium text-background">{node.label}</p>
+                  <p class="mt-1 text-xs text-background/55">{node.detail}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <Steps class="mt-16" steps={runSteps} tone="dark" />
+    <Actions>
+      <CtaLink href={`${DOCS}/understanding/architecture/`} variant="onDark">Architecture</CtaLink>
+      <CtaLink href={`${DOCS}/adr/005-check-suite-gating/`} variant="onDark">ADR 005</CtaLink>
+    </Actions>
+  </Section>
 
-  <h2>Results</h2>
-  <p>
-    GitHub shows the Check Run. The details URL is <code>GET /runs/&#123;id&#125;</code>
-    on your instance — session by default, or a shareable log if that binding
-    opted in.
-  </p>
+  <Section badge="Configuration" title="Rows in SQLite, commands in your repo">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <Prose>
+        <p>
+          Bindings and Apps are rows in SQLite, edited in the web UI — not a
+          block of environment variables per installation. An optional
+          <code>.ci.yml</code> in the repo supplies the commands, with binding
+          overrides and <code>package.json</code> scripts filling the gaps.
+        </p>
+        <p>
+          Resolution order and the full field list live in{' '}
+          <a href={`${DOCS}/using/pipelines/`}>the pipeline docs</a>; the short
+          version is on <a href="/pipeline/">/pipeline</a>.
+        </p>
+        <p>
+          <strong>Portable in the real sense:</strong> the same
+          <code>.ci.yml</code> and the same worker run on <em>your</em> host.
+          That is not “any CI vendor” — there are no GitLab, Jenkins, or
+          CircleCI adapters.
+        </p>
+      </Prose>
+      <CodePanel
+        label=".ci.yml"
+        code={`runtime: node:24
+install: npm ci
+test: npm test
+build: npm run build
+timeout: 15m`}
+      />
+    </div>
+  </Section>
 
-  <h2>Security</h2>
-  <p>
-    Claims match the docs only:
-    <a href={`${DOCS}/understanding/security-model/`}>security model</a>.
-    Marketing page: <a href="/security/">/security</a>.
-  </p>
+  <Section badge="Results" title="Where the output ends up">
+    <Grid class="mt-12" cols={2}>
+      <Card title="The Check Run">
+        GitHub shows conclusion and a log tail on the commit, the same way it
+        shows any other check.
+      </Card>
+      <Card title="The details URL">
+        <code>GET /runs/&#123;id&#125;</code> on your instance — session by default,
+        or a shareable log if that binding opted in.
+      </Card>
+    </Grid>
+    <Callout class="mt-8" title="Security">
+      Claims here match the published{' '}
+      <a href={`${DOCS}/understanding/security-model/`}>security model</a> and
+      nothing more. The page-length version is <a href="/security/">/security</a>.
+    </Callout>
+  </Section>
 
-  <div class="cta-row">
-    <a class="primary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href={REPO}>GitHub</a>
-    <a class="secondary" href="/#demo">See demo</a>
-  </div>
+  <NextSteps
+    links={[
+      {
+        label: 'Why this shape',
+        href: '/why/',
+        description: 'The problem that produces a binary and a SQLite file.',
+      },
+      {
+        label: 'Pipeline',
+        href: '/pipeline/',
+        description: 'Fields, resolution order, and skipped vs failed.',
+      },
+      {
+        label: 'Self-hosted',
+        href: '/self-hosted/',
+        description: 'What you actually operate, and what has to persist.',
+      },
+      {
+        label: 'vs GitHub Actions',
+        href: '/compare/github-actions/',
+        description: 'Which layer each one is, and how they coexist.',
+      },
+      {
+        label: 'Concepts',
+        href: '/concepts/',
+        description: 'Check Run, binding, pipeline, executor — defined.',
+      },
+      {
+        label: 'Quickstart',
+        href: CTA.quickstart,
+        description: 'Compose file, one secret key, first Check Run.',
+      },
+    ]}
+  />
 </MarketingPage>

@@ -23,11 +23,7 @@ const { title, description } = Astro.props;
       ctaHref={CTA.quickstart}
       showProfile={false}
     />
-    <main id="content">
-      <article class="marketing-article mx-auto w-full max-w-3xl px-6 py-16 sm:px-8 sm:py-20">
-        <slot />
-      </article>
-    </main>
+    <main id="content"><slot /></main>
     <Footer01
       brand="openpreflight"
       description={tagline}

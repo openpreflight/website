@@ -1,58 +1,192 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
+import PageHero from '../components/marketing/PageHero.astro';
+import Section from '../components/marketing/Section.astro';
+import Grid from '../components/marketing/Grid.astro';
+import Card from '../components/marketing/Card.astro';
+import CodePanel from '../components/marketing/CodePanel.astro';
+import Actions from '../components/marketing/Actions.astro';
+import CtaLink from '../components/marketing/CtaLink.astro';
+import Callout from '../components/marketing/Callout.astro';
+import NextSteps from '../components/marketing/NextSteps.astro';
 import { CTA, DOCS, REPO } from '../lib/site';
+
+const fields = [
+  {
+    name: 'runtime',
+    required: 'optional',
+    detail:
+      'Container image for the steps. Omit it and they run in the worker process.',
+  },
+  {
+    name: 'install',
+    required: 'optional',
+    detail: 'Shell command. Usually the lockfile install for your language.',
+  },
+  { name: 'test', required: 'optional', detail: 'Shell command. Its exit code gates the commit.' },
+  { name: 'build', required: 'optional', detail: 'Shell command, run after test.' },
+  {
+    name: 'timeout',
+    required: 'optional',
+    detail: 'How long the run may take before it is cut off.',
+  },
+];
+
+const resolution = [
+  {
+    order: '01',
+    title: 'The repo’s pipeline file',
+    detail: '<code>.ci.yml</code> at the root of the commit being checked.',
+  },
+  {
+    order: '02',
+    title: 'The binding’s command overrides',
+    detail: 'Set in the UI, for repos you do not want to add a file to.',
+  },
+  {
+    order: '03',
+    title: 'Node defaults from <code>package.json</code>',
+    detail:
+      'Lockfile install, then <code>test</code> and <code>build</code> only if those scripts exist.',
+  },
+  {
+    order: '04',
+    title: 'Nothing to run',
+    detail: 'The check reports <strong>skipped</strong> — not failed.',
+  },
+];
 ---
 
 <MarketingPage
   title="Pipeline · openpreflight"
   description="What runs before the Check Run completes: .ci.yml fields, resolution order, skipped vs failed. Commands you write, not a check marketplace."
 >
-  <p class="kicker">Pipeline</p>
-  <h1>What runs before the Check Run completes</h1>
-  <p class="lead">
-    There is no check registry. Steps are shell commands in
-    <code>.ci.yml</code> — illustrations like <code>go test</code> or
-    <code>npm test</code> are commands you author, not first-class products.
-  </p>
-
-  <h2>The file</h2>
-  <pre>{`runtime: node:24
+  <PageHero
+    kicker="Pipeline"
+    title="What runs before the Check Run completes"
+    lead="There is no check registry. Steps are shell commands in .ci.yml — go test or npm test are commands you author, not first-class products."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Pipeline' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href={`${DOCS}/using/pipelines/`} variant="primary" size="lg">Pipeline docs</CtaLink>
+      <CtaLink href={`${REPO}/blob/main/examples/.ci.yml`} variant="outline" size="lg">
+        Example file
+      </CtaLink>
+    </Actions>
+    <CodePanel
+      slot="visual"
+      label=".ci.yml"
+      code={`runtime: node:24
 install: npm ci
 test: npm test
 build: npm run build
-timeout: 15m`}</pre>
-  <p>
-    Sample in the code repo:
-    <a href={`${REPO}/blob/main/examples/.ci.yml`}>examples/.ci.yml</a>.
-    Default filename is <code>.ci.yml</code>, not <code>openpreflight.yaml</code>.
-  </p>
+timeout: 15m`}
+    />
+  </PageHero>
 
-  <h2>Resolution order</h2>
-  <p>Highest first:</p>
-  <ol>
-    <li>the repo’s pipeline file</li>
-    <li>the binding’s command overrides</li>
-    <li>
-      Node defaults from <code>package.json</code> (lockfile install, then
-      <code>test</code> / <code>build</code> only if those scripts exist)
-    </li>
-    <li>nothing to run → the check is <strong>skipped</strong>, not failed</li>
-  </ol>
-  <p>A failing step stops the run; later steps are reported skipped.</p>
+  <Section
+    badge="The file"
+    title="Five keys, all of them optional"
+    description="The default filename is .ci.yml, not openpreflight.yaml. Everything in it is a command you already run locally."
+  >
+    <dl class="mt-12 divide-y divide-foreground/10 border-y border-foreground/10">
+      {
+        fields.map((field) => (
+          <div class="grid gap-2 py-5 sm:grid-cols-[10rem_1fr] sm:gap-8 sm:py-6">
+            <dt class="flex items-baseline gap-3">
+              <code class="font-mono text-sm font-semibold text-foreground">{field.name}</code>
+              <span class="font-mono text-[0.65rem] uppercase tracking-[0.06em] text-muted-foreground/70">
+                {field.required}
+              </span>
+            </dt>
+            <dd class="text-sm leading-relaxed text-muted-foreground [&_code]:font-mono [&_code]:text-[0.85em]">
+              <span set:html={field.detail} />
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </Section>
 
-  <h2>Runtime</h2>
-  <p>
-    Omit <code>runtime</code> to run in-process. A non-empty image uses
-    <code>docker run --rm</code>. If the engine is unreachable, the job fails
-    instead of falling back. Fork jobs always use Docker.
-  </p>
-  <p>
-    The contract, not this page, is source of truth:
-    <a href={`${DOCS}/using/pipelines/`}>pipelines</a>.
-  </p>
+  <Section
+    badge="Resolution order"
+    title="Where the commands come from"
+    tone="dark"
+    description="Highest first. The first source that has something to run wins."
+  >
+    <ol class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        resolution.map((step) => (
+          <li class="flex flex-col rounded-[1.5rem] border border-background/12 bg-background/[.055] p-6">
+            <span class="font-mono text-xs text-primary">{step.order}</span>
+            <h3 class="mt-6 text-base font-semibold tracking-[-.02em]" set:html={step.title} />
+            <p
+              class="mt-3 text-sm leading-relaxed text-background/60 [&_code]:font-mono [&_code]:text-[0.85em] [&_strong]:text-background"
+              set:html={step.detail}
+            />
+          </li>
+        ))
+      }
+    </ol>
+    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
+      A failing step stops the run; later steps are reported skipped. Nothing to
+      run at all is a skipped check, which is a different signal from a failure.
+    </p>
+  </Section>
 
-  <div class="cta-row">
-    <a class="primary" href={`${DOCS}/using/pipelines/`}>Pipeline docs</a>
-    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
-  </div>
+  <Section badge="Runtime" title="Two ways a step executes">
+    <Grid class="mt-12" cols={2}>
+      <Card eyebrow="Default" title="In the worker process">
+        Omit <code>runtime</code> and steps run as local processes on the host
+        that runs the binary. Nothing else to install.
+      </Card>
+      <Card eyebrow="runtime: node:24" title="In a container">
+        A non-empty image uses <code>docker run --rm</code>. If the engine is
+        unreachable the job fails instead of falling back. Fork jobs always use
+        Docker.
+      </Card>
+    </Grid>
+    <Callout class="mt-8" title="Source of truth">
+      <p>
+        This page is positioning. The contract — full field list, precedence
+        rules, and what each executor guarantees — is{' '}
+        <a href={`${DOCS}/using/pipelines/`}>the pipeline reference</a>.
+      </p>
+    </Callout>
+  </Section>
+
+  <NextSteps
+    links={[
+      {
+        label: 'Product',
+        href: '/product/',
+        description: 'How a run gets from webhook to Check Run.',
+      },
+      {
+        label: 'Concepts',
+        href: '/concepts/',
+        description: 'Binding, job, executor — the nouns used here.',
+      },
+      {
+        label: 'Security',
+        href: '/security/',
+        description: 'What a step can and cannot reach.',
+      },
+      {
+        label: 'GitHub App',
+        href: '/integrations/github-app/',
+        description: 'Install, bind, and get the first Check Run.',
+      },
+      {
+        label: 'Example .ci.yml',
+        href: `${REPO}/blob/main/examples/.ci.yml`,
+        description: 'The file in the code repo, kept current.',
+      },
+      {
+        label: 'Quickstart',
+        href: CTA.quickstart,
+        description: 'Stand the worker up, then add this file.',
+      },
+    ]}
+  />
 </MarketingPage>

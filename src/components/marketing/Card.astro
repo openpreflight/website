@@ -1,0 +1,60 @@
+---
+/**
+ * Bordered card, matching the landing page's pillar cards. Becomes a link when
+ * `href` is set. `tone="dark"` for use inside a Section tone="dark".
+ */
+interface Props {
+  title?: string;
+  href?: string;
+  eyebrow?: string;
+  index?: number;
+  tone?: 'default' | 'dark';
+  class?: string;
+}
+
+const { title, href, eyebrow, index, tone = 'default', class: className = '' } = Astro.props;
+
+const Tag = href ? 'a' : 'article';
+
+const base =
+  'group flex flex-col rounded-[1.5rem] border p-6 transition-[border-color,background-color] duration-300 sm:p-7';
+const toneClass =
+  tone === 'dark'
+    ? 'border-background/12 bg-background/[.055]'
+    : 'border-foreground/10 bg-background';
+const hoverClass = href
+  ? tone === 'dark'
+    ? 'hover:border-primary/50'
+    : 'hover:border-primary/45 hover:bg-primary/[.03]'
+  : '';
+
+const eyebrowClass = tone === 'dark' ? 'text-primary' : 'text-muted-foreground';
+const bodyClass = tone === 'dark' ? 'text-background/60' : 'text-muted-foreground';
+---
+
+<Tag href={href} class={`${base} ${toneClass} ${hoverClass} ${className}`.trim()}>
+  {
+    (eyebrow || index !== undefined) && (
+      <p class={`font-mono text-xs font-medium uppercase tracking-[0.06em] ${eyebrowClass}`}>
+        {index !== undefined ? String(index).padStart(2, '0') : eyebrow}
+      </p>
+    )
+  }
+  {
+    title && (
+      <h3
+        class={`text-lg font-semibold tracking-[-.03em] ${eyebrow || index !== undefined ? 'mt-4' : ''}`}
+      >
+        {title}
+        {href && (
+          <span aria-hidden="true" class="ml-1 inline-block text-primary opacity-0 transition-opacity group-hover:opacity-100">
+            →
+          </span>
+        )}
+      </h3>
+    )
+  }
+  <div class={`mt-3 text-sm leading-relaxed ${bodyClass} [&_code]:font-mono [&_code]:text-[0.85em]`}>
+    <slot />
+  </div>
+</Tag>
