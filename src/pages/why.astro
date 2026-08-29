@@ -9,6 +9,7 @@ import Actions from '../components/marketing/Actions.astro';
 import CtaLink from '../components/marketing/CtaLink.astro';
 import Prose from '../components/marketing/Prose.astro';
 import Callout from '../components/marketing/Callout.astro';
+import Faq from '../components/marketing/Faq.astro';
 import NextSteps from '../components/marketing/NextSteps.astro';
 import { CTA, DOCS, REPO, RELEASE } from '../lib/site';
 
@@ -56,6 +57,78 @@ const ceiling = [
   'Matrices',
   'Caches',
   'Artifacts',
+];
+
+const borrowed = [
+  'Gate on the commit, not the push',
+  'Queue work against an immutable SHA',
+  'Attach logs to the run',
+  'Write the result back to the forge',
+];
+
+const rejected = [
+  'ZooKeeper for coordination',
+  'Nodepool for node lifecycle',
+  'Ansible as the execution layer',
+  'A scheduler separate from its executors',
+];
+
+const strengths = [
+  {
+    title: 'Operationally small',
+    body: 'One container, one SQLite file, one process. No broker, no agent registration, no database server.',
+  },
+  {
+    title: 'Native Check Runs',
+    body: 'Not a status API shim. Gating on the check suite is what makes required checks behave under force-pushes and rapid pushes.',
+  },
+  {
+    title: 'Configured in a UI',
+    body: 'Apps and repo bindings are rows you edit, not a block of environment variables per installation.',
+  },
+  {
+    title: 'Secrets encrypted at rest',
+    body: 'PEMs, webhook secrets, and Coolify tokens are AES-256-GCM columns.',
+  },
+  {
+    title: 'Small enough to audit',
+    body: 'The whole implementation is one <code>internal/</code> tree, with no plugin surface.',
+  },
+];
+
+const weaknesses = [
+  {
+    title: 'One machine',
+    body: 'There is no agent protocol. Jobs run in the process, or in a sibling container on the same Docker engine. This does not scale horizontally.',
+  },
+  {
+    title: 'One job at a time, by default',
+    body: '<code>max_concurrent_jobs</code> is 1 and can only be raised after first boot. Raising it adds concurrency on this one machine, not across hosts.',
+  },
+  {
+    title: 'Three steps, fixed order',
+    body: 'install, test, build. No stages, no <code>needs:</code>, no fan-out, no conditional steps.',
+  },
+  {
+    title: 'No caches, no artifacts',
+    body: 'Every job is a fresh shallow clone. Nothing carries between runs or moves to a later step.',
+  },
+  {
+    title: 'No matrices',
+    body: 'One pipeline per commit, not one per version combination.',
+  },
+  {
+    title: 'GitHub only',
+    body: 'It is built on Check Runs, which no other forge has.',
+  },
+  {
+    title: 'One admin user',
+    body: 'No teams, no roles, no SSO.',
+  },
+  {
+    title: 'Monorepos are the worst case',
+    body: 'There is no path filter. A commit touching one directory runs the same three commands as a commit touching all of them.',
+  },
 ];
 ---
 
@@ -125,6 +198,36 @@ const ceiling = [
     </Actions>
   </Section>
 
+  <Section
+    badge="Prior art"
+    title="Zuul's trigger model, at one server's scale"
+    description="The gating idea is borrowed on purpose, and named so you can go read the original. The architecture around it is not."
+  >
+    <div class="mt-12 grid gap-4 lg:grid-cols-2">
+      <div class="rounded-[1.5rem] border border-primary/25 bg-primary/[.04] p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">Borrowed</h3>
+        <MarkList class="mt-5" cols={1} items={borrowed} mark="check" />
+      </div>
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">Not adopted</h3>
+        <MarkList class="mt-5" cols={1} items={rejected} mark="cross" />
+      </div>
+    </div>
+    <Prose class="mt-10">
+      <p>
+        Trigger on <code>check_suite</code> and <code>check_run</code>, never on
+        <code>push</code> or <code>pull_request</code>. A suite is already scoped
+        to one commit and one App; <code>push</code> would fire for refs nobody
+        is reviewing. One Check Run per job means one required-status entry in
+        branch protection, so adding a step never breaks it.
+      </p>
+      <p>
+        <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a> records what
+        is borrowed, what is rejected, and where the ceiling is.
+      </p>
+    </Prose>
+  </Section>
+
   <Section badge="Contrast" title="It is a layer, not a replacement">
     <div class="mt-12 grid gap-4 md:grid-cols-2">
       <Card eyebrow="Solves orchestration" title="Hosted runners and full platforms">
@@ -144,18 +247,91 @@ const ceiling = [
   </Section>
 
   <Section
+    badge="Where it wins"
+    title="What you get for accepting that scope"
+    tone="dark"
+  >
+    <Grid class="mt-12" cols={3}>
+      {strengths.map((item) => (
+        <Card title={item.title} tone="dark">
+          <span set:html={item.body} />
+        </Card>
+      ))}
+    </Grid>
+  </Section>
+
+  <Section
     badge="The ceiling"
     title="Where this is the wrong tool"
-    description="None of these are in v1. If one is a requirement, stop here and pick something else."
+    description="Stated plainly, because these are the things that will bite. If one of them is a requirement, stop here and pick something else."
   >
-    <MarkList class="mt-10" cols={3} items={ceiling} mark="cross" />
+    <div class="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+      {weaknesses.map((item) => (
+        <div class="border-t border-foreground/10 pt-5">
+          <h3 class="text-base font-semibold tracking-[-.02em]">{item.title}</h3>
+          <p
+            class="mt-2 text-sm leading-relaxed text-muted-foreground [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:text-foreground"
+            set:html={item.body}
+          />
+        </div>
+      ))}
+    </div>
+    <h3 class="mt-16 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+      Not in v1 at all
+    </h3>
+    <MarkList class="mt-6" cols={3} items={ceiling} mark="cross" />
     <Callout class="mt-8">
       <p>
         Jobs on another machine use a Docker engine (<code>CI_DOCKER_HOST</code>),
-        not Coolify as a job runner. The <a href={`${DOCS}/start/comparison/`}>docs comparison</a> is
-        honest about which neighbour to reach for instead.
+        not Coolify as a job runner. The <a href={`${DOCS}/start/comparison/`}>docs comparison</a> says
+        which neighbour to reach for instead — Woodpecker and Drone for a real
+        pipeline DSL, a self-hosted <code>actions/runner</code> to keep your
+        existing workflows, Jenkins for everything else.
       </p>
     </Callout>
+  </Section>
+
+  <Section badge="Before you install" title="Questions people ask first">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'Why a GitHub App and not OAuth?',
+          answer:
+            'Only a GitHub App can create Check Runs — user and OAuth tokens are refused. An App also has exactly one webhook URL, which is why Coolify\u2019s own GitHub connector cannot do this job: its webhook belongs to Coolify\u2019s deploy pipeline.',
+          href: `${DOCS}/adr/003-github-app/`,
+          linkLabel: 'ADR 003',
+        },
+        {
+          question: 'Why gate on the check suite instead of push?',
+          answer:
+            'Gate on the commit, not the push, without importing a second scheduler. Adding a <code>push</code> case would reverse that decision rather than extend it.',
+          href: `${DOCS}/adr/005-check-suite-gating/`,
+          linkLabel: 'ADR 005',
+        },
+        {
+          question: 'Why is Coolify optional?',
+          answer:
+            'It is a deployment target and an optional repository source, not the product. Skip it and everything works the same: checks still come from an App you register, and jobs still run here or on any Docker engine you point <code>CI_DOCKER_HOST</code> at.',
+          href: `${DOCS}/setup/coolify/`,
+          linkLabel: 'Coolify',
+        },
+        {
+          question: 'Does it work with GitHub Enterprise Server?',
+          answer:
+            'The plumbing is there and it has not been tested against a real instance. Each App row carries an API URL and the git origin is derived from it. What is untested is everything specific to a GHE deployment.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+        {
+          question: 'Does the project use itself for CI?',
+          answer:
+            'No — <code>openpreflight/openpreflight</code> runs GitHub Actions. Dogfooding needs a permanently reachable HTTPS instance and an App registered against the org, and releases have to publish multi-arch images, which this tool does not do at all.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+      ]}
+    />
   </Section>
 
   <NextSteps

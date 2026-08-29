@@ -13,6 +13,7 @@ import CtaLink from '../../components/marketing/CtaLink.astro';
 import Prose from '../../components/marketing/Prose.astro';
 import Callout from '../../components/marketing/Callout.astro';
 import NextSteps from '../../components/marketing/NextSteps.astro';
+import Faq from '../../components/marketing/Faq.astro';
 import { CTA, DOCS, REPO, RELEASE } from '../../lib/site';
 
 const panelSteps = [
@@ -55,6 +56,43 @@ const runSteps = [
     title: 'One Check Run comes back',
     detail:
       'Conclusion plus a log tail land on the commit. The details URL points at your instance, where the full log lives.',
+  },
+];
+
+const dedup = [
+  {
+    title: 'GitHub asks twice',
+    detail:
+      'A second <code>requested</code> delivery for a commit already in flight is answered <em>already queued</em>. Delivery ids still in flight are deduped.',
+  },
+  {
+    title: 'A human presses Re-run',
+    detail:
+      'A <code>rerequested</code> delivery supersedes the run in flight — the old one is cancelled first, then the new one is queued.',
+  },
+  {
+    title: 'A newer commit lands',
+    detail:
+      'An older in-flight job for the same repo and ref on a <em>different</em> SHA is cancelled, and the new SHA is enqueued in its place.',
+  },
+];
+
+const surfaces = [
+  {
+    title: 'The web UI',
+    body: 'Server-rendered pages for Apps, bindings, settings, jobs, and log pages. This is where a first install gets configured.',
+  },
+  {
+    title: 'The JSON API',
+    body: 'The same handlers answer JSON. <code>POST /api/v1/login</code> returns a bearer token; jobs can be listed, re-run, and cancelled from a script.',
+  },
+  {
+    title: 'The webhook',
+    body: '<code>POST /webhook/{slug}</code> is the only route GitHub touches, and it is HMAC-verified against that App\u2019s secret.',
+  },
+  {
+    title: 'A health probe',
+    body: '<code>GET /health</code> is liveness. It answers 503 when the process cannot read SQLite, which is what a reverse proxy should watch.',
   },
 ];
 
@@ -166,25 +204,52 @@ const outbound = [
     </Actions>
   </Section>
 
+  <Section
+    badge="Gating"
+    title="One live run per commit"
+    description="Three different things can arrive for the same commit. Each one has a defined answer, so a commit never collects two checks with the same name racing each other."
+  >
+    <Grid class="mt-12" cols={3}>
+      {dedup.map((item, index) => (
+        <Card index={index + 1} title={item.title}>
+          <span set:html={item.detail} />
+        </Card>
+      ))}
+    </Grid>
+    <Callout class="mt-8" title="Why it matters">
+      <p>
+        Branch protection reads whichever check finished last. Holding to one
+        live run per <code>(app, repo, sha)</code> is what makes a required check
+        behave under force-pushes and rapid pushes — the argument is in{' '}
+        <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a>.
+      </p>
+    </Callout>
+  </Section>
+
   <Section badge="Configuration" title="Rows in SQLite, commands in your repo">
     <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
       <Prose>
         <p>
           Bindings and Apps are rows in SQLite, edited in the web UI — not a
-          block of environment variables per installation. An optional
-          <code>.ci.yml</code> in the repo supplies the commands, with binding
-          overrides and <code>package.json</code> scripts filling the gaps.
+          block of environment variables per installation. The process reads a
+          handful of env vars so it can start; everything after that is a row.
+        </p>
+        <p>
+          A binding can override the branch list, the check name, the pipeline
+          file path, the timeout, the install / test / build commands, and
+          whether logs are shareable. At run time precedence is
+          <strong>binding → App → settings</strong>.
+        </p>
+        <p>
+          <strong>The bindings table is the allow-list.</strong> A webhook for a
+          repo with no enabled binding is acknowledged and dropped, however
+          valid its signature. Only enable repos you trust — a pipeline runs
+          that repo’s own commands.
         </p>
         <p>
           Resolution order and the full field list live in{' '}
           <a href={`${DOCS}/using/pipelines/`}>the pipeline docs</a>; the short
           version is on <a href="/pipeline/">/pipeline</a>.
-        </p>
-        <p>
-          <strong>Portable in the real sense:</strong> the same
-          <code>.ci.yml</code> and the same worker run on <em>your</em> host.
-          That is not “any CI vendor” — there are no GitLab, Jenkins, or
-          CircleCI adapters.
         </p>
       </Prose>
       <CodePanel
@@ -198,15 +263,39 @@ timeout: 15m`}
     </div>
   </Section>
 
+  <Section badge="Surfaces" title="One process, four ways in" tone="dark">
+    <Grid class="mt-12" cols={4}>
+      {surfaces.map((item) => (
+        <Card title={item.title} tone="dark">
+          <span set:html={item.body} />
+        </Card>
+      ))}
+    </Grid>
+    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
+      The HTML UI and the JSON API come out of the same handlers, so anything
+      you can click you can also script. There is no separate frontend to
+      deploy and no second service to keep in sync.
+    </p>
+    <Actions>
+      <CtaLink href={`${DOCS}/using/api/`} variant="onDark">API reference</CtaLink>
+    </Actions>
+  </Section>
+
   <Section badge="Results" title="Where the output ends up">
-    <Grid class="mt-12" cols={2}>
+    <Grid class="mt-12" cols={3}>
       <Card title="The Check Run">
-        GitHub shows conclusion and a log tail on the commit, the same way it
-        shows any other check.
+        GitHub shows the conclusion and a truncated log tail on the commit, the
+        same way it shows any other check. Steps are rendered as a table in that
+        run’s summary rather than as separate runs.
       </Card>
       <Card title="The details URL">
-        <code>GET /runs/&#123;id&#125;</code> on your instance — session by default,
-        or a shareable log if that binding opted in.
+        <code>GET /runs/&#123;id&#125;</code> on your instance. GitHub never fetches
+        it — the reader’s browser does, so it needs a session unless that
+        binding opted into shareable logs.
+      </Card>
+      <Card title="The full log">
+        Written to a file per job on your disk, capped so one runaway build
+        cannot fill the volume, and pruned on a retention window you set.
       </Card>
     </Grid>
     <Callout class="mt-8" title="Security">
@@ -214,6 +303,46 @@ timeout: 15m`}
       <a href={`${DOCS}/understanding/security-model/`}>security model</a> and
       nothing more. The page-length version is <a href="/security/">/security</a>.
     </Callout>
+  </Section>
+
+  <Section
+    badge="Honest scope"
+    title="What running it actually costs you"
+    description="The parts worth knowing before you install, not after."
+  >
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'How many jobs run at once?',
+          answer:
+            'One, by default. <code>max_concurrent_jobs</code> is a settings row that starts at 1 and can only be raised after first boot — and raising it adds concurrency on this one machine. Jobs never spread across hosts.',
+          href: `${DOCS}/start/configuration/`,
+          linkLabel: 'Configuration',
+        },
+        {
+          question: 'What happens if you restart mid-job?',
+          answer:
+            'Nothing in progress survives. On a clean signal the job writes itself <strong>cancelled</strong> and is not retried; on a kill it is requeued from the beginning on the next boot, which opens a second Check Run on that commit.',
+          href: `${DOCS}/understanding/operations/`,
+          linkLabel: 'Operations',
+        },
+        {
+          question: 'What has to be backed up?',
+          answer:
+            '<code>DATA_DIR</code> plus <code>CI_SECRET_KEY</code>, and neither is much use without the other. A backup without the key restores your bindings and job history but no credentials.',
+          href: `${DOCS}/understanding/operations/`,
+          linkLabel: 'Operations',
+        },
+        {
+          question: 'Does it work for monorepos?',
+          answer:
+            'It runs, but it runs everything on every push. There is no path filter, and a plan is three steps in a fixed order — so the usual monorepo answer, one job per affected package, has nothing to express itself with.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+      ]}
+    />
   </Section>
 
   <NextSteps

@@ -6,6 +6,7 @@ import Actions from '../components/marketing/Actions.astro';
 import CtaLink from '../components/marketing/CtaLink.astro';
 import Callout from '../components/marketing/Callout.astro';
 import NextSteps from '../components/marketing/NextSteps.astro';
+import Steps from '../components/marketing/Steps.astro';
 import { CTA, DOCS } from '../lib/site';
 
 const groups = [
@@ -16,6 +17,12 @@ const groups = [
         id: 'check-run',
         term: 'Check Run',
         body: 'GitHub’s status object on a commit. openpreflight creates one per job and writes the conclusion plus a log tail. It is the product’s hero artifact.',
+        links: [{ label: 'ADR 005', href: `${DOCS}/adr/005-check-suite-gating/` }],
+      },
+      {
+        id: 'check-suite',
+        term: 'Check suite',
+        body: 'GitHub’s container for the runs on one commit. It is the only thing that triggers work here — never <code>push</code>, never <code>pull_request</code>. A suite is already scoped to one commit and one App.',
         links: [{ label: 'ADR 005', href: `${DOCS}/adr/005-check-suite-gating/` }],
       },
       {
@@ -39,6 +46,12 @@ const groups = [
         links: [{ label: 'Bindings', href: `${DOCS}/setup/bindings/` }],
       },
       {
+        id: 'settings',
+        term: 'Settings',
+        body: 'One row holding the instance-wide defaults: check name, pipeline file path, timeout, how many jobs run at once, log size and retention. A binding or an App can override most of them.',
+        links: [{ label: 'Configuration', href: `${DOCS}/start/configuration/` }],
+      },
+      {
         id: 'pipeline',
         term: 'Pipeline (<code>.ci.yml</code>)',
         body: 'Repo file with <code>install</code>, <code>test</code>, <code>build</code>, and optional <code>runtime</code> and <code>timeout</code>. Commands you write, not a marketplace of named checks.',
@@ -57,6 +70,18 @@ const groups = [
         term: 'Job',
         body: 'One queued or running attempt for an <code>(app, repo, sha)</code>. Logs are files under <code>DATA_DIR</code>.',
         links: [{ label: 'Logs', href: `${DOCS}/using/logs/` }],
+      },
+      {
+        id: 'workspace',
+        term: 'Workspace',
+        body: 'The per-job checkout of the exact SHA. It is detached, the remote is stripped before any step runs, and the whole directory is deleted when the job ends.',
+        links: [],
+      },
+      {
+        id: 'installation-token',
+        term: 'Installation token',
+        body: 'A short-lived credential minted per job from the webhook’s installation id. It clones the commit and writes the Check Run, and it is never placed in the job’s environment.',
+        links: [{ label: 'Security model', href: `${DOCS}/understanding/security-model/` }],
       },
       {
         id: 'executor',
@@ -138,6 +163,142 @@ const groups = [
         ))
       }
     </div>
+  </Section>
+
+  <Section badge="In order" title="The same nouns, as one run" tone="dark">
+    <Steps
+      tone="dark"
+      steps={[
+        {
+          title: 'A <b>check suite</b> is created for a commit',
+          detail:
+            'GitHub creates it and delivers it to the webhook URL of the <b>GitHub App</b> you registered.',
+        },
+        {
+          title: 'The <b>binding</b> decides whether anything happens',
+          detail:
+            'No enabled binding for that repo, and the delivery is acknowledged and dropped — however valid its signature.',
+        },
+        {
+          title: 'A <b>job</b> is queued for that <code>(app, repo, sha)</code>',
+          detail:
+            'One live run per commit. A second delivery for the same commit is answered <i>already queued</i>, or supersedes the run in flight if a human pressed Re-run.',
+        },
+        {
+          title: 'An <b>installation token</b> fills a <b>workspace</b>',
+          detail:
+            'The exact SHA is fetched, detached, and the remote stripped — before any of your commands run.',
+        },
+        {
+          title: 'The <b>executor</b> runs the <b>pipeline</b>',
+          detail:
+            'In this process, or in a container when <code>runtime:</code> is set. A failing step stops the run and later steps report skipped.',
+        },
+        {
+          title: 'A <b>Check Run</b> is completed',
+          detail:
+            'Conclusion plus a log tail on the commit, with a details URL pointing at the full log — behind a session, unless that binding opted into a <b>shareable log</b>.',
+        },
+      ]}
+    />
+    <Actions>
+      <CtaLink href={`${DOCS}/understanding/architecture/`} variant="onDark">
+        The same loop, at reference depth
+      </CtaLink>
+    </Actions>
+  </Section>
+
+  <Section
+    badge="Not in the vocabulary"
+    title="Words this product deliberately does not use"
+    description="If you are looking for one of these, you are looking at the wrong layer — and that is worth knowing before you install rather than after."
+  >
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        [
+          {
+            word: 'Workflow',
+            why: 'There is no workflow language. A pipeline is three shell commands in a fixed order.',
+          },
+          {
+            word: 'Stage',
+            why: 'No stages and no <code>needs:</code>. install, then test, then build, and that is the plan format.',
+          },
+          {
+            word: 'Agent',
+            why: 'There is no agent protocol to register. Jobs run in this process or in a sibling container.',
+          },
+          {
+            word: 'Matrix',
+            why: 'One pipeline per commit, never one per version combination.',
+          },
+          {
+            word: 'Artifact',
+            why: 'Nothing is handed from one step to the next, or published anywhere.',
+          },
+          {
+            word: 'Cache',
+            why: 'Every job is a fresh shallow clone. Nothing is carried between runs.',
+          },
+          {
+            word: 'Plugin',
+            why: 'No marketplace and no extension API. Steps are commands you already run locally.',
+          },
+          {
+            word: 'Control plane',
+            why: 'There is no hosted anything. The binary on your server is the whole deployment.',
+          },
+        ].map((item) => (
+          <div class="rounded-2xl border border-foreground/10 p-5">
+            <p class="font-mono text-sm font-semibold text-muted-foreground/70 line-through">
+              {item.word}
+            </p>
+            <p
+              class="mt-2 text-sm leading-relaxed text-muted-foreground [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:text-foreground"
+              set:html={item.why}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section badge="Precedence" title="When two things say different things">
+    <div class="mt-12 grid gap-4 sm:grid-cols-3">
+      {
+        [
+          {
+            n: '01',
+            title: 'Binding',
+            body: 'The per-repo row. Branches, check name, pipeline file, timeout, commands, shareable logs.',
+          },
+          {
+            n: '02',
+            title: 'App',
+            body: 'Defaults for every repo bound to that GitHub App.',
+          },
+          {
+            n: '03',
+            title: 'Settings',
+            body: 'The instance-wide row, used when neither of the above says otherwise.',
+          },
+        ].map((item) => (
+          <div class="rounded-[1.5rem] border border-foreground/10 p-6">
+            <span class="font-mono text-xs text-primary">{item.n}</span>
+            <h3 class="mt-5 text-base font-semibold tracking-[-.02em]">{item.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+    <Callout class="mt-8" title="Commands are resolved separately">
+      <p>
+        The install / test / build commands have their own order — repo file,
+        then binding overrides, then Node defaults from <code>package.json</code>,
+        then nothing to run, which reports skipped. That ladder is on{' '}
+        <a href="/pipeline/">/pipeline</a>.
+      </p>
+    </Callout>
   </Section>
 
   <NextSteps

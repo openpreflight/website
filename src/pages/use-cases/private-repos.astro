@@ -8,7 +8,10 @@ import Steps from '../../components/marketing/Steps.astro';
 import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
 import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
+import Callout from '../../components/marketing/Callout.astro';
 import NextSteps from '../../components/marketing/NextSteps.astro';
+import Faq from '../../components/marketing/Faq.astro';
+import MarkList from '../../components/marketing/MarkList.astro';
 import { CTA, DOCS } from '../../lib/site';
 
 const panelSteps = [
@@ -79,6 +82,113 @@ const steps = [
         <code>.ci.yml</code> holds the same commands you already run locally.
       </Card>
     </Grid>
+  </Section>
+
+  <Section badge="Access" title="What the worker can and cannot reach">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <div class="rounded-[1.5rem] border border-primary/25 bg-primary/[.04] p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">It can</h3>
+        <MarkList
+          class="mt-5"
+          cols={1}
+          items={[
+            'Read the contents of repos you bound, at the commit being checked',
+            'Write a Check Run onto that commit',
+            'Run the three commands your pipeline names',
+          ]}
+          mark="check"
+        />
+      </div>
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">It cannot</h3>
+        <MarkList
+          class="mt-5"
+          cols={1}
+          items={[
+            'Push to your repository — Contents is read-only',
+            'Touch a repo with no enabled binding, signed webhook or not',
+            'Leak the clone token into a step: the job environment is built from scratch',
+          ]}
+          mark="cross"
+        />
+      </div>
+    </div>
+    <Callout class="mt-8" title="The clone credential">
+      <p>
+        A short-lived installation token is handed to git through
+        <code>GIT_CONFIG_*</code>, never in the remote URL, <code>.git/config</code>,
+        or a command line — and the remote is removed before your first command
+        runs. Details on <a href="/security/">/security</a>.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Branch protection" title="Making it a check people cannot merge past" tone="dark">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <div>
+        <p class="text-base leading-relaxed text-background/65">
+          One job produces one Check Run, and its steps are rendered as a table
+          inside that run rather than as separate checks. That is what makes it
+          usable as a required status: there is exactly one entry to tick in
+          branch protection, and adding a step to your pipeline later never
+          breaks the rule.
+        </p>
+        <p class="mt-4 text-base leading-relaxed text-background/65">
+          Holding to one live run per commit matters here too. Without it, a
+          force-push or a fast second commit can leave two runs of the same name
+          racing, and branch protection reads whichever finished last.
+        </p>
+      </div>
+      <Callout tone="muted">
+        <p>
+          <strong>Pick the check name before you rely on it.</strong> GitHub
+          matches a required status check by name, so renaming one strands the
+          branch protection rule that referenced the old name. New installs
+          choose it once; an existing instance keeps the name it already has for
+          exactly this reason.
+        </p>
+      </Callout>
+    </div>
+    <Actions>
+      <CtaLink href={`${DOCS}/adr/005-check-suite-gating/`} variant="onDark">ADR 005</CtaLink>
+      <CtaLink href={`${DOCS}/start/configuration/`} variant="onDark">Check name settings</CtaLink>
+    </Actions>
+  </Section>
+
+  <Section badge="Expectations" title="Before you point it at the whole org">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'How many of these repos can it keep up with?',
+          answer:
+            'One job runs at a time by default, on one machine. That suits a handful of repos pushing a few times an hour; a second commit waits for the first to finish.',
+          href: `${DOCS}/start/configuration/`,
+          linkLabel: 'Configuration',
+        },
+        {
+          question: 'Can I filter which paths trigger a run?',
+          answer:
+            'No. A binding matches a repo and optionally a branch list — exact names, or a <code>release/*</code> prefix. Do path filtering inside your own <code>test</code> command.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+        {
+          question: 'What about pull requests from forks?',
+          answer:
+            'Skipped by default. Opting in requires a reachable Docker engine and a default runtime, and those jobs then always run in a container rather than as a process on your host.',
+          href: `${DOCS}/adr/004-docker-executor/`,
+          linkLabel: 'ADR 004',
+        },
+        {
+          question: 'Who can read the logs?',
+          answer:
+            'Anyone with a session on your instance. A single binding can opt into shareable log pages if you want to hand a link to someone without an account — treat that link as a secret.',
+          href: `${DOCS}/using/logs/`,
+          linkLabel: 'Logs',
+        },
+      ]}
+    />
   </Section>
 
   <Section>

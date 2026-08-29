@@ -9,6 +9,9 @@ import Actions from '../components/marketing/Actions.astro';
 import CtaLink from '../components/marketing/CtaLink.astro';
 import Callout from '../components/marketing/Callout.astro';
 import NextSteps from '../components/marketing/NextSteps.astro';
+import Faq from '../components/marketing/Faq.astro';
+import MarkList from '../components/marketing/MarkList.astro';
+import Prose from '../components/marketing/Prose.astro';
 import { CTA, DOCS, REPO } from '../lib/site';
 
 const fields = [
@@ -30,6 +33,26 @@ const fields = [
     required: 'optional',
     detail: 'How long the run may take before it is cut off.',
   },
+];
+
+const cannot = [
+  'Stages or <code>needs:</code>',
+  'Fan-out and parallel steps',
+  'Conditional steps',
+  'Caches between runs',
+  'Artifacts between steps',
+  'Build matrices',
+  'Path filters for monorepos',
+  'Steps that are not install / test / build',
+];
+
+const overrides = [
+  'the branch list',
+  'the check name',
+  'the pipeline file path',
+  'the timeout',
+  'the install / test / build commands',
+  'whether logs are shareable',
 ];
 
 const resolution = [
@@ -106,6 +129,14 @@ timeout: 15m`}
         ))
       }
     </dl>
+    <Callout class="mt-10" title="A partial file still counts">
+      <p>
+        A file that only sets <code>runtime:</code> or <code>timeout:</code>
+        still applies those, while the commands come from the binding or from
+        <code>package.json</code>. Image names are allow-listed — no shell
+        metacharacters and no leading <code>-</code>.
+      </p>
+    </Callout>
   </Section>
 
   <Section
@@ -134,6 +165,38 @@ timeout: 15m`}
     </p>
   </Section>
 
+  <Section badge="Sources" title="What fills the gaps when there is no file">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <div>
+        <h3 class="text-lg font-semibold tracking-[-.03em]">Node defaults</h3>
+        <Prose class="mt-4">
+          <p>
+            With no pipeline file and no overrides, a Node repo is inferred from
+            <code>package.json</code>: the install command follows the lockfile
+            — <code>npm ci</code>, <code>pnpm</code>, or <code>yarn</code> — and
+            <code>test</code> and <code>build</code> run <strong>only if those
+            scripts exist</strong>.
+          </p>
+          <p>
+            That is the whole inference. No other language is guessed, and
+            nothing is invented for a repo that has neither a file nor scripts —
+            it reports skipped.
+          </p>
+        </Prose>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold tracking-[-.03em]">Binding overrides</h3>
+        <p class="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+          For a repo you would rather not add a file to, a binding can override:
+        </p>
+        <MarkList class="mt-5" cols={1} items={overrides} mark="check" />
+        <p class="mt-5 text-sm leading-relaxed text-muted-foreground">
+          At run time precedence is <strong class="text-foreground">binding → App → settings</strong>.
+        </p>
+      </div>
+    </div>
+  </Section>
+
   <Section badge="Runtime" title="Two ways a step executes">
     <Grid class="mt-12" cols={2}>
       <Card eyebrow="Default" title="In the worker process">
@@ -153,6 +216,61 @@ timeout: 15m`}
         <a href={`${DOCS}/using/pipelines/`}>the pipeline reference</a>.
       </p>
     </Callout>
+  </Section>
+
+  <Section
+    badge="Limits"
+    title="What a pipeline here cannot do"
+    tone="dark"
+    description="Three steps in a fixed order is the whole plan format. None of the following exists, and none of it is coming in v1."
+  >
+    <MarkList class="mt-10" cols={3} items={cannot} mark="cross" tone="dark" />
+    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
+      Every job is a fresh shallow clone, so nothing is carried between runs or
+      handed to a later step. If your build needs any of the above, a pipeline
+      engine like Woodpecker or Drone is the right tool — the{' '}
+      <a class="text-primary underline underline-offset-4" href={`${DOCS}/start/comparison/`}>docs comparison</a>{' '}
+      makes that call explicitly.
+    </p>
+  </Section>
+
+  <Section badge="Running it" title="Timeouts, logs, and what stops a run">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'What happens when a step fails?',
+          answer:
+            'The run stops there. Later steps are reported as skipped, and the Check Run completes with a failure conclusion plus a log tail.',
+        },
+        {
+          question: 'What if there is nothing to run?',
+          answer:
+            'The check reports <strong>skipped</strong>, not failed. That is a different signal on purpose — a repo with no pipeline is not a broken build.',
+        },
+        {
+          question: 'How long can a run take?',
+          answer:
+            'Until the timeout. <code>timeout</code> in the file overrides the binding, which overrides the settings default. A job that exceeds it is cut off and reported.',
+          href: `${DOCS}/start/configuration/`,
+          linkLabel: 'Configuration',
+        },
+        {
+          question: 'How big can a log get?',
+          answer:
+            'There is a byte cap; the log stops growing at it while the run continues. Logs and their job rows are pruned on a retention window, so history is finite by design.',
+          href: `${DOCS}/using/logs/`,
+          linkLabel: 'Logs',
+        },
+        {
+          question: 'Can a fork PR run my pipeline?',
+          answer:
+            'Not by default — fork pull requests are skipped. Opting in requires a reachable Docker engine and a <code>default_runtime</code>, and fork jobs then always run in Docker, never as a process on the host.',
+          href: `${DOCS}/adr/004-docker-executor/`,
+          linkLabel: 'ADR 004',
+        },
+      ]}
+    />
   </Section>
 
   <NextSteps

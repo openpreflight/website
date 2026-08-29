@@ -6,6 +6,10 @@ import Actions from '../components/marketing/Actions.astro';
 import CtaLink from '../components/marketing/CtaLink.astro';
 import Callout from '../components/marketing/Callout.astro';
 import NextSteps from '../components/marketing/NextSteps.astro';
+import Grid from '../components/marketing/Grid.astro';
+import Card from '../components/marketing/Card.astro';
+import MarkList from '../components/marketing/MarkList.astro';
+import Prose from '../components/marketing/Prose.astro';
 import { CTA, DOCS, REPO } from '../lib/site';
 
 const topics = [
@@ -15,7 +19,7 @@ const topics = [
   },
   {
     title: 'Network',
-    body: 'GitHub POSTs webhooks to your public HTTPS URL. The worker clones with an installation token via <code>GIT_CONFIG_*</code> Basic auth — never in the remote URL — then strips the remote before pipeline steps run.',
+    body: 'GitHub POSTs webhooks to your public HTTPS URL, HMAC-verified against that App\u2019s secret. The worker clones with a short-lived installation token passed through <code>GIT_CONFIG_*</code> as Basic <code>x-access-token</code> — GitHub\u2019s git endpoint wants Basic, not the REST API\u2019s Bearer. It never enters the remote URL, <code>.git/config</code>, or a command line, and the remote is removed before any pipeline step runs.',
   },
   {
     title: 'Secrets at rest',
@@ -84,6 +88,112 @@ const topics = [
         ))
       }
     </div>
+  </Section>
+
+  <Section
+    badge="The allow-list"
+    title="Nothing runs that you did not enable"
+    description="A valid signature is not authorisation. The bindings table is the allow-list, and it is the only thing that turns a webhook into a job."
+  >
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <Prose>
+        <p>
+          A signed webhook for a repo with no enabled binding is acknowledged
+          and dropped, however valid its signature. Fork pull requests are
+          dropped on top of that unless you have explicitly opted in, and that
+          opt-in requires Docker.
+        </p>
+        <p>
+          <strong>Enable only repos you trust.</strong> A pipeline runs that
+          repository’s own commands — in this process by default, or in a
+          container when <code>runtime:</code> is set. That is the trust boundary
+          worth thinking about before you tick a box in the picker.
+        </p>
+        <p>
+          Bindings and their overrides are documented in{' '}
+          <a href={`${DOCS}/setup/bindings/`}>enable repos</a>.
+        </p>
+      </Prose>
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">What a job container gets</h3>
+        <MarkList
+          class="mt-5"
+          cols={1}
+          items={[
+            'Dropped capabilities and <code>no-new-privileges</code>',
+            'An allow-listed image name',
+            'A fresh environment with none of your secrets in it',
+            'No access to the Docker engine socket',
+          ]}
+          mark="check"
+        />
+      </div>
+    </div>
+  </Section>
+
+  <Section badge="Keys" title="One key, and what depends on it" tone="dark">
+    <Grid class="mt-12" cols={3}>
+      <Card title="It encrypts the columns" tone="dark">
+        App PEMs, webhook secrets, and Coolify tokens are AES-256-GCM columns in
+        SQLite. Reads give back a redacted marker, never the value.
+      </Card>
+      <Card title="Rotation is a boot step" tone="dark">
+        Set the new key, keep the old one alongside it for one start, and the
+        secret columns are re-sealed under the new key. A row that opens with
+        neither key fails startup rather than serving broken.
+      </Card>
+      <Card title="Lose it and the credentials go" tone="dark">
+        A backup without the key still restores bindings and job history — but
+        the App has to be pasted in again. Store the key where your other
+        secrets live, not beside the backup.
+      </Card>
+    </Grid>
+  </Section>
+
+  <Section
+    badge="Auth surface"
+    title="What is reachable without a session"
+    description="Three routes are public by design. Everything else needs a session cookie from the UI or a bearer token from the API."
+  >
+    <div class="mt-12 overflow-hidden rounded-[1.5rem] border border-foreground/10">
+      {
+        [
+          {
+            route: 'POST /webhook/{slug}',
+            who: 'GitHub only',
+            note: 'HMAC-verified against that App’s webhook secret. An unsigned or wrongly-signed delivery goes nowhere.',
+          },
+          {
+            route: 'GET /health',
+            who: 'Anyone',
+            note: 'Liveness for your proxy. 503 when SQLite cannot be read. It carries no data about your repos.',
+          },
+          {
+            route: 'GET /runs/{id}',
+            who: 'Session — or anyone, if opted in',
+            note: 'A binding can make its log pages readable by link holders. Job ids are random UUIDs; treat such a link as a secret.',
+          },
+          {
+            route: 'Everything else',
+            who: 'Session or bearer token',
+            note: 'Browser writes additionally need a CSRF token. Bearer callers carry no ambient cookie and so skip CSRF.',
+          },
+        ].map((row, i) => (
+          <div class={`grid gap-2 p-5 sm:grid-cols-[15rem_12rem_1fr] sm:gap-6 sm:p-6 ${i > 0 ? 'border-t border-foreground/10' : ''}`}>
+            <code class="font-mono text-sm font-semibold text-foreground">{row.route}</code>
+            <span class="font-mono text-xs uppercase tracking-[0.06em] text-primary">{row.who}</span>
+            <p class="text-sm leading-relaxed text-muted-foreground">{row.note}</p>
+          </div>
+        ))
+      }
+    </div>
+    <Callout class="mt-8" title="One admin user">
+      <p>
+        There are no teams, no roles, and no SSO. That is a real limit, listed
+        with the others on <a href="/why/">why this shape</a> — not something to
+        discover after you have onboarded a team.
+      </p>
+    </Callout>
   </Section>
 
   <Section badge="Reporting" title="Found something?" tone="dark">

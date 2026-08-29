@@ -1,0 +1,47 @@
+---
+/**
+ * Positioning questions, answered inline. Each answer links the doc or ADR
+ * that argues it in full — this page never becomes the source of truth.
+ */
+interface Item {
+  question: string;
+  answer: string;
+  href?: string;
+  linkLabel?: string;
+}
+
+interface Props {
+  items: Item[];
+  tone?: 'default' | 'dark';
+  class?: string;
+}
+
+const { items, tone = 'default', class: className = '' } = Astro.props;
+
+const dividerClass = tone === 'dark' ? 'divide-background/12' : 'divide-foreground/10';
+const borderClass = tone === 'dark' ? 'border-background/12' : 'border-foreground/10';
+const answerClass = tone === 'dark' ? 'text-background/60' : 'text-muted-foreground';
+---
+
+<dl class={`divide-y border-y ${dividerClass} ${borderClass} ${className}`.trim()}>
+  {
+    items.map((item) => (
+      <div class="grid gap-3 py-6 lg:grid-cols-[1fr_1.4fr] lg:gap-10">
+        <dt class="text-base font-semibold tracking-[-.02em]">{item.question}</dt>
+        <dd
+          class={`text-sm leading-relaxed ${answerClass} [&_code]:font-mono [&_code]:text-[0.85em] [&_strong]:font-semibold`}
+        >
+          <span set:html={item.answer} />
+          {item.href && (
+            <a
+              class="mt-3 block w-fit font-mono text-xs text-primary underline underline-offset-4"
+              href={item.href}
+            >
+              {item.linkLabel ?? 'Read more'} →
+            </a>
+          )}
+        </dd>
+      </div>
+    ))
+  }
+</dl>

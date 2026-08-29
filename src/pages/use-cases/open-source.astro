@@ -8,6 +8,8 @@ import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
 import NextSteps from '../../components/marketing/NextSteps.astro';
+import Prose from '../../components/marketing/Prose.astro';
+import CodePanel from '../../components/marketing/CodePanel.astro';
 import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
 import { CTA, DEMO_REPO, REPO } from '../../lib/site';
 import demoRuns from '../../data/demo-runs.json';
@@ -106,12 +108,117 @@ const panelSteps = [
     </Grid>
   </Section>
 
+  <Section badge="How it is wired" title="What makes those pages public">
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      {
+        [
+          {
+            n: '01',
+            title: 'A self-hosted instance',
+            body: 'An ordinary openpreflight box with a GitHub App registered against the demo repository. Nothing special is running.',
+          },
+          {
+            n: '02',
+            title: 'One binding, logs shareable',
+            body: 'Shareable logs are a per-binding opt-in, switched on for the demo repository only. Every other binding stays behind a session.',
+          },
+          {
+            n: '03',
+            title: 'Six branches, six conclusions',
+            body: 'The pull requests are shaped so that pass, failure, timeout, skip, and a container runtime each show up as themselves.',
+          },
+        ].map((item) => (
+          <div class="rounded-[1.5rem] border border-foreground/10 p-6">
+            <span class="font-mono text-xs text-primary">{item.n}</span>
+            <h3 class="mt-5 text-base font-semibold tracking-[-.02em]">{item.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+    <Callout class="mt-8" title="You can do the same">
+      <p>
+        Nothing about that setup is privileged. Point your own instance at a
+        public repository, opt that binding into shareable logs, and you have the
+        same thing — visibility is read from the payload but never gates
+        anything.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Reading a run" title="What a contributor actually sees">
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      <Card index={1} title="The check on the commit">
+        A conclusion and a step table in the run’s summary — install, test,
+        build, with the one that failed marked and the rest reported skipped.
+      </Card>
+      <Card index={2} title="A log tail">
+        Enough output attached to the Check Run to see what broke without
+        leaving GitHub.
+      </Card>
+      <Card index={3} title="The full log page">
+        The details URL, served by the instance that ran the job. For this
+        binding it opens without an account; everywhere else it needs a session.
+      </Card>
+    </div>
+    <Callout class="mt-8" title="A failing check is the interesting one">
+      <p>
+        Two of the six pull requests fail on purpose and one times out. That is
+        the part worth clicking — a green check tells you very little about
+        whether a CI tool reports failures usefully.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Contributing" title="The test suite runs offline">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-center">
+      <Prose>
+        <p>
+          <code>go test ./...</code> needs no network and no credentials. The
+          GitHub and Coolify APIs are faked, and the clone and pipeline tests
+          run against a real <code>git-http-backend</code> server over a fixture
+          repository — so the interesting paths are actually exercised, not
+          stubbed away.
+        </p>
+        <p>
+          That is what makes a bug report with a failing test the most useful
+          thing you can send. The whole implementation is one
+          <code>internal/</code> tree with no plugin surface, so there is no
+          extension API to learn before you can read it.
+        </p>
+      </Prose>
+      <CodePanel
+        label="clone and test"
+        code={`git clone https://github.com/openpreflight/openpreflight
+cd openpreflight
+
+go build ./...
+go test ./...
+go vet ./...`}
+      />
+    </div>
+    <Actions>
+      <CtaLink href={`${REPO}/blob/main/CONTRIBUTING.md`} variant="primary">
+        CONTRIBUTING.md
+      </CtaLink>
+      <CtaLink href="/open-source/" variant="outline">Repos and licences</CtaLink>
+    </Actions>
+  </Section>
+
   <Section>
     <Callout title="If a link is empty">
       <p>
         The demo instance is a live box and can be down. A run URL may also 404
         once retention prunes the job — the pull request always stays. Until the
         demo App is bound, run URLs are left empty rather than invented.
+      </p>
+      <p>
+        For the same reason the project is honest about not dogfooding:
+        <code>openpreflight/openpreflight</code> runs GitHub Actions. Dogfooding
+        needs a permanently reachable HTTPS instance and an App registered
+        against the org, and releases have to publish multi-arch images — which
+        this tool does not do at all. It reports a check; it does not ship
+        artifacts.
       </p>
     </Callout>
   </Section>

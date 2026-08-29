@@ -10,6 +10,8 @@ import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
 import NextSteps from '../../components/marketing/NextSteps.astro';
+import Faq from '../../components/marketing/Faq.astro';
+import Prose from '../../components/marketing/Prose.astro';
 import { CTA, DOCS } from '../../lib/site';
 
 const steps = [
@@ -83,6 +85,43 @@ const panelSteps = [
     </Callout>
   </Section>
 
+  <Section
+    badge="Permissions"
+    title="What it asks GitHub for"
+    tone="dark"
+    description="Three repository permissions and two events. Nothing here can push code, open pull requests, or read your organisation."
+  >
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        [
+          { name: 'Checks', level: 'Read and write', why: 'Creating and completing the Check Run — the entire point.' },
+          { name: 'Contents', level: 'Read-only', why: 'Cloning the commit being checked. Read-only: it never writes to your repo.' },
+          { name: 'Metadata', level: 'Read-only', why: 'The mandatory baseline GitHub requires alongside the others.' },
+          { name: 'Check suite', level: 'Event', why: 'The trigger. GitHub creates a suite per commit and delivers it here.' },
+          { name: 'Check run', level: 'Event', why: 'Re-run requests, honoured only for this App’s own checks.' },
+        ].map((item) => (
+          <div class="rounded-[1.5rem] border border-background/12 bg-background/[.055] p-6">
+            <div class="flex items-baseline justify-between gap-3">
+              <span class="font-mono text-sm font-semibold text-background">{item.name}</span>
+              <span class="shrink-0 font-mono text-[0.62rem] uppercase tracking-[0.06em] text-primary">
+                {item.level}
+              </span>
+            </div>
+            <p class="mt-3 text-sm leading-relaxed text-background/60">{item.why}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
+      The authoritative table — exact values, the webhook URL format, and the
+      order to do things in — is in the setup docs. It changes with the code, so
+      this page does not try to be the checklist.
+    </p>
+    <Actions>
+      <CtaLink href={`${DOCS}/setup/github-app/`} variant="onDark">The full checklist</CtaLink>
+    </Actions>
+  </Section>
+
   <Section badge="After that" title="What the App is used for">
     <Grid class="mt-12" cols={3}>
       <Card title="Receiving events">
@@ -97,6 +136,72 @@ const panelSteps = [
         The same App reports the conclusion and a log tail back onto the commit.
       </Card>
     </Grid>
+  </Section>
+
+  <Section badge="After the first check" title="Where people go next">
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      <Card index={1} title="Make it required">
+        One job produces one Check Run, so there is a single entry to tick in
+        branch protection. Pick the check name before you rely on it — renaming
+        one strands the rule that referenced it.
+      </Card>
+      <Card index={2} title="Add the rest of the repos">
+        The same App can cover everything it is installed on. Each repo still
+        needs its own enabled binding, which is what keeps the allow-list
+        meaningful.
+      </Card>
+      <Card index={3} title="Override per repo">
+        A binding can change the branch list, the commands, the timeout, the
+        check name, and whether logs are shareable — useful for the one repo
+        that does not fit the default.
+      </Card>
+    </div>
+    <Callout class="mt-8" title="Then mostly forget about it">
+      <p>
+        After the binding exists, the loop is automatic: a commit lands, a
+        check appears. The next thing worth reading is{' '}
+        <a href="/pipeline/">what runs inside it</a>.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Common snags" title="Things that catch people out">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'Can I reuse one App for everything?',
+          answer:
+            'You can bind many repos to one App, but give each App its own webhook secret. An App has exactly one webhook URL, so the slug in that URL is what routes a delivery to the right row.',
+        },
+        {
+          question: 'I pushed and nothing happened.',
+          answer:
+            'A delivery for a repo with no <strong>enabled binding</strong> is acknowledged and dropped, however valid its signature. That is the allow-list working, not a failure — check the binding first.',
+          href: `${DOCS}/setup/bindings/`,
+          linkLabel: 'Bindings',
+        },
+        {
+          question: 'Where did my PEM go?',
+          answer:
+            'It is encrypted at rest and never shown again. Reads return a redacted marker rather than the value, so keep your own copy when you generate it on GitHub.',
+          href: `${DOCS}/understanding/security-model/`,
+          linkLabel: 'Security model',
+        },
+        {
+          question: 'Does the App need to be public?',
+          answer:
+            'No. It lives in your account or organisation and is installed only where you install it. Nothing about it is published.',
+        },
+        {
+          question: 'What about GitHub Enterprise Server?',
+          answer:
+            'Each App row carries an API URL, and the git origin is derived from it. The plumbing is there; it has not been tested against a real instance, and an issue saying which version broke would be useful.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+      ]}
+    />
   </Section>
 
   <NextSteps

@@ -5,8 +5,13 @@ import Section from '../../components/marketing/Section.astro';
 import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import MarkList from '../../components/marketing/MarkList.astro';
+import Steps from '../../components/marketing/Steps.astro';
 import Callout from '../../components/marketing/Callout.astro';
 import NextSteps from '../../components/marketing/NextSteps.astro';
+import Grid from '../../components/marketing/Grid.astro';
+import Card from '../../components/marketing/Card.astro';
+import Prose from '../../components/marketing/Prose.astro';
+import Faq from '../../components/marketing/Faq.astro';
 import { CTA, DOCS } from '../../lib/site';
 
 const surfaces = [
@@ -94,6 +99,110 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
         })
       }
     </div>
+  </Section>
+
+  <Section
+    badge="Connecting"
+    title="What plugging it in involves"
+    description="Four surfaces, but only the first one is work. The rest are switches you may never touch."
+  >
+    <Steps
+      steps={[
+        {
+          title: 'Register the App and paste it in',
+          detail:
+            'Three repository permissions and two events. The PEM and webhook secret are encrypted on the way into SQLite.',
+        },
+        {
+          title: 'Bind the repositories',
+          detail:
+            'The bindings table is the allow-list. A signed webhook for an unbound repo is acknowledged and dropped.',
+        },
+        {
+          title: 'Leave the executor alone',
+          detail:
+            'With no <code>runtime:</code>, steps run in the worker process. Most installs never need anything past this point.',
+        },
+        {
+          title: 'Add Docker only if you need it',
+          detail:
+            'Set <code>CI_DOCKER_HOST</code> — or mount a socket — when you want container runtimes or fork pull requests.',
+        },
+      ]}
+    />
+  </Section>
+
+  <Section badge="Why an App" title="Only a GitHub App can create a Check Run" tone="dark">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <Prose>
+        <p>
+          User tokens and OAuth tokens are refused by GitHub for this — the
+          Check Runs API is App-only. That single fact is why the integration
+          list starts and ends where it does.
+        </p>
+        <p>
+          A GitHub App also has exactly <strong>one</strong> webhook URL, which
+          is why Coolify’s own GitHub connector cannot stand in: its webhook
+          already belongs to Coolify’s deploy pipeline, and its manifest carries
+          no <code>checks</code> permission.
+        </p>
+      </Prose>
+      <Grid cols={2}>
+        <Card title="What the App does here" tone="dark">
+          Receives check-suite webhooks, mints a short-lived installation token
+          per job, and writes the Check Run back onto the commit.
+        </Card>
+        <Card title="What it never does" tone="dark">
+          Get created for you, act on repos you have not bound, or hand its
+          private key to a job.
+        </Card>
+      </Grid>
+    </div>
+    <Actions>
+      <CtaLink href={`${DOCS}/adr/003-github-app/`} variant="onDark">ADR 003</CtaLink>
+      <CtaLink href="/integrations/github-app/" variant="onDark">Set one up</CtaLink>
+    </Actions>
+  </Section>
+
+  <Section badge="Precisely" title="What the two optional ones actually do">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'When does Docker get involved?',
+          answer:
+            'When a pipeline sets <code>runtime:</code>, and for every fork pull request. The engine comes from <code>CI_DOCKER_HOST</code>, else <code>DOCKER_HOST</code>, else the default socket — and it can be a different machine, over Docker’s own remote API.',
+          href: `${DOCS}/adr/004-docker-executor/`,
+          linkLabel: 'ADR 004',
+        },
+        {
+          question: 'What happens if the engine is unreachable?',
+          answer:
+            'The job fails rather than quietly falling back to running your commands as a process on the host. The service itself boots and reports checks fine without an engine — only <code>runtime:</code> jobs and fork PRs need it.',
+        },
+        {
+          question: 'Do job containers get the Docker socket?',
+          answer:
+            'No. Job containers drop capabilities, set <code>no-new-privileges</code>, and never receive the engine socket. Image names are allow-listed.',
+          href: `${DOCS}/understanding/security-model/`,
+          linkLabel: 'Security model',
+        },
+        {
+          question: 'What is Coolify used for?',
+          answer:
+            'Server inventory, a repository picker for the bindings screen, and an install-worker call that creates the compose application for you. That is the whole surface.',
+          href: `${DOCS}/setup/coolify/`,
+          linkLabel: 'Coolify',
+        },
+        {
+          question: 'Can Coolify run the jobs?',
+          answer:
+            'No. A Coolify token cannot start a <code>docker run</code>. To put jobs on another machine you point <code>CI_DOCKER_HOST</code> at that machine’s Docker engine — that is Docker’s remote API, not Coolify’s.',
+          href: `${DOCS}/understanding/deployment/`,
+          linkLabel: 'Deployment',
+        },
+      ]}
+    />
   </Section>
 
   <Section

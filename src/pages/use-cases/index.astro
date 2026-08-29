@@ -6,7 +6,10 @@ import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
 import NextSteps from '../../components/marketing/NextSteps.astro';
-import { CTA } from '../../lib/site';
+import Grid from '../../components/marketing/Grid.astro';
+import Card from '../../components/marketing/Card.astro';
+import Faq from '../../components/marketing/Faq.astro';
+import { CTA, DOCS } from '../../lib/site';
 
 const cases = [
   {
@@ -82,14 +85,142 @@ const cases = [
         ))
       }
     </div>
-    <Callout class="mt-10" title="Not a use case">
-      <p>
-        Hosted CI for arbitrary public repos, cross-vendor pipeline portability,
-        and policy engines are all out of scope. See{' '}
-        <a href="/compare/github-actions/">the comparison</a> if orchestration is
-        what you are shopping for.
-      </p>
-    </Callout>
+  </Section>
+
+  <Section badge="In common" title="What all three actually get" tone="dark">
+    <Grid class="mt-12" cols={3}>
+      <Card title="One Check Run per commit" tone="dark">
+        Gated on the check suite and the immutable SHA, with one live run per
+        commit — so a required check behaves under force-pushes and rapid
+        pushes.
+      </Card>
+      <Card title="Logs on hardware you own" tone="dark">
+        GitHub gets a conclusion and a tail. The full log is a file on your
+        disk, served by your instance at a details URL.
+      </Card>
+      <Card title="No second workflow language" tone="dark">
+        Three shell commands in <code>.ci.yml</code> — or nothing at all, if a
+        Node repo’s <code>package.json</code> already says enough.
+      </Card>
+    </Grid>
+  </Section>
+
+  <Section badge="The long version" title="Why each of them ends up here">
+    <div class="mt-12 space-y-4">
+      {
+        [
+          {
+            who: 'Private GitHub repos',
+            href: '/use-cases/private-repos/',
+            body: 'The repository is already on GitHub and the team wants a status on the commit. Hosted Actions would do it, but it means buying minutes for work that a machine they already pay for could do, and writing workflow YAML for what is really three commands. Registering an App and ticking a repo is a smaller ask than adopting a second configuration language.',
+          },
+          {
+            who: 'Self-hosted teams',
+            href: '/use-cases/self-hosted-teams/',
+            body: 'The constraint is not cost, it is custody: build logs should stay on infrastructure the team operates. A full platform would satisfy that and bring a control plane, agents, and a database server with it. One container and one file satisfies it too, and there is nothing else to keep patched.',
+          },
+          {
+            who: 'Open-source contributors',
+            href: '/use-cases/open-source/',
+            body: 'Nobody should have to install a CI tool to find out how it reports a failure. The demo repository carries pull requests that land on each conclusion, from an ordinary self-hosted instance, with log pages anyone can open — proof you can click before you commit an afternoon.',
+          },
+        ].map((item) => (
+          <a
+            class="group block rounded-[1.5rem] border border-foreground/10 p-6 transition-colors duration-300 hover:border-primary/45 sm:p-7"
+            href={item.href}
+          >
+            <h3 class="text-lg font-semibold tracking-[-.03em]">
+              {item.who}
+              <span
+                aria-hidden="true"
+                class="ml-1 inline-block text-primary opacity-0 transition-opacity group-hover:opacity-100"
+              >
+                →
+              </span>
+            </h3>
+            <p class="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+          </a>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section badge="Not a use case" title="Where to go instead">
+    <div class="mt-12 grid gap-4 lg:grid-cols-3">
+      {
+        [
+          {
+            case: 'Hosted CI for arbitrary public repos',
+            why: 'There is no hosted openpreflight. Every instance is one someone runs, bound to repos they chose.',
+            go: 'Read the product page',
+            href: '/product/',
+          },
+          {
+            case: 'One config across GitLab, Jenkins, and CircleCI',
+            why: '“Portable” here means the same file and the same worker on your own host — there are no vendor adapters.',
+            go: 'See integrations',
+            href: '/integrations/',
+          },
+          {
+            case: 'A policy or orchestration engine',
+            why: 'No stages, no fan-out, no cross-repo pipelines, no approvals. Actions and its neighbours own that layer.',
+            go: 'Compare the layers',
+            href: '/compare/github-actions/',
+          },
+        ].map((item) => (
+          <a
+            class="group flex flex-col rounded-[1.5rem] border border-foreground/10 p-6 transition-colors duration-300 hover:border-primary/45 sm:p-7"
+            href={item.href}
+          >
+            <p class="font-mono text-xs uppercase tracking-[0.06em] text-muted-foreground/70">
+              Not this
+            </p>
+            <h3 class="mt-4 text-base font-semibold tracking-[-.02em]">{item.case}</h3>
+            <p class="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{item.why}</p>
+            <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs text-primary">
+              {item.go}
+              <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section badge="Fit check" title="Whether this is your situation">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'How many repos is this good for?',
+          answer:
+            'A handful that push a few times an hour. One process on one box runs one job at a time by default, and raising that adds concurrency on the same machine — never across hosts.',
+          href: `${DOCS}/start/configuration/`,
+          linkLabel: 'Configuration',
+        },
+        {
+          question: 'Does it work on public repos?',
+          answer:
+            'Yes. Repository visibility is read from the webhook payload but never gates anything — “private repos” is what this is aimed at, not a restriction it enforces.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+        {
+          question: 'Can it live alongside GitHub Actions?',
+          answer:
+            'Yes, on the same commit. GitHub shows every check that reports on it, whoever produced them. Keep Actions for releases and matrices, and let this one gate the pull request.',
+          href: '/compare/github-actions/',
+          linkLabel: 'Compare',
+        },
+        {
+          question: 'What is the worst case?',
+          answer:
+            'A busy monorepo. There is no path filter, so every commit runs the same three commands over everything, and the serial default means those runs queue behind each other.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+      ]}
+    />
   </Section>
 
   <NextSteps

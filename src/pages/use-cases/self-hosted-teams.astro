@@ -8,7 +8,9 @@ import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
 import MarkList from '../../components/marketing/MarkList.astro';
+import Steps from '../../components/marketing/Steps.astro';
 import NextSteps from '../../components/marketing/NextSteps.astro';
+import Faq from '../../components/marketing/Faq.astro';
 import { CTA, DOCS } from '../../lib/site';
 
 const stack = [
@@ -60,6 +62,113 @@ const stack = [
         endpoint and no hosted control plane.
       </Card>
     </Grid>
+  </Section>
+
+  <Section badge="Day one" title="What the first afternoon looks like">
+    <Steps
+      steps={[
+        {
+          title: 'Bring up the container',
+          detail:
+            'One compose file, one generated <code>CI_SECRET_KEY</code>, and a volume that persists. The image pulls; there is nothing to clone.',
+        },
+        {
+          title: 'Put it behind your proxy',
+          detail:
+            'GitHub has to reach <code>POST /webhook/{slug}</code> over HTTPS. Point the domain at port 8080 and let the proxy forward <code>X-Forwarded-Proto</code> so cookies come back <code>Secure</code>.',
+        },
+        {
+          title: 'Register a GitHub App and paste it in',
+          detail:
+            'Name, slug, App ID, webhook secret, PEM. The secret columns are encrypted on the way in, and reads give back a redacted marker.',
+        },
+        {
+          title: 'Tick the repos',
+          detail:
+            'The bindings screen is the allow-list. Nothing runs for a repo you did not enable, however valid the webhook signature.',
+        },
+        {
+          title: 'Push',
+          detail:
+            'The commit collects a Check Run whose details URL points back at your box. From here it is ordinary infrastructure.',
+        },
+      ]}
+    />
+    <Callout class="mt-6" title="The walkthrough lives in the docs">
+      <p>
+        Exact commands, mounts, and the reverse-proxy notes are in the{' '}
+        <a href={`${DOCS}/start/quickstart/`}>quickstart</a> and{' '}
+        <a href={`${DOCS}/understanding/deployment/`}>deployment</a> pages, which
+        track the code. This page is only the shape of it.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Sizing" title="What to size it for">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'How much CPU and memory?',
+          answer:
+            'Whatever your own <code>test</code> and <code>build</code> need, plus a small idle Go process. The worker itself is not the expensive part — your pipeline is.',
+        },
+        {
+          question: 'How much disk?',
+          answer:
+            'Every concurrent job holds its own checkout and its own log, so disk scales with concurrency. There is no cap on checkout size: size the workspace volume for your largest repository times however many jobs you allow at once.',
+          href: `${DOCS}/start/configuration/`,
+          linkLabel: 'Configuration',
+        },
+        {
+          question: 'How much history does it keep?',
+          answer:
+            'A retention window you set. An hourly pass deletes job rows and their log files past it — queued and running jobs are never pruned. History is finite by design.',
+          href: `${DOCS}/understanding/operations/`,
+          linkLabel: 'Operations',
+        },
+        {
+          question: 'What does a deploy cost?',
+          answer:
+            'A brief outage and any job that was mid-run. On a clean stop that job records itself cancelled and is not retried; deploy when the queue is empty if you care.',
+          href: `${DOCS}/understanding/operations/`,
+          linkLabel: 'Operations',
+        },
+        {
+          question: 'Can jobs run on a different machine?',
+          answer:
+            'Point <code>CI_DOCKER_HOST</code> at another Docker engine and <code>runtime:</code> jobs execute there. That is Docker’s remote API — it is still one worker deciding what runs, not a fleet.',
+          href: `${DOCS}/understanding/deployment/`,
+          linkLabel: 'Deployment',
+        },
+      ]}
+    />
+  </Section>
+
+  <Section badge="People" title="Who on the team can touch it">
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      <Card eyebrow="Today" title="One admin user">
+        There are no teams, no roles, and no SSO. One account configures Apps,
+        bindings, and settings — so decide who holds it the way you would decide
+        who holds a server credential.
+      </Card>
+      <Card eyebrow="For scripts" title="Bearer tokens">
+        The JSON API takes a token from a login call, so a deploy script or a
+        chat bot can list, re-run, and cancel jobs without a browser session.
+      </Card>
+      <Card eyebrow="For everyone else" title="Log links">
+        Reading a run needs a session — unless that binding opted into shareable
+        logs, which turns its log pages into anyone-with-the-link URLs.
+      </Card>
+    </div>
+    <Callout class="mt-8" title="Plan around the single account">
+      <p>
+        This is a genuine limit, not an oversight, and it is listed with the
+        others on <a href="/why/">why this shape</a>. If your team needs
+        per-person access to CI configuration, that is a reason to pick
+        something larger.
+      </p>
+    </Callout>
   </Section>
 
   <Section badge="Day two" title="What running it involves">

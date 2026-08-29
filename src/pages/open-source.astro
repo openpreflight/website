@@ -8,6 +8,9 @@ import Actions from '../components/marketing/Actions.astro';
 import CtaLink from '../components/marketing/CtaLink.astro';
 import Callout from '../components/marketing/Callout.astro';
 import NextSteps from '../components/marketing/NextSteps.astro';
+import CodePanel from '../components/marketing/CodePanel.astro';
+import Prose from '../components/marketing/Prose.astro';
+import Faq from '../components/marketing/Faq.astro';
 import { CTA, DOCS, DOCS_REPO, REPO, WEBSITE_REPO, RELEASE } from '../lib/site';
 
 const repos = [
@@ -83,6 +86,38 @@ const repos = [
     </div>
   </Section>
 
+  <Section badge="Readable on purpose" title="One tree, no plugin surface">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-center">
+      <Prose>
+        <p>
+          The whole implementation lives under <code>internal/</code>. There is
+          no <code>pkg/</code>, nothing importable, and no extension API — which
+          means there is also no plugin boundary where behaviour can hide.
+        </p>
+        <p>
+          <code>go test ./...</code> needs no network and no credentials: the
+          GitHub and Coolify APIs are faked, and the clone and pipeline tests run
+          against a real <code>git-http-backend</code> server over a fixture
+          repository.
+        </p>
+        <p>
+          That is the practical reason to open source a worker that holds App
+          private keys — a reviewer can read every path a key takes in an
+          afternoon, and run the suite without asking anyone for access.
+        </p>
+      </Prose>
+      <CodePanel
+        label="repository layout"
+        code={`cmd/server/          entrypoint
+internal/            the whole implementation
+  web/               templates, Tailwind, static assets
+examples/            a sample .ci.yml
+.github/workflows/   ci.yml gates merges
+                     release.yml publishes on a v* tag`}
+      />
+    </div>
+  </Section>
+
   <Section badge="Contribute" title="What is actually useful" tone="dark">
     <Grid class="mt-12" cols={3}>
       <Card index={1} title="A failing test" tone="dark">
@@ -130,6 +165,73 @@ const repos = [
         source is how you check that the list is true.
       </p>
     </Callout>
+  </Section>
+
+  <Section badge="Licensing" title="Two licences, on purpose">
+    <div class="mt-12 grid gap-4 md:grid-cols-2">
+      <div class="rounded-[1.5rem] border border-primary/25 bg-primary/[.04] p-6 sm:p-7">
+        <p class="font-mono text-xs font-semibold uppercase tracking-[0.06em] text-primary">
+          Apache-2.0
+        </p>
+        <h3 class="mt-4 text-lg font-semibold tracking-[-.03em]">The binary</h3>
+        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+          A permissive licence with an explicit patent grant, for the thing you
+          will actually run on your own infrastructure. Fork it, run it
+          internally, or ship a modified build.
+        </p>
+        <a
+          class="mt-5 inline-block font-mono text-xs text-primary underline underline-offset-4"
+          href={`${REPO}/blob/main/LICENSE`}
+        >
+          Read the licence →
+        </a>
+      </div>
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <p class="font-mono text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+          MIT
+        </p>
+        <h3 class="mt-4 text-lg font-semibold tracking-[-.03em]">The two sites</h3>
+        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+          The documentation and this marketing site. Lighter terms for prose and
+          markup that nobody deploys as infrastructure — take a page as a
+          starting point if it is useful.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section badge="Project" title="How this is actually run">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'Who decides what goes in?',
+          answer:
+            'There is no foundation, no board, and no RFC process to join. Issues and pull requests on the code repository are the whole process, and the scope note in the README is the boundary.',
+          href: `${REPO}#not-in-v1`,
+          linkLabel: 'Not in v1',
+        },
+        {
+          question: 'What will not be accepted?',
+          answer:
+            'Features from the Not-in-v1 list, and product claims the docs do not back. A behaviour change in the binary needs a documentation change alongside it.',
+          href: `${REPO}/blob/main/CONTRIBUTING.md`,
+          linkLabel: 'CONTRIBUTING.md',
+        },
+        {
+          question: 'Does the project use itself for CI?',
+          answer:
+            'No — it runs GitHub Actions, and says so. Dogfooding needs a permanently reachable HTTPS instance and an App registered against the org, and releases publish multi-arch images, which this tool does not do at all.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+        {
+          question: 'Why are the sites separate repos?',
+          answer:
+            'The binary, the documentation, and the marketing site each move at their own pace. The docs are the source of truth for behaviour; the marketing site links out rather than duplicating instructions that would go stale first.',
+        },
+      ]}
+    />
   </Section>
 
   <NextSteps
