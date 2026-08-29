@@ -1,6 +1,6 @@
 {
   "repo": "openpreflight/demo",
-  "updatedAt": "2026-08-29T02:25:16.474Z",
+  "updatedAt": "2026-08-29T04:57:40.500Z",
   "runs": [
     {
       "id": "passing",
@@ -9,7 +9,7 @@
       "branch": "demo/passing",
       "conclusion": "success",
       "prUrl": "https://github.com/openpreflight/demo/pull/7",
-      "runUrl": null
+      "runUrl": "https://ci.openpreflight.xyz/runs/2487f438-f37e-4e4c-8c89-bed1dee5707b"
     },
     {
       "id": "failing-test",
@@ -18,7 +18,7 @@
       "branch": "demo/failing-test",
       "conclusion": "failure",
       "prUrl": "https://github.com/openpreflight/demo/pull/8",
-      "runUrl": null
+      "runUrl": "https://ci.openpreflight.xyz/runs/9470e2cc-26b5-45ed-8b1e-10cd794e519e"
     },
     {
       "id": "failing-build",
@@ -27,7 +27,7 @@
       "branch": "demo/failing-build",
       "conclusion": "failure",
       "prUrl": "https://github.com/openpreflight/demo/pull/9",
-      "runUrl": null
+      "runUrl": "https://ci.openpreflight.xyz/runs/da08d47d-60ba-4733-9465-1f6f5e26552c"
     },
     {
       "id": "timeout",
@@ -36,7 +36,7 @@
       "branch": "demo/timeout",
       "conclusion": "timed_out",
       "prUrl": "https://github.com/openpreflight/demo/pull/10",
-      "runUrl": null
+      "runUrl": "https://ci.openpreflight.xyz/runs/2f0222a5-cc02-4f5b-aaf4-d696d62d755a"
     },
     {
       "id": "skipped",
@@ -45,16 +45,16 @@
       "branch": "demo/skipped",
       "conclusion": "skipped",
       "prUrl": "https://github.com/openpreflight/demo/pull/11",
-      "runUrl": null
+      "runUrl": "https://ci.openpreflight.xyz/runs/185f5b52-2919-463c-8250-91e2da7df8d5"
     },
     {
       "id": "container",
       "title": "Container",
       "outcome": "runtime: node:24 via Docker",
       "branch": "demo/container",
-      "conclusion": "success",
+      "conclusion": "failure",
       "prUrl": "https://github.com/openpreflight/demo/pull/12",
-      "runUrl": null
+      "runUrl": "https://ci.openpreflight.xyz/runs/bab651e6-cbaf-469d-a894-a8517d17da9f"
     }
   ]
 }
