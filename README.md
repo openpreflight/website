@@ -38,9 +38,16 @@ npm run dev
 - `src/pages/index.astro`: the marketing homepage
 - `src/pages/`: Product, Why, Self-hosted, Security, and the other hub routes
 - `src/pages/404.astro`: branded not-found
-- `src/layouts/MarketingPage.astro`: shared header/footer chrome for inner pages
-- `src/lib/site.ts`: nav, footer groups, CTAs
-- `src/components/`: Header, CheckRunPanel, RunFlow, Rivelle blocks
+- `src/layouts/MarketingPage.astro`: header/footer chrome for inner pages; the
+  pages themselves compose full-bleed sections
+- `src/lib/site.ts`: `siteSections` is the canonical site map — the header nav,
+  the footer, and the 404 all render it, so a route cannot exist without being
+  reachable from every page
+- `src/components/marketing/`: the subpage system — `PageHero`, `Section`,
+  `Card`/`Grid`, `Steps`, `MarkList`, `CodePanel`, `CheckRunPanel`, `Callout`,
+  `Faq`, `Prose`, `CtaLink`/`Actions`
+- `src/components/blocks/`, `src/components/ui/`: Rivelle blocks and primitives
+  used by the homepage template
 - `src/layouts/Layout.astro`: head, meta, OG tags, header/footer chrome
 - `src/styles/global.css`: product-green palette, JetBrains Mono, light/dark
   via `prefers-color-scheme`

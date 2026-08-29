@@ -1,32 +1,194 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
+import PageHero from '../../components/marketing/PageHero.astro';
+import Section from '../../components/marketing/Section.astro';
+import Grid from '../../components/marketing/Grid.astro';
+import Card from '../../components/marketing/Card.astro';
+import Steps from '../../components/marketing/Steps.astro';
+import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
+import Actions from '../../components/marketing/Actions.astro';
+import CtaLink from '../../components/marketing/CtaLink.astro';
+import Callout from '../../components/marketing/Callout.astro';
+import Faq from '../../components/marketing/Faq.astro';
+import MarkList from '../../components/marketing/MarkList.astro';
 import { CTA, DOCS } from '../../lib/site';
+
+const panelSteps = [
+  { name: 'install', command: 'go mod download', duration: '5s', width: '16%' },
+  { name: 'test', command: 'go test ./...', duration: '24s', width: '62%' },
+  { name: 'build', command: 'go build ./...', duration: '8s', width: '22%' },
+];
+
+const steps = [
+  {
+    title: 'Register a GitHub App against those repos',
+    detail: 'It lives in your org, with the permissions the docs list — nothing broader.',
+  },
+  {
+    title: 'Bind the repos in the UI',
+    detail: 'A binding names the App, the repo, the branches, and any command overrides.',
+  },
+  {
+    title: 'Push',
+    detail:
+      'The worker clones with an installation token that never lands in the remote URL, and strips the remote before your steps run.',
+  },
+];
 ---
 
 <MarketingPage
   title="Private repos · openpreflight"
   description="Self-hosted Check Runs on private GitHub repositories without Actions YAML."
 >
-  <p class="kicker"><a href="/use-cases/">Use cases</a> / Private repos</p>
-  <h1>Check Runs on private code, without Actions</h1>
-  <p class="lead">
-    GitHub already stores the repo. You want a status on the commit. You do not
-    want to put that work on hosted Actions minutes or write workflow YAML for
-    install/test/build.
-  </p>
-  <p>
-    Register a GitHub App against those private repos, bind them in the UI, and
-    the worker clones with an installation token that never lands in the remote
-    URL. The Check Run is the artifact GitHub already knows how to display.
-  </p>
-  <p>
-    Setup:
-    <a href={`${DOCS}/setup/github-app/`}>GitHub App</a>
-    and
-    <a href={`${DOCS}/setup/bindings/`}>bindings</a>.
-  </p>
-  <div class="cta-row">
-    <a class="primary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href="/use-cases/">All use cases</a>
-  </div>
+  <PageHero
+    kicker="Private repos"
+    title="Check Runs on private code, without Actions"
+    lead="GitHub already stores the repo. You want a status on the commit — without spending hosted Actions minutes or writing workflow YAML for install, test, and build."
+    crumbs={[
+      { label: 'openpreflight', href: '/' },
+      { label: 'Use cases', href: '/use-cases/' },
+      { label: 'Private repos' },
+    ]}
+  >
+    <Actions slot="actions">
+      <CtaLink href={CTA.quickstart} variant="primary" size="lg">Quickstart</CtaLink>
+      <CtaLink href="/product/" variant="outline" size="lg">How it works</CtaLink>
+    </Actions>
+    <CheckRunPanel
+      slot="visual"
+      repo="private/billing"
+      meta={['#87', '4b09de1', 'main']}
+      duration="37s"
+      steps={panelSteps}
+    />
+  </PageHero>
+
+  <Section badge="Setup" title="Three moves, then it is automatic">
+    <Steps steps={steps} />
+  </Section>
+
+  <Section badge="What you get" title="One artifact, in the place people already look" tone="dark">
+    <Grid class="mt-12" cols={3}>
+      <Card title="The Check Run" tone="dark">
+        GitHub already knows how to display it — on the commit, in the pull
+        request, and in branch protection.
+      </Card>
+      <Card title="Logs on your server" tone="dark">
+        The details URL is <code>GET /runs/{'{id}'}</code> on your own instance.
+        Nothing beyond the conclusion and a tail leaves the box.
+      </Card>
+      <Card title="No workflow language" tone="dark">
+        <code>.ci.yml</code> holds the same commands you already run locally.
+      </Card>
+    </Grid>
+  </Section>
+
+  <Section badge="Access" title="What the worker can and cannot reach">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <div class="rounded-[1.5rem] border border-primary/25 bg-primary/[.04] p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">It can</h3>
+        <MarkList
+          class="mt-5"
+          cols={1}
+          items={[
+            'Read the contents of repos you bound, at the commit being checked',
+            'Write a Check Run onto that commit',
+            'Run the three commands your pipeline names',
+          ]}
+          mark="check"
+        />
+      </div>
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">It cannot</h3>
+        <MarkList
+          class="mt-5"
+          cols={1}
+          items={[
+            'Push to your repository — Contents is read-only',
+            'Touch a repo with no enabled binding, signed webhook or not',
+            'Leak the clone token into a step: the job environment is built from scratch',
+          ]}
+          mark="cross"
+        />
+      </div>
+    </div>
+    <Callout class="mt-8" title="How the clone is authenticated">
+      <p>
+        With a short-lived installation token that never reaches your pipeline
+        steps. The mechanics — and everything else the worker is allowed to do —
+        are on <a href="/security/">security</a>.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Branch protection" title="Making it a check people cannot merge past" tone="dark">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <div>
+        <p class="text-base leading-relaxed text-background/65">
+          One job produces one Check Run, and its steps are rendered as a table
+          inside that run rather than as separate checks. That is what makes it
+          usable as a required status: there is exactly one entry to tick in
+          branch protection, and adding a step to your pipeline later never
+          breaks the rule.
+        </p>
+        <p class="mt-4 text-base leading-relaxed text-background/65">
+          Holding to one live run per commit matters here too. Without it, a
+          force-push or a fast second commit can leave two runs of the same name
+          racing, and branch protection reads whichever finished last.
+        </p>
+      </div>
+      <Callout tone="muted">
+        <p>
+          <strong>Pick the check name before you rely on it.</strong> GitHub
+          matches a required status check by name, so renaming one strands the
+          branch protection rule that referenced the old name. New installs
+          choose it once; an existing instance keeps the name it already has for
+          exactly this reason.
+        </p>
+      </Callout>
+    </div>
+    <Actions>
+      <CtaLink href={`${DOCS}/adr/005-check-suite-gating/`} variant="onDark">ADR 005</CtaLink>
+      <CtaLink href={`${DOCS}/start/configuration/`} variant="onDark">Check name settings</CtaLink>
+    </Actions>
+  </Section>
+
+  <Section badge="Expectations" title="Questions this raises">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'Which branches does it check?',
+          answer:
+            'Whatever the binding says. The branch list takes exact names or a <code>release/*</code> style prefix, and an empty list means every branch the App sees.',
+          href: `${DOCS}/setup/bindings/`,
+          linkLabel: 'Bindings',
+        },
+        {
+          question: 'Can two repos run different commands?',
+          answer:
+            'Yes. Each repo can carry its own <code>.ci.yml</code>, or the binding can override install, test, and build for a repo you would rather not add a file to.',
+          href: '/pipeline/',
+          linkLabel: 'Pipeline',
+        },
+        {
+          question: 'How do I try it on one repo first?',
+          answer:
+            'Enable exactly one binding. Nothing else the App is installed on will run, because a repo with no enabled binding is ignored — so a trial stays a trial.',
+        },
+      ]}
+    />
+  </Section>
+
+  <Section>
+    <div class="grid gap-4 md:grid-cols-2">
+      <Card eyebrow="Docs" href={`${DOCS}/setup/github-app/`} title="Register the App">
+        Permissions, events, and the webhook URL to use.
+      </Card>
+      <Card eyebrow="Docs" href={`${DOCS}/setup/bindings/`} title="Enable the repos">
+        Bindings, branch filters, and command overrides.
+      </Card>
+    </div>
+  </Section>
+
 </MarketingPage>

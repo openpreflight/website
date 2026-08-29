@@ -1,0 +1,142 @@
+---
+/**
+ * The product's hero artifact (design.md): a Check Run as GitHub renders it,
+ * in the product's own mono voice. Illustrative values only — pass real ones
+ * where the page has them.
+ */
+interface Step {
+  name: string;
+  command: string;
+  duration: string;
+  width: string;
+  state?: 'pass' | 'fail' | 'skip';
+}
+
+interface Props {
+  label?: string;
+  repo: string;
+  meta?: string[];
+  conclusion?: 'passed' | 'failed' | 'skipped';
+  duration?: string;
+  steps: Step[];
+  footer?: string;
+  class?: string;
+}
+
+const {
+  label = 'Check Run · pull request',
+  repo,
+  meta = [],
+  conclusion = 'passed',
+  duration,
+  steps,
+  footer = 'View full logs',
+  class: className = '',
+} = Astro.props;
+
+const summary = {
+  passed: { color: '#7cc79c', glyph: '✓', text: 'Passed' },
+  failed: { color: '#e0857b', glyph: '✕', text: 'Failed' },
+  skipped: { color: '#9aa39a', glyph: '–', text: 'Skipped' },
+}[conclusion];
+
+const stepColor = {
+  pass: '#7cc79c',
+  fail: '#e0857b',
+  skip: '#9aa39a',
+};
+const stepGlyph = { pass: '✓', fail: '✕', skip: '–' };
+---
+
+<figure
+  class={`overflow-hidden rounded-2xl border border-[#2a2f2a] bg-[#121412] text-left text-[#e8ebe6] shadow-[0_40px_100px_-60px_color-mix(in_srgb,var(--primary)_55%,transparent)] ${className}`.trim()}
+>
+  <div class="flex h-11 items-center gap-2.5 border-b border-white/10 bg-white/[0.03] px-4 sm:px-5">
+    <span aria-hidden="true" class="size-2 shrink-0 rounded-full" style={`background:${summary.color}`}></span>
+    <span class="truncate font-mono text-xs text-white/50">{label}</span>
+  </div>
+
+  <figcaption class="sr-only">
+    Example Check Run on {repo}: {steps.length} steps, {summary.text.toLowerCase()}.
+  </figcaption>
+
+  <div class="border-b border-white/10 px-4 py-4 sm:px-5">
+    <div class="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-white/55">
+      <span class="text-[#e8ebe6]">{repo}</span>
+      {
+        meta.map((item) => (
+          <>
+            <span class="text-white/25">·</span>
+            <span class="truncate">{item}</span>
+          </>
+        ))
+      }
+    </div>
+    <div
+      class="mt-3 flex items-center justify-between gap-3 rounded-xl border px-3.5 py-2.5"
+      style={`border-color:color-mix(in srgb, ${summary.color} 22%, transparent);background:color-mix(in srgb, ${summary.color} 10%, transparent)`}
+    >
+      <div class="flex items-center gap-2.5">
+        <span
+          class="grid size-5 place-items-center rounded-full font-mono text-[0.6rem] text-[#102018]"
+          style={`background:${summary.color}`}
+          aria-hidden="true">{summary.glyph}</span
+        >
+        <span class="font-mono text-sm font-medium" style={`color:${summary.color}`}>
+          {summary.text}
+        </span>
+      </div>
+      {duration && <span class="font-mono text-xs text-white/45">{duration}</span>}
+    </div>
+  </div>
+
+  <ul class="divide-y divide-white/[0.06] px-2 py-1 sm:px-3">
+    {
+      steps.map((step) => {
+        const state = step.state ?? 'pass';
+        const color = stepColor[state];
+        return (
+          <li class="flex items-center gap-3 px-2 py-3 sm:gap-4 sm:px-2.5">
+            <span
+              class="grid size-5 shrink-0 place-items-center rounded-full font-mono text-[0.6rem]"
+              style={`background:color-mix(in srgb, ${color} 15%, transparent);color:${color}`}
+              aria-hidden="true"
+            >
+              {stepGlyph[state]}
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-baseline justify-between gap-3">
+                <span class="font-mono text-sm text-[#e8ebe6]">{step.name}</span>
+                <span class="shrink-0 font-mono text-xs text-white/40">{step.duration}</span>
+              </div>
+              <div class="mt-1 flex items-center gap-3">
+                <code class="min-w-0 truncate font-mono text-[0.7rem] text-white/35">
+                  {step.command}
+                </code>
+                <span
+                  aria-hidden="true"
+                  class="ml-auto hidden h-1 w-16 overflow-hidden rounded-full bg-white/10 sm:block sm:w-24"
+                >
+                  <span
+                    class="block h-full rounded-full"
+                    style={`width:${step.width};background:color-mix(in srgb, ${color} 70%, transparent)`}
+                  />
+                </span>
+              </div>
+            </div>
+          </li>
+        );
+      })
+    }
+  </ul>
+
+  {
+    footer && (
+      <div class="border-t border-white/10 px-4 py-3 sm:px-5">
+        <span class="inline-flex items-center gap-1.5 font-mono text-xs text-[#7cc79c]">
+          {footer} →
+        </span>
+      </div>
+    )
+  }
+</figure>

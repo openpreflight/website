@@ -1,30 +1,187 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
+import PageHero from '../../components/marketing/PageHero.astro';
+import Section from '../../components/marketing/Section.astro';
+import Grid from '../../components/marketing/Grid.astro';
+import Card from '../../components/marketing/Card.astro';
+import Actions from '../../components/marketing/Actions.astro';
+import CtaLink from '../../components/marketing/CtaLink.astro';
+import Callout from '../../components/marketing/Callout.astro';
+import MarkList from '../../components/marketing/MarkList.astro';
+import Steps from '../../components/marketing/Steps.astro';
+import Faq from '../../components/marketing/Faq.astro';
 import { CTA, DOCS } from '../../lib/site';
+
+const stack = [
+  'UI and JSON API',
+  'Webhook receiver',
+  'Job runner',
+  'SQLite in <code>DATA_DIR</code>',
+  'Job logs on disk',
+  'Nothing else to schedule',
+];
 ---
 
 <MarketingPage
   title="Self-hosted teams · openpreflight"
   description="Keep the CI worker, SQLite file, and job logs on infrastructure you already operate."
 >
-  <p class="kicker"><a href="/use-cases/">Use cases</a> / Self-hosted teams</p>
-  <h1>Runner and logs stay on your box</h1>
-  <p class="lead">
-    The team already pays for a VPS or a home-lab machine. openpreflight is a
-    Compose stack on that machine: UI, webhook, runner, SQLite, logs.
-  </p>
-  <p>
-    GitHub only receives Check Run payloads and a details URL that points at
-    you. Shareable logs are opt-in per binding. Operations (backups, upgrades,
-    what a restart does to an in-flight job) are in
-    <a href={`${DOCS}/understanding/operations/`}>operations</a>.
-  </p>
-  <p>
-    Coolify can inventory servers and install the worker. It is not required,
-    and it does not execute jobs.
-  </p>
-  <div class="cta-row">
-    <a class="primary" href="/self-hosted/">Self-hosted</a>
-    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
-  </div>
+  <PageHero
+    kicker="Self-hosted teams"
+    title="Runner and logs stay on your box"
+    lead="The team already pays for a VPS or a home-lab machine. openpreflight is a Compose stack on that machine — and GitHub only ever receives a Check Run payload."
+    crumbs={[
+      { label: 'openpreflight', href: '/' },
+      { label: 'Use cases', href: '/use-cases/' },
+      { label: 'Self-hosted teams' },
+    ]}
+  >
+    <Actions slot="actions">
+      <CtaLink href="/self-hosted/" variant="primary" size="lg">Self-hosting details</CtaLink>
+      <CtaLink href={CTA.quickstart} variant="outline" size="lg">Quickstart</CtaLink>
+    </Actions>
+  </PageHero>
+
+  <Section badge="The stack" title="One Compose file, on hardware you already have">
+    <MarkList class="mt-10" cols={3} items={stack} mark="check" />
+  </Section>
+
+  <Section badge="What leaves the box" title="Only the result" tone="dark">
+    <Grid class="mt-12" cols={3}>
+      <Card title="A Check Run payload" tone="dark">
+        Conclusion plus a truncated log tail, written onto the commit through
+        your own GitHub App.
+      </Card>
+      <Card title="A details URL" tone="dark">
+        It points back at your host. The full log is served by your instance,
+        not copied anywhere.
+      </Card>
+      <Card title="Nothing else" tone="dark">
+        Shareable logs are opt-in per binding. There is no vendor telemetry
+        endpoint and no hosted control plane.
+      </Card>
+    </Grid>
+  </Section>
+
+  <Section badge="Day one" title="What the first afternoon looks like">
+    <Steps
+      steps={[
+        {
+          title: 'Bring up the container',
+          detail:
+            'One compose file, one generated <code>CI_SECRET_KEY</code>, and a volume that persists. The image pulls; there is nothing to clone.',
+        },
+        {
+          title: 'Put it behind your proxy',
+          detail:
+            'GitHub has to reach <code>POST /webhook/{slug}</code> over HTTPS. Point the domain at port 8080 and let the proxy forward <code>X-Forwarded-Proto</code> so cookies come back <code>Secure</code>.',
+        },
+        {
+          title: 'Register a GitHub App and paste it in',
+          detail:
+            'Name, slug, App ID, webhook secret, PEM. The secret columns are encrypted on the way in, and reads give back a redacted marker.',
+        },
+        {
+          title: 'Tick the repos',
+          detail:
+            'Nothing runs for a repo you did not enable — see <a class="underline underline-offset-4" href="/security/">security</a> for why that is the trust boundary.',
+        },
+        {
+          title: 'Push',
+          detail:
+            'The commit collects a Check Run whose details URL points back at your box. From here it is ordinary infrastructure.',
+        },
+      ]}
+    />
+    <Callout class="mt-6" title="The walkthrough lives in the docs">
+      <p>
+        Exact commands, mounts, and the reverse-proxy notes are in the{' '}
+        <a href={`${DOCS}/start/quickstart/`}>quickstart</a> and{' '}
+        <a href={`${DOCS}/understanding/deployment/`}>deployment</a> pages, which
+        track the code. This page is only the shape of it.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Sizing" title="What to size it for">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'How much CPU and memory?',
+          answer:
+            'Whatever your own <code>test</code> and <code>build</code> need, plus a small idle Go process. The worker itself is not the expensive part — your pipeline is.',
+        },
+        {
+          question: 'How much disk?',
+          answer:
+            'Enough for your largest checkout, times however many jobs you allow at once, plus the logs you keep. <a class="underline underline-offset-4" href="/self-hosted/">Self-hosted</a> has the sizing rule.',
+        },
+        {
+          question: 'How much history does it keep?',
+          answer:
+            'A retention window you set. An hourly pass deletes job rows and their log files past it — queued and running jobs are never pruned. History is finite by design.',
+          href: `${DOCS}/understanding/operations/`,
+          linkLabel: 'Operations',
+        },
+        {
+          question: 'What does a deploy cost?',
+          answer:
+            'A brief outage and whatever was mid-run. <a class="underline underline-offset-4" href="/self-hosted/">Self-hosted</a> covers exactly how an interrupted job is recorded.',
+        },
+        {
+          question: 'Can jobs run on a different machine?',
+          answer:
+            'Point <code>CI_DOCKER_HOST</code> at another Docker engine and <code>runtime:</code> jobs execute there. That is Docker’s remote API — it is still one worker deciding what runs, not a fleet.',
+          href: `${DOCS}/understanding/deployment/`,
+          linkLabel: 'Deployment',
+        },
+      ]}
+    />
+  </Section>
+
+  <Section badge="People" title="Who on the team can touch it">
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      <Card eyebrow="Today" title="One admin user">
+        There are no teams, no roles, and no SSO. One account configures Apps,
+        bindings, and settings — so decide who holds it the way you would decide
+        who holds a server credential.
+      </Card>
+      <Card eyebrow="For scripts" title="Bearer tokens">
+        The JSON API takes a token from a login call, so a deploy script or a
+        chat bot can list, re-run, and cancel jobs without a browser session.
+      </Card>
+      <Card eyebrow="For everyone else" title="Log links">
+        Reading a run needs an account on your instance, with one per-repo
+        exception you can switch on. <a class="text-primary underline underline-offset-4" href="/security/">Security</a> covers it.
+      </Card>
+    </div>
+    <Callout class="mt-8" title="Plan around the single account">
+      <p>
+        This is a genuine limit, not an oversight, and it is listed with the
+        others on <a href="/why/">why this shape</a>. If your team needs
+        per-person access to CI configuration, that is a reason to pick
+        something larger.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Day two" title="What running it involves">
+    <div class="grid gap-4 md:grid-cols-2">
+      <Card eyebrow="Docs" href={`${DOCS}/understanding/operations/`} title="Operations">
+        Backups, upgrades, and what a restart does to an in-flight job.
+      </Card>
+      <Card eyebrow="Docs" href={`${DOCS}/understanding/deployment/`} title="Deployment">
+        Reverse proxy, volumes, and the environment reference.
+      </Card>
+    </div>
+    <Callout class="mt-8" title="If you already run Coolify">
+      <p>
+        It can inventory your servers and install the worker for you.{' '}
+        <a href="/integrations/">Integrations</a> covers what it does and does
+        not do here.
+      </p>
+    </Callout>
+  </Section>
+
 </MarketingPage>

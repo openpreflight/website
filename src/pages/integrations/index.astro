@@ -1,40 +1,220 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
+import PageHero from '../../components/marketing/PageHero.astro';
+import Section from '../../components/marketing/Section.astro';
+import Actions from '../../components/marketing/Actions.astro';
+import CtaLink from '../../components/marketing/CtaLink.astro';
+import MarkList from '../../components/marketing/MarkList.astro';
+import Steps from '../../components/marketing/Steps.astro';
+import Callout from '../../components/marketing/Callout.astro';
+import Grid from '../../components/marketing/Grid.astro';
+import Card from '../../components/marketing/Card.astro';
+import Prose from '../../components/marketing/Prose.astro';
+import Faq from '../../components/marketing/Faq.astro';
 import { CTA, DOCS } from '../../lib/site';
+
+const surfaces = [
+  {
+    status: 'Required',
+    title: 'GitHub App',
+    body: 'Webhooks in, installation tokens out, Check Runs on the commit. You register it; the worker never creates one for you.',
+    href: '/integrations/github-app/',
+    cta: 'How to set it up',
+    primary: true,
+  },
+  {
+    status: 'Default',
+    title: 'Process executor',
+    body: 'Used whenever <code>runtime</code> is empty. Steps run in the worker process, on the host — no extra daemon.',
+    href: null,
+    cta: null,
+    primary: false,
+  },
+  {
+    status: 'Optional',
+    title: 'Docker',
+    body: 'A reachable engine turns <code>runtime:</code> into <code>docker run</code>. Fork pull requests always use it.',
+    href: `${DOCS}/adr/004-docker-executor/`,
+    cta: 'ADR 004',
+    primary: false,
+  },
+  {
+    status: 'Optional',
+    title: 'Coolify',
+    body: 'Server inventory, a repo picker, and an install-worker API. It is not a job runner and is not required.',
+    href: `${DOCS}/setup/coolify/`,
+    cta: 'Coolify docs',
+    primary: false,
+  },
+];
+
+const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure DevOps'];
 ---
 
 <MarketingPage
   title="Integrations · openpreflight"
   description="What actually connects: GitHub App, optional Coolify, Docker runtime, process executor. Not a CI-provider catalog."
 >
-  <p class="kicker">Integrations</p>
-  <h1>Surfaces that exist in v1</h1>
-  <p class="lead">
-    This is not a grid of CI vendors. GitLab CI, Jenkins, CircleCI, Buildkite,
-    and Azure DevOps are not adapters here.
-  </p>
+  <PageHero
+    kicker="Integrations"
+    title="Surfaces that exist in v1"
+    lead="Four things connect to openpreflight. One is required, one is the default, and two are optional. That is the entire list."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Integrations' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href="/integrations/github-app/" variant="primary" size="lg">Start with the App</CtaLink>
+      <CtaLink href={CTA.quickstart} variant="outline" size="lg">Quickstart</CtaLink>
+    </Actions>
+  </PageHero>
 
-  <div class="card-grid cols-2">
-    <a href="/integrations/github-app/">
-      <h3>GitHub App</h3>
-      <p>Required. Webhooks, installation tokens, Check Runs.</p>
-    </a>
-    <a href={`${DOCS}/setup/coolify/`}>
-      <h3>Coolify</h3>
-      <p>Optional API: inventory, repo picker, install-worker. Not a job runner.</p>
-    </a>
-    <a href={`${DOCS}/adr/004-docker-executor/`}>
-      <h3>Docker</h3>
-      <p><code>runtime:</code> and fork jobs via <code>docker run</code>.</p>
-    </a>
-    <div>
-      <h3>Process executor</h3>
-      <p>Default when <code>runtime</code> is empty. Steps run in the worker.</p>
+  <Section>
+    <div class="grid gap-4 md:grid-cols-2">
+      {
+        surfaces.map((surface) => {
+          const Tag = surface.href ? 'a' : 'div';
+          return (
+            <Tag
+              class={`group flex flex-col rounded-[1.5rem] border p-6 transition-colors duration-300 sm:p-7 ${surface.primary ? 'border-primary/30 bg-primary/[.04]' : 'border-foreground/10'} ${surface.href ? 'hover:border-primary/50' : ''}`}
+              href={surface.href}
+            >
+              <span
+                class={`w-fit rounded-lg border px-2.5 py-1.5 font-mono text-[0.62rem] font-semibold uppercase leading-none tracking-[0.06em] ${surface.primary ? 'border-primary/20 bg-primary/10 text-primary' : 'border-foreground/12 text-muted-foreground'}`}
+              >
+                {surface.status}
+              </span>
+              <h2 class="mt-5 text-lg font-semibold tracking-[-.03em]">{surface.title}</h2>
+              <p
+                class="mt-3 text-sm leading-relaxed text-muted-foreground [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:text-foreground"
+                set:html={surface.body}
+              />
+              {surface.cta && (
+                <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs text-primary">
+                  {surface.cta}
+                  <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+                </span>
+              )}
+            </Tag>
+          );
+        })
+      }
     </div>
-  </div>
+  </Section>
 
-  <div class="cta-row">
-    <a class="primary" href="/integrations/github-app/">GitHub App</a>
-    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
-  </div>
+  <Section
+    badge="Connecting"
+    title="What plugging it in involves"
+    description="Four surfaces, but only the first one is work. The rest are switches you may never touch."
+  >
+    <Steps
+      steps={[
+        {
+          title: 'Register the App and paste it in',
+          detail:
+            'Three repository permissions and two events. The PEM and webhook secret are encrypted on the way into SQLite.',
+        },
+        {
+          title: 'Bind the repositories',
+          detail:
+            'Ticking a repo is what turns a webhook into a job — and <a class="underline underline-offset-4" href="/security/">the trust boundary</a> worth understanding before you tick a lot of them.',
+        },
+        {
+          title: 'Leave the executor alone',
+          detail:
+            'With no <code>runtime:</code>, steps run in the worker process. Most installs never need anything past this point.',
+        },
+        {
+          title: 'Add Docker only if you need it',
+          detail:
+            'Set <code>CI_DOCKER_HOST</code> — or mount a socket — when you want container runtimes or fork pull requests.',
+        },
+      ]}
+    />
+  </Section>
+
+  <Section badge="Why an App" title="Only a GitHub App can create a Check Run" tone="dark">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <Prose>
+        <p>
+          User tokens and OAuth tokens are refused by GitHub for this — the
+          Check Runs API is App-only. That single fact is why the integration
+          list starts and ends where it does.
+        </p>
+        <p>
+          A GitHub App also has exactly <strong>one</strong> webhook URL, which
+          is why Coolify’s own GitHub connector cannot stand in: its webhook
+          already belongs to Coolify’s deploy pipeline, and its manifest carries
+          no <code>checks</code> permission.
+        </p>
+      </Prose>
+      <Grid cols={2}>
+        <Card title="What the App does here" tone="dark">
+          Receives check-suite webhooks, mints a short-lived installation token
+          per job, and writes the Check Run back onto the commit.
+        </Card>
+        <Card title="What it never does" tone="dark">
+          Get created for you, act on repos you have not bound, or hand its
+          private key to a job.
+        </Card>
+      </Grid>
+    </div>
+    <Actions>
+      <CtaLink href={`${DOCS}/adr/003-github-app/`} variant="onDark">ADR 003</CtaLink>
+      <CtaLink href="/integrations/github-app/" variant="onDark">Set one up</CtaLink>
+    </Actions>
+  </Section>
+
+  <Section badge="Precisely" title="What the two optional ones actually do">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'When does Docker get involved?',
+          answer:
+            'When a pipeline sets <code>runtime:</code>, and for every fork pull request. The engine comes from <code>CI_DOCKER_HOST</code>, else <code>DOCKER_HOST</code>, else the default socket — and it can be a different machine, over Docker’s own remote API.',
+          href: `${DOCS}/adr/004-docker-executor/`,
+          linkLabel: 'ADR 004',
+        },
+        {
+          question: 'What happens if the engine is unreachable?',
+          answer:
+            'The job fails rather than quietly falling back to running your commands as a process on the host. The service itself boots and reports checks fine without an engine — only <code>runtime:</code> jobs and fork PRs need it.',
+        },
+        {
+          question: 'Do job containers get the Docker socket?',
+          answer:
+            'No — a job never gets a handle on the engine that started it. What a container is and is not given is on <a class="underline underline-offset-4" href="/security/">security</a>.',
+        },
+        {
+          question: 'What is Coolify used for?',
+          answer:
+            'Server inventory, a repository picker for the bindings screen, and an install-worker call that creates the compose application for you. That is the whole surface.',
+          href: `${DOCS}/setup/coolify/`,
+          linkLabel: 'Coolify',
+        },
+        {
+          question: 'Can Coolify run the jobs?',
+          answer:
+            'No. A Coolify token cannot start a <code>docker run</code>. To put jobs on another machine you point <code>CI_DOCKER_HOST</code> at that machine’s Docker engine — that is Docker’s remote API, not Coolify’s.',
+          href: `${DOCS}/understanding/deployment/`,
+          linkLabel: 'Deployment',
+        },
+      ]}
+    />
+  </Section>
+
+  <Section
+    badge="Not here"
+    title="This is not a grid of CI vendors"
+    description="No adapter exists for any of these, and none is planned for v1."
+  >
+    <MarkList class="mt-10" cols={3} items={notAdapters} mark="cross" />
+    <Callout class="mt-8">
+      <p>
+        “Portable” here means the same <code>.ci.yml</code> and the same worker
+        on your own host — not one config that targets every CI vendor. See{' '}
+        <a href="/product/">the product page</a> for what that does and does not buy you.
+      </p>
+    </Callout>
+  </Section>
+
 </MarketingPage>

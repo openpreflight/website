@@ -1,79 +1,225 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
+import PageHero from '../components/marketing/PageHero.astro';
+import Section from '../components/marketing/Section.astro';
+import Actions from '../components/marketing/Actions.astro';
+import CtaLink from '../components/marketing/CtaLink.astro';
+import Callout from '../components/marketing/Callout.astro';
+import Grid from '../components/marketing/Grid.astro';
+import Card from '../components/marketing/Card.astro';
+import MarkList from '../components/marketing/MarkList.astro';
+import Prose from '../components/marketing/Prose.astro';
 import { CTA, DOCS, REPO } from '../lib/site';
+
+const topics = [
+  {
+    title: 'Execution',
+    body: 'Steps run as a local process, or as <code>docker run --rm</code> when <code>runtime:</code> is set. Job containers drop capabilities, set <code>no-new-privileges</code>, and do not get the engine socket. Image names are allow-listed.',
+  },
+  {
+    title: 'Network',
+    body: 'GitHub POSTs webhooks to your public HTTPS URL, HMAC-verified against that App\u2019s secret. The worker clones with a short-lived installation token passed through <code>GIT_CONFIG_*</code> as Basic <code>x-access-token</code> — GitHub\u2019s git endpoint wants Basic, not the REST API\u2019s Bearer. It never enters the remote URL, <code>.git/config</code>, or a command line, and the remote is removed before any pipeline step runs.',
+  },
+  {
+    title: 'Secrets at rest',
+    body: 'App PEM, webhook secret, and Coolify token columns are AES-256-GCM. GET responses return a redacted marker. The key is <code>CI_SECRET_KEY</code>; rotation uses <code>CI_SECRET_KEY_OLD</code> on boot.',
+  },
+  {
+    title: 'Job environment',
+    body: 'Job env is built from scratch: no <code>CI_SECRET_KEY</code>, no PEMs, no webhook secrets, no Coolify tokens, no installation token.',
+  },
+  {
+    title: 'Fork pull requests',
+    body: 'Fork PRs are skipped by default. Opting in requires a reachable Docker engine and a <code>default_runtime</code>. Fork jobs always run in Docker.',
+  },
+  {
+    title: 'Sessions and CSRF',
+    body: 'Session cookies are HttpOnly, and Secure behind HTTPS. Browser writes need a CSRF token; Bearer callers skip CSRF.',
+    links: [{ label: 'ADR 002', href: `${DOCS}/adr/002-authentication/` }],
+  },
+  {
+    title: 'Shareable logs',
+    body: 'A binding can opt into unauthenticated <code>GET /runs/{id}</code>. Job ids are random UUIDs — treat the link as a secret.',
+  },
+];
 ---
 
 <MarketingPage
   title="Security · openpreflight"
   description="Execution, network, secrets at rest, job isolation, fork PRs, sessions, shareable logs, and how to report a vulnerability."
 >
-  <p class="kicker">Security</p>
-  <h1>What the worker is allowed to do</h1>
-  <p class="lead">
-    This page restates the published security model. It does not add claims.
-    Source:
-    <a href={`${DOCS}/understanding/security-model/`}>security model</a>
-    and
-    <a href={`${REPO}/blob/main/SECURITY.md`}>SECURITY.md</a>.
-  </p>
+  <PageHero
+    kicker="Security"
+    title="What the worker is allowed to do"
+    lead="This page restates the published security model. It does not add claims — every line below has a source in the docs or the repository."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Security' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href={`${DOCS}/understanding/security-model/`} variant="primary" size="lg">
+        Security model
+      </CtaLink>
+      <CtaLink href={`${REPO}/blob/main/SECURITY.md`} variant="outline" size="lg">
+        SECURITY.md
+      </CtaLink>
+    </Actions>
+  </PageHero>
 
-  <h2>Execution</h2>
-  <p>
-    Steps run as a local process, or as <code>docker run --rm</code> when
-    <code>runtime:</code> is set. Job containers drop capabilities, set
-    <code>no-new-privileges</code>, and do not get the engine socket. Image
-    names are allow-listed.
-  </p>
+  <Section>
+    <div class="grid gap-4 md:grid-cols-2">
+      {
+        topics.map((topic) => (
+          <article class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+            <h2 class="text-lg font-semibold tracking-[-.03em]">{topic.title}</h2>
+            <p
+              class="mt-3 text-sm leading-relaxed text-muted-foreground [&_code]:rounded [&_code]:bg-foreground/[.06] [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.82em] [&_code]:text-foreground"
+              set:html={topic.body}
+            />
+            {topic.links && (
+              <p class="mt-4 flex flex-wrap gap-x-4 text-sm">
+                {topic.links.map((link) => (
+                  <a class="text-primary underline underline-offset-4" href={link.href}>
+                    {link.label}
+                  </a>
+                ))}
+              </p>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </Section>
 
-  <h2>Network</h2>
-  <p>
-    GitHub POSTs webhooks to your public HTTPS URL. The worker clones with an
-    installation token via <code>GIT_CONFIG_*</code> Basic auth — never in the
-    remote URL — then strips the remote before pipeline steps run.
-  </p>
+  <Section
+    badge="The allow-list"
+    title="Nothing runs that you did not enable"
+    description="A valid signature is not authorisation. The bindings table is the allow-list, and it is the only thing that turns a webhook into a job."
+  >
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <Prose>
+        <p>
+          A signed webhook for a repo with no enabled binding is acknowledged
+          and dropped, however valid its signature. Fork pull requests are
+          dropped on top of that unless you have explicitly opted in, and that
+          opt-in requires Docker.
+        </p>
+        <p>
+          <strong>Enable only repos you trust.</strong> A pipeline runs that
+          repository’s own commands — in this process by default, or in a
+          container when <code>runtime:</code> is set. That is the trust boundary
+          worth thinking about before you tick a box in the picker.
+        </p>
+        <p>
+          Bindings and their overrides are documented in{' '}
+          <a href={`${DOCS}/setup/bindings/`}>enable repos</a>.
+        </p>
+      </Prose>
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">What a job container gets</h3>
+        <MarkList
+          class="mt-5"
+          cols={1}
+          items={[
+            'Dropped capabilities and <code>no-new-privileges</code>',
+            'An allow-listed image name',
+            'A fresh environment with none of your secrets in it',
+            'No access to the Docker engine socket',
+          ]}
+          mark="check"
+        />
+      </div>
+    </div>
+  </Section>
 
-  <h2>Secrets at rest</h2>
-  <p>
-    App PEM, webhook secret, and Coolify token columns are AES-256-GCM.
-    GET responses return a redacted marker. The key is <code>CI_SECRET_KEY</code>.
-    Rotation uses <code>CI_SECRET_KEY_OLD</code> on boot.
-  </p>
+  <Section badge="Keys" title="One key, and what depends on it" tone="dark">
+    <Grid class="mt-12" cols={3}>
+      <Card title="It encrypts the columns" tone="dark">
+        App PEMs, webhook secrets, and Coolify tokens are AES-256-GCM columns in
+        SQLite. Reads give back a redacted marker, never the value.
+      </Card>
+      <Card title="Rotation is a boot step" tone="dark">
+        Set the new key, keep the old one alongside it for one start, and the
+        secret columns are re-sealed under the new key. A row that opens with
+        neither key fails startup rather than serving broken.
+      </Card>
+      <Card title="Nothing else can open them" tone="dark">
+        The key is the only thing that decrypts those columns — there is no
+        recovery path and no escrow. Store it where your other secrets live, and
+        see <a class="underline underline-offset-4" href="/self-hosted/">self-hosted</a> for what
+        that means at backup time.
+      </Card>
+    </Grid>
+  </Section>
 
-  <h2>Job environment</h2>
-  <p>
-    Job env is built from scratch: no <code>CI_SECRET_KEY</code>, no PEMs, no
-    webhook secrets, no Coolify tokens, no installation token.
-  </p>
+  <Section
+    badge="Auth surface"
+    title="What is reachable without a session"
+    description="Three routes are public by design. Everything else needs a session cookie from the UI or a bearer token from the API."
+  >
+    <div class="mt-12 overflow-hidden rounded-[1.5rem] border border-foreground/10">
+      {
+        [
+          {
+            route: 'POST /webhook/{slug}',
+            who: 'GitHub only',
+            note: 'HMAC-verified against that App’s webhook secret. An unsigned or wrongly-signed delivery goes nowhere.',
+          },
+          {
+            route: 'GET /health',
+            who: 'Anyone',
+            note: 'Liveness for your proxy. 503 when SQLite cannot be read. It carries no data about your repos.',
+          },
+          {
+            route: 'GET /runs/{id}',
+            who: 'Session — or anyone, if opted in',
+            note: 'A binding can make its log pages readable by link holders. Job ids are random UUIDs; treat such a link as a secret.',
+          },
+          {
+            route: 'Everything else',
+            who: 'Session or bearer token',
+            note: 'Browser writes additionally need a CSRF token. Bearer callers carry no ambient cookie and so skip CSRF.',
+          },
+        ].map((row, i) => (
+          <div class={`grid gap-2 p-5 sm:grid-cols-[15rem_12rem_1fr] sm:gap-6 sm:p-6 ${i > 0 ? 'border-t border-foreground/10' : ''}`}>
+            <code class="font-mono text-sm font-semibold text-foreground">{row.route}</code>
+            <span class="font-mono text-xs uppercase tracking-[0.06em] text-primary">{row.who}</span>
+            <p class="text-sm leading-relaxed text-muted-foreground">{row.note}</p>
+          </div>
+        ))
+      }
+    </div>
+    <Callout class="mt-8" title="One admin user">
+      <p>
+        There are no teams, no roles, and no SSO. That is a real limit, listed
+        with the others on <a href="/why/">why this shape</a> — not something to
+        discover after you have onboarded a team.
+      </p>
+    </Callout>
+  </Section>
 
-  <h2>Fork pull requests</h2>
-  <p>
-    Fork PRs are skipped by default. Opt-in requires a reachable Docker engine
-    and <code>default_runtime</code>. Fork jobs always run in Docker.
-  </p>
+  <Section badge="Reporting" title="Found something?" tone="dark">
+    <div class="mt-10 max-w-2xl">
+      <p class="text-base leading-relaxed text-background/65">
+        Report vulnerabilities the way SECURITY.md describes — private reporting
+        on the GitHub repository, or email. Not the public issue tracker.
+      </p>
+    </div>
+    <Actions>
+      <CtaLink href={`${REPO}/blob/main/SECURITY.md`} variant="onDark">SECURITY.md</CtaLink>
+      <CtaLink arrow={false} href="mailto:security@openpreflight.xyz" variant="onDark">
+        security@openpreflight.xyz
+      </CtaLink>
+    </Actions>
+  </Section>
 
-  <h2>Sessions and CSRF</h2>
-  <p>
-    Session cookies are HttpOnly, Secure behind HTTPS. Browser writes need a
-    CSRF token. Bearer callers skip CSRF. See
-    <a href={`${DOCS}/adr/002-authentication/`}>ADR 002</a>.
-  </p>
+  <Section>
+    <Callout title="Scope">
+      <p>
+        The worker holds GitHub App private keys, which is exactly why the code
+        is public. Read what it does with them in{' '}
+        <a href={REPO}>the repository</a>, and see{' '}
+        <a href="/open-source/">open source</a> for how the repos are laid out.
+      </p>
+    </Callout>
+  </Section>
 
-  <h2>Shareable logs</h2>
-  <p>
-    A binding can opt into unauthenticated <code>GET /runs/&#123;id&#125;</code>.
-    Job ids are random UUIDs; treat the link as a secret.
-  </p>
-
-  <h2>Reporting</h2>
-  <p>
-    Report vulnerabilities as described in
-    <a href={`${REPO}/blob/main/SECURITY.md`}>SECURITY.md</a>
-    (private reporting on the GitHub repo, and
-    <a href="mailto:security@openpreflight.xyz">security@openpreflight.xyz</a>).
-  </p>
-
-  <div class="cta-row">
-    <a class="primary" href={`${DOCS}/understanding/security-model/`}>Security model</a>
-    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
-  </div>
 </MarketingPage>

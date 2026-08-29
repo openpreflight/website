@@ -1,32 +1,210 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
+import PageHero from '../../components/marketing/PageHero.astro';
+import Section from '../../components/marketing/Section.astro';
+import Steps from '../../components/marketing/Steps.astro';
+import Grid from '../../components/marketing/Grid.astro';
+import Card from '../../components/marketing/Card.astro';
+import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
+import Actions from '../../components/marketing/Actions.astro';
+import CtaLink from '../../components/marketing/CtaLink.astro';
+import Callout from '../../components/marketing/Callout.astro';
+import Faq from '../../components/marketing/Faq.astro';
+import Prose from '../../components/marketing/Prose.astro';
 import { CTA, DOCS } from '../../lib/site';
+
+const steps = [
+  {
+    title: 'Register the App',
+    detail:
+      'In your org or user settings, with the permissions and events listed in the docs. You own it — openpreflight never creates one for you.',
+  },
+  {
+    title: 'Point the webhook at your instance',
+    detail: 'The URL is <code>https://your-host/webhook/{slug}</code>.',
+  },
+  {
+    title: 'Paste the PEM and webhook secret into the UI',
+    detail:
+      'They are stored as AES-256-GCM encrypted columns, and GET responses give back a redacted marker.',
+  },
+  {
+    title: 'Install it on the repos you care about',
+    detail: 'Org-wide or a hand-picked set. Installation tokens are minted per job.',
+  },
+  {
+    title: 'Enable a binding and push',
+    detail:
+      'The binding names the repo and branches. The next commit gets the first Check Run.',
+  },
+];
+
+const panelSteps = [
+  { name: 'install', command: 'npm ci', duration: '6s', width: '22%' },
+  { name: 'test', command: 'npm test', duration: '14s', width: '48%' },
+];
 ---
 
 <MarketingPage
   title="GitHub App · openpreflight"
   description="Install a GitHub App you own, bind a repo, and get the first Check Run. How-to lives in the docs."
 >
-  <p class="kicker"><a href="/integrations/">Integrations</a> / GitHub App</p>
-  <h1>Install, bind, first Check Run</h1>
-  <p class="lead">
-    openpreflight does not create the App for you. You register it, paste the
-    PEM and webhook secret into the UI, enable a binding, and push.
-  </p>
-  <ol>
-    <li>Register the App with the permissions and events in the docs.</li>
-    <li>Point the webhook at <code>https://your-host/webhook/&#123;slug&#125;</code>.</li>
-    <li>Install the App on the org or repos you care about.</li>
-    <li>Enable a binding. Push a commit (or open a PR).</li>
-  </ol>
-  <p>
-    The full checklist, permission table, and event list:
-    <a href={`${DOCS}/setup/github-app/`}>Register a GitHub App</a>.
-    Bindings:
-    <a href={`${DOCS}/setup/bindings/`}>enable repos</a>.
-  </p>
-  <div class="cta-row">
-    <a class="primary" href={`${DOCS}/setup/github-app/`}>Setup docs</a>
-    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
-  </div>
+  <PageHero
+    kicker="GitHub App"
+    title="Install, bind, first Check Run"
+    lead="openpreflight does not create the App for you. You register it, paste the PEM and webhook secret into the UI, enable a binding, and push."
+    crumbs={[
+      { label: 'openpreflight', href: '/' },
+      { label: 'Integrations', href: '/integrations/' },
+      { label: 'GitHub App' },
+    ]}
+  >
+    <Actions slot="actions">
+      <CtaLink href={`${DOCS}/setup/github-app/`} variant="primary" size="lg">Setup docs</CtaLink>
+      <CtaLink href={`${DOCS}/setup/bindings/`} variant="outline" size="lg">Bindings</CtaLink>
+    </Actions>
+    <CheckRunPanel
+      slot="visual"
+      label="Check Run · first run"
+      repo="private/web"
+      meta={['a41f0c2', 'main']}
+      duration="20s"
+      steps={panelSteps}
+    />
+  </PageHero>
+
+  <Section badge="Five steps" title="What you do once, per App">
+    <Steps steps={steps} />
+    <Callout class="mt-6" title="The checklist lives in the docs">
+      <p>
+        The exact permission table and event list are in{' '}
+        <a href={`${DOCS}/setup/github-app/`}>Register a GitHub App</a>. They change
+        with the code, so this page does not copy them.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section
+    badge="Permissions"
+    title="What it asks GitHub for"
+    tone="dark"
+    description="Three repository permissions and two events. Nothing here can push code, open pull requests, or read your organisation."
+  >
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        [
+          { name: 'Checks', level: 'Read and write', why: 'Creating and completing the Check Run — the entire point.' },
+          { name: 'Contents', level: 'Read-only', why: 'Cloning the commit being checked. Read-only: it never writes to your repo.' },
+          { name: 'Metadata', level: 'Read-only', why: 'The mandatory baseline GitHub requires alongside the others.' },
+          { name: 'Check suite', level: 'Event', why: 'The trigger. GitHub creates a suite per commit and delivers it here.' },
+          { name: 'Check run', level: 'Event', why: 'Re-run requests, honoured only for this App’s own checks.' },
+        ].map((item) => (
+          <div class="rounded-[1.5rem] border border-background/12 bg-background/[.055] p-6">
+            <div class="flex items-baseline justify-between gap-3">
+              <span class="font-mono text-sm font-semibold text-background">{item.name}</span>
+              <span class="shrink-0 font-mono text-[0.62rem] uppercase tracking-[0.06em] text-primary">
+                {item.level}
+              </span>
+            </div>
+            <p class="mt-3 text-sm leading-relaxed text-background/60">{item.why}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
+      The authoritative table — exact values, the webhook URL format, and the
+      order to do things in — is in the setup docs. It changes with the code, so
+      this page does not try to be the checklist.
+    </p>
+    <Actions>
+      <CtaLink href={`${DOCS}/setup/github-app/`} variant="onDark">The full checklist</CtaLink>
+    </Actions>
+  </Section>
+
+  <Section badge="After that" title="What the App is used for">
+    <Grid class="mt-12" cols={3}>
+      <Card title="Receiving events">
+        Check suite webhooks arrive at your slug URL and are verified by HMAC
+        before anything is enqueued.
+      </Card>
+      <Card title="Cloning the commit">
+        A short-lived installation token clones the exact SHA, then goes no
+        further — how it is handled is on{' '}
+        <a class="text-primary underline underline-offset-4" href="/security/">security</a>.
+      </Card>
+      <Card title="Writing the Check Run">
+        The same App reports the conclusion and a log tail back onto the commit.
+      </Card>
+    </Grid>
+  </Section>
+
+  <Section badge="After the first check" title="Where people go next">
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      <Card index={1} title="Make it required">
+        One job produces one Check Run, so there is a single entry to tick in
+        branch protection.{' '}
+        <a class="text-primary underline underline-offset-4" href="/use-cases/private-repos/">
+          Private repos
+        </a>{' '}
+        covers the naming trap worth avoiding first.
+      </Card>
+      <Card index={2} title="Add the rest of the repos">
+        The same App can cover everything it is installed on. Each repo still
+        needs its own enabled binding, which is what keeps the allow-list
+        meaningful.
+      </Card>
+      <Card index={3} title="Override per repo">
+        A binding can change the branch list, the commands, the timeout, the
+        check name, and whether logs are shareable — useful for the one repo
+        that does not fit the default.
+      </Card>
+    </div>
+    <Callout class="mt-8" title="Then mostly forget about it">
+      <p>
+        After the binding exists, the loop is automatic: a commit lands, a
+        check appears. The next thing worth reading is{' '}
+        <a href="/pipeline/">what runs inside it</a>.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Common snags" title="Things that catch people out">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'Can I reuse one App for everything?',
+          answer:
+            'You can bind many repos to one App, but give each App its own webhook secret. An App has exactly one webhook URL, so the slug in that URL is what routes a delivery to the right row.',
+        },
+        {
+          question: 'I pushed and nothing happened.',
+          answer:
+            'Check the binding first: a repo you have not enabled is ignored by design, not by accident.',
+          href: '/security/',
+          linkLabel: 'Why that is the boundary',
+        },
+        {
+          question: 'Where did my PEM go?',
+          answer:
+            'It is encrypted at rest and never shown again. Reads return a redacted marker rather than the value, so keep your own copy when you generate it on GitHub.',
+          href: `${DOCS}/understanding/security-model/`,
+          linkLabel: 'Security model',
+        },
+        {
+          question: 'Does the App need to be public?',
+          answer:
+            'No. It lives in your account or organisation and is installed only where you install it. Nothing about it is published.',
+        },
+        {
+          question: 'What about GitHub Enterprise Server?',
+          answer:
+            'Each App row carries an API URL, and the git origin is derived from it. The plumbing is there; it has not been tested against a real instance, and an issue saying which version broke would be useful.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+      ]}
+    />
+  </Section>
+
 </MarketingPage>

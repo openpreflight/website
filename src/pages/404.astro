@@ -1,17 +1,47 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
-import { CTA, DOCS, REPO } from '../lib/site';
+import PageHero from '../components/marketing/PageHero.astro';
+import Section from '../components/marketing/Section.astro';
+import Actions from '../components/marketing/Actions.astro';
+import CtaLink from '../components/marketing/CtaLink.astro';
+import { DOCS, siteSections } from '../lib/site';
 ---
 
 <MarketingPage title="Not found · openpreflight" description="That URL is not on this site.">
-  <p class="kicker">404</p>
-  <h1>Page not found</h1>
-  <p class="lead">That URL is not on this site. The links below cover everything that is.</p>
-  <div class="cta-row">
-    <a class="primary" href="/">Home</a>
-    <a class="secondary" href="/product/">Product</a>
-    <a class="secondary" href={DOCS}>Docs</a>
-    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href={REPO}>GitHub</a>
-  </div>
+  <PageHero
+    kicker="404"
+    title="Page not found"
+    lead="That URL is not on this site. Everything that is here is listed below, and in the footer of every page."
+  >
+    <Actions slot="actions">
+      <CtaLink href="/" variant="primary" size="lg">Home</CtaLink>
+      <CtaLink href={DOCS} variant="outline" size="lg">Documentation</CtaLink>
+    </Actions>
+  </PageHero>
+
+  <Section>
+    <div class="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        siteSections.map((section) => (
+          <div>
+            <h2 class="font-mono text-xs font-semibold uppercase tracking-[0.06em] text-primary">
+              {section.title}
+            </h2>
+            <ul class="mt-4 space-y-2.5">
+              {section.links.map((link) => (
+                <li>
+                  <a
+                    class="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+                    href={link.href}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
 </MarketingPage>

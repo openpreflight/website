@@ -2,7 +2,7 @@
 import Layout from './Layout.astro';
 import { SiteHeader01 } from '../components/blocks/site-header-01';
 import { Footer01 } from '../components/blocks/footer-01';
-import { CTA, footerGroups, navLinks, tagline } from '../lib/site';
+import { CTA, footerGroups, navGroups, navLinks, tagline } from '../lib/site';
 
 interface Props {
   title: string;
@@ -18,16 +18,13 @@ const { title, description } = Astro.props;
     <SiteHeader01
       client:load
       brand="openpreflight"
+      groups={navGroups}
       links={navLinks}
       ctaLabel="Quickstart"
       ctaHref={CTA.quickstart}
       showProfile={false}
     />
-    <main id="content">
-      <article class="marketing-article mx-auto w-full max-w-3xl px-6 py-16 sm:px-8 sm:py-20">
-        <slot />
-      </article>
-    </main>
+    <main id="content"><slot /></main>
     <Footer01
       brand="openpreflight"
       description={tagline}

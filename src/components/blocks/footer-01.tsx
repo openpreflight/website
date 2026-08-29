@@ -54,7 +54,7 @@ function Footer01({
       {...props}
     >
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-12 lg:grid-cols-[1.1fr_1.4fr]">
+        <div className="grid gap-12 lg:grid-cols-[.85fr_2fr]">
           <div>
             <a
               className="inline-flex items-center gap-2.5 font-semibold tracking-tight"
@@ -89,7 +89,7 @@ function Footer01({
           </div>
           <nav
             aria-label="Footer"
-            className="grid grid-cols-2 gap-8 sm:grid-cols-3"
+            className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4"
           >
             {groups.map((group) => (
               <div key={group.title}>

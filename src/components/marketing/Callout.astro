@@ -1,0 +1,26 @@
+---
+/** Accent-rail note. Used for the "source of truth is the docs" reminders. */
+interface Props {
+  title?: string;
+  tone?: 'accent' | 'muted';
+  class?: string;
+}
+
+const { title, tone = 'accent', class: className = '' } = Astro.props;
+
+const toneClass =
+  tone === 'accent'
+    ? 'border-primary/25 bg-primary/[.06]'
+    : 'border-foreground/10 bg-muted/40';
+---
+
+<aside class={`rounded-[1.25rem] border p-5 sm:p-6 ${toneClass} ${className}`.trim()}>
+  {
+    title && (
+      <p class="font-mono text-xs font-semibold uppercase tracking-[0.06em] text-primary">
+        {title}
+      </p>
+    )
+  }
+  <div class={`prose-block text-sm ${title ? 'mt-2.5' : ''}`}><slot /></div>
+</aside>

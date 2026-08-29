@@ -1,0 +1,34 @@
+---
+/** Chip list with a leading mark. `cross` is the "not in v1" pattern. */
+interface Props {
+  items: string[];
+  mark?: 'check' | 'cross' | 'dot';
+  cols?: 1 | 2 | 3;
+  tone?: 'default' | 'dark';
+  class?: string;
+}
+
+const { items, mark = 'check', cols = 2, tone = 'default', class: className = '' } = Astro.props;
+
+const colsClass = { 1: '', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid-cols-3' }[cols];
+const itemClass =
+  tone === 'dark'
+    ? 'border-background/12 text-background/70'
+    : 'border-foreground/10 text-muted-foreground';
+const glyph = { check: '✓', cross: '✕', dot: '·' }[mark];
+const glyphClass =
+  mark === 'check' ? 'text-primary' : 'text-muted-foreground/70';
+---
+
+<ul class={`grid gap-3 ${colsClass} ${className}`.trim()}>
+  {
+    items.map((item) => (
+      <li
+        class={`flex items-start gap-3 rounded-2xl border px-4 py-3 text-sm leading-relaxed ${itemClass} [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:text-foreground`}
+      >
+        <span aria-hidden="true" class={`mt-0.5 font-mono ${glyphClass}`}>{glyph}</span>
+        <span set:html={item} />
+      </li>
+    ))
+  }
+</ul>

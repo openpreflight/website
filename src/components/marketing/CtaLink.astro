@@ -1,0 +1,53 @@
+---
+/** Static equivalent of the landing page's Button variants, as an anchor. */
+interface Props {
+  href: string;
+  variant?: 'primary' | 'outline' | 'ghost' | 'onDark';
+  size?: 'default' | 'lg';
+  arrow?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'outline',
+  size = 'default',
+  arrow = true,
+  class: className = '',
+} = Astro.props;
+
+const base =
+  'group inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold tracking-[-0.012em] transition-[color,background-color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(.16,1,.3,1)] hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-ring/55 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transform-none';
+
+const variantClass = {
+  primary:
+    'rounded-[0.9rem_0.9rem_0.9rem_0.35rem] bg-primary text-primary-foreground shadow-[0_10px_28px_-16px_var(--primary)] hover:bg-primary/90',
+  outline:
+    'border border-foreground/14 bg-background/65 text-foreground shadow-[inset_0_1px_0_color-mix(in_oklch,var(--foreground)_5%,transparent)] hover:border-foreground/28 hover:bg-foreground/[.045]',
+  ghost: 'text-primary hover:bg-primary/10',
+  onDark:
+    'border border-background/20 bg-transparent text-background hover:bg-background/10',
+}[variant];
+
+const sizeClass = size === 'lg' ? 'h-12 px-6 text-[0.95rem]' : 'h-10.5 px-4.5 py-2';
+---
+
+<a href={href} class={`${base} ${variantClass} ${sizeClass} ${className}`.trim()}>
+  <slot />
+  {
+    arrow && (
+      <svg
+        aria-hidden="true"
+        class="size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5"
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </svg>
+    )
+  }
+</a>

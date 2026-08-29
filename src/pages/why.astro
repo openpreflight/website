@@ -1,66 +1,334 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
-import { CTA, DOCS, REPO, RELEASE } from '../lib/site';
+import PageHero from '../components/marketing/PageHero.astro';
+import Section from '../components/marketing/Section.astro';
+import Grid from '../components/marketing/Grid.astro';
+import Card from '../components/marketing/Card.astro';
+import MarkList from '../components/marketing/MarkList.astro';
+import Actions from '../components/marketing/Actions.astro';
+import CtaLink from '../components/marketing/CtaLink.astro';
+import Prose from '../components/marketing/Prose.astro';
+import Callout from '../components/marketing/Callout.astro';
+import Faq from '../components/marketing/Faq.astro';
+import { DOCS, REPO, RELEASE } from '../lib/site';
+
+const positions = [
+  {
+    eyebrow: 'One end',
+    title: 'Hosted Actions',
+    body: 'The default path. Workflow YAML, hosted minutes, and a lot of surface area.',
+  },
+  {
+    eyebrow: 'Other end',
+    title: 'A full platform',
+    body: 'Right when you need matrices, caches, and artifacts, with a control plane to operate.',
+  },
+  {
+    eyebrow: 'This',
+    title: 'In between',
+    body: 'The commit is gated, the logs stay here, and the operator is a binary.',
+  },
+];
+
+const shape = [
+  {
+    title: 'One process',
+    body: 'Configurator and worker are the same program. Nothing else to schedule.',
+  },
+  {
+    title: 'One SQLite file',
+    body: 'Apps, bindings, jobs, and encrypted secrets are rows in one file.',
+  },
+  {
+    title: 'An App you own',
+    body: 'You register the GitHub App. It is not brokered through anyone else.',
+  },
+  {
+    title: 'No new DSL',
+    body: 'Pipelines are install / test / build in <code>.ci.yml</code>.',
+  },
+];
+
+const ceiling = [
+  'GitHub Actions YAML',
+  '<code>actions/runner</code>',
+  'Creating GitHub Apps for you',
+  'Matrices',
+  'Caches',
+  'Artifacts',
+];
+
+const borrowed = [
+  'Gate on the commit, not the push',
+  'Queue work against an immutable SHA',
+  'Attach logs to the run',
+  'Write the result back to the forge',
+];
+
+const rejected = [
+  'ZooKeeper for coordination',
+  'Nodepool for node lifecycle',
+  'Ansible as the execution layer',
+  'A scheduler separate from its executors',
+];
+
+const strengths = [
+  {
+    title: 'Operationally small',
+    body: 'One container, one SQLite file, one process. No broker, no agent registration, no database server.',
+  },
+  {
+    title: 'Native Check Runs',
+    body: 'Not a status API shim. Gating on the check suite is what makes required checks behave under force-pushes and rapid pushes.',
+  },
+  {
+    title: 'Configured in a UI',
+    body: 'Apps and repo bindings are rows you edit, not a block of environment variables per installation.',
+  },
+  {
+    title: 'Secrets encrypted at rest',
+    body: 'PEMs, webhook secrets, and Coolify tokens are AES-256-GCM columns.',
+  },
+  {
+    title: 'Small enough to audit',
+    body: 'The whole implementation is one <code>internal/</code> tree, with no plugin surface.',
+  },
+];
+
+const weaknesses = [
+  {
+    title: 'One machine',
+    body: 'There is no agent protocol. Jobs run in the process, or in a sibling container on the same Docker engine. This does not scale horizontally.',
+  },
+  {
+    title: 'One job at a time, by default',
+    body: '<code>max_concurrent_jobs</code> is 1 and can only be raised after first boot. Raising it adds concurrency on this one machine, not across hosts.',
+  },
+  {
+    title: 'Three steps, fixed order',
+    body: 'install, test, build. No stages, no <code>needs:</code>, no fan-out, no conditional steps.',
+  },
+  {
+    title: 'No caches, no artifacts',
+    body: 'Every job is a fresh shallow clone. Nothing carries between runs or moves to a later step.',
+  },
+  {
+    title: 'No matrices',
+    body: 'One pipeline per commit, not one per version combination.',
+  },
+  {
+    title: 'GitHub only',
+    body: 'It is built on Check Runs, which no other forge has.',
+  },
+  {
+    title: 'One admin user',
+    body: 'No teams, no roles, no SSO.',
+  },
+  {
+    title: 'Monorepos are the worst case',
+    body: 'There is no path filter. A commit touching one directory runs the same three commands as a commit touching all of them.',
+  },
+];
 ---
 
 <MarketingPage
   title="Why · openpreflight"
   description="Private-repo CI without Actions YAML or a pipeline DSL: a binary and a SQLite file on a server you already pay for."
 >
-  <p class="kicker">Why</p>
-  <h1>CI for private repos, small enough to host</h1>
-  <p class="lead">
-    The problem is not “we need another CI platform.” It is: we want a Check
-    Run on our private code, on our machine, without learning a second
-    workflow language.
-  </p>
+  <PageHero
+    kicker="Why"
+    title="CI for private repos, small enough to host"
+    lead="The problem is not “we need another CI platform.” It is: we want a Check Run on our private code, on our machine, without learning a second workflow language."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Why' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href="/product/" variant="primary" size="lg">See the product</CtaLink>
+      <CtaLink href={REPO} variant="outline" size="lg">View source</CtaLink>
+    </Actions>
+  </PageHero>
 
-  <h2>The problem</h2>
-  <p>
-    GitHub already knows how to show a Check Run. Hosted Actions is the default
-    path, and it brings YAML, hosted minutes, and a lot of surface area. Full
-    self-hosted platforms exist for teams that need matrices, caches, and
-    artifacts. Plenty of people want something in between: the commit is gated,
-    the logs stay here, and the operator is a binary.
-  </p>
-  <p>
-    <strong>v1.0.0</strong> is out. Linux binaries are on the{" "}
-    <a href={RELEASE}>GitHub Release</a>. The ceiling below is still the
-    product boundary, not a backlog.
-  </p>
+  <Section
+    badge="The problem"
+    title="Two good options, and a gap between them"
+    description="GitHub already knows how to show a Check Run. Getting one on a private repo usually means picking a side."
+  >
+    <Grid class="mt-12" cols={3}>
+      {positions.map((position) => (
+        <Card eyebrow={position.eyebrow} title={position.title}>{position.body}</Card>
+      ))}
+    </Grid>
+    <Prose class="mt-10">
+      <p>
+        Both ends are the right answer for someone. Plenty of people want
+        neither: no hosted minutes to buy, no orchestration layer to run — just
+        the commit checked, on hardware that is already theirs.
+      </p>
+      <p>
+        <strong>v1.0.0</strong> is out. Linux binaries are on the{' '}
+        <a href={RELEASE}>GitHub Release</a>. The ceiling below is still the
+        product boundary, not a backlog.
+      </p>
+    </Prose>
+  </Section>
 
-  <h2>The shape</h2>
-  <p>
-    One process is configurator and worker. One SQLite file holds Apps,
-    bindings, jobs, and encrypted secrets. You register a GitHub App you own.
-    Pipelines are install/test/build in <code>.ci.yml</code>, not a new DSL.
-    Runs are gated on the commit the way Zuul does it — trigger on the check
-    suite, build the immutable SHA, one live run per commit. The ceiling of
-    that model is in
-    <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a>.
-  </p>
+  <Section
+    badge="The shape"
+    title="What that answer looks like when you build it"
+    tone="dark"
+    description="Every piece here exists because removing it would mean adding something bigger."
+  >
+    <Grid class="mt-12" cols={4}>
+      {shape.map((item) => (
+        <Card title={item.title} tone="dark">
+          <span set:html={item.body} />
+        </Card>
+      ))}
+    </Grid>
+    <Prose class="mt-12">
+      <p>
+        Runs are gated on the commit the way Zuul does it — trigger on the
+        check suite, build the immutable SHA, one live run per commit. The
+        ceiling of that model is written down in ADR 005 rather than discovered
+        later.
+      </p>
+    </Prose>
+    <Actions>
+      <CtaLink href={`${DOCS}/adr/005-check-suite-gating/`} variant="onDark">Read ADR 005</CtaLink>
+    </Actions>
+  </Section>
 
-  <h2>Contrast</h2>
-  <p>
-    Hosted runners and full platforms solve orchestration. This product does
-    not. It reports Check Runs from a worker you host. GitHub Actions can still
-    orchestrate everything else. They can coexist; this does not replace
-    workflow YAML. See
-    <a href="/compare/github-actions/">openpreflight and GitHub Actions</a>.
-  </p>
+  <Section
+    badge="Prior art"
+    title="Zuul's trigger model, at one server's scale"
+    description="The gating idea is borrowed on purpose, and named so you can go read the original. The architecture around it is not."
+  >
+    <div class="mt-12 grid gap-4 lg:grid-cols-2">
+      <div class="rounded-[1.5rem] border border-primary/25 bg-primary/[.04] p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">Borrowed</h3>
+        <MarkList class="mt-5" cols={1} items={borrowed} mark="check" />
+      </div>
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">Not adopted</h3>
+        <MarkList class="mt-5" cols={1} items={rejected} mark="cross" />
+      </div>
+    </div>
+    <Prose class="mt-10">
+      <p>
+        Trigger on <code>check_suite</code> and <code>check_run</code>, never on
+        <code>push</code> or <code>pull_request</code>. A suite is already scoped
+        to one commit and one App; <code>push</code> would fire for refs nobody
+        is reviewing. One Check Run per job means one required-status entry in
+        branch protection, so adding a step never breaks it.
+      </p>
+      <p>
+        <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a> records what
+        is borrowed, what is rejected, and where the ceiling is.
+      </p>
+    </Prose>
+  </Section>
 
-  <h2>The ceiling</h2>
-  <p>
-    Not in v1: Actions YAML, <code>actions/runner</code>, creating Apps for
-    you, matrices, caches, artifacts. Jobs on another machine use a Docker
-    engine (<code>CI_DOCKER_HOST</code>), not Coolify as a job runner. If those
-    are requirements, pick a different tool — the
-    <a href={`${DOCS}/start/comparison/`}>docs comparison</a> is honest about
-    that.
-  </p>
+  <Section badge="Contrast" title="It is a layer, not a replacement">
+    <div class="mt-12 grid gap-4 md:grid-cols-2">
+      <Card eyebrow="Solves orchestration" title="Hosted runners and full platforms">
+        Matrices, caches, artifacts, a marketplace, and a scheduler. openpreflight
+        does none of that, and GitHub Actions can keep doing all of it.
+      </Card>
+      <Card eyebrow="Solves the report" title="A worker you host">
+        Clone the SHA, run install / test / build, report one Check Run. The two
+        can coexist on the same repository.
+      </Card>
+    </div>
+    <Actions>
+      <CtaLink href="/compare/github-actions/" variant="outline">
+        openpreflight and GitHub Actions
+      </CtaLink>
+    </Actions>
+  </Section>
 
-  <div class="cta-row">
-    <a class="primary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href={REPO}>GitHub</a>
-  </div>
+  <Section
+    badge="Where it wins"
+    title="What you get for accepting that scope"
+    tone="dark"
+  >
+    <Grid class="mt-12" cols={3}>
+      {strengths.map((item) => (
+        <Card title={item.title} tone="dark">
+          <span set:html={item.body} />
+        </Card>
+      ))}
+    </Grid>
+  </Section>
+
+  <Section
+    badge="The ceiling"
+    title="Where this is the wrong tool"
+    description="Stated plainly, because these are the things that will bite. If one of them is a requirement, stop here and pick something else."
+  >
+    <div class="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+      {weaknesses.map((item) => (
+        <div class="border-t border-foreground/10 pt-5">
+          <h3 class="text-base font-semibold tracking-[-.02em]">{item.title}</h3>
+          <p
+            class="mt-2 text-sm leading-relaxed text-muted-foreground [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:text-foreground"
+            set:html={item.body}
+          />
+        </div>
+      ))}
+    </div>
+    <h3 class="mt-16 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+      Not in v1 at all
+    </h3>
+    <MarkList class="mt-6" cols={3} items={ceiling} mark="cross" />
+    <Callout class="mt-8">
+      <p>
+        If one of these is a dealbreaker, that is useful information rather than
+        a dead end — <a href="/compare/github-actions/">the comparison</a> works
+        through which tool to reach for instead.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Before you install" title="Questions people ask first">
+    <Faq
+      class="mt-12"
+      items={[
+        {
+          question: 'Is v1 released?',
+          answer:
+            'Yes. <strong>v1.0.0</strong> was tagged 29 August 2026. Linux binaries are on the GitHub Release. What v1 still does not include is listed below — those things are out of scope, not unfinished.',
+          href: RELEASE,
+          linkLabel: 'GitHub Release',
+        },
+        {
+          question: 'Why gate on the check suite instead of push?',
+          answer:
+            'Gate on the commit, not the push, without importing a second scheduler. Adding a <code>push</code> case would reverse that decision rather than extend it.',
+          href: `${DOCS}/adr/005-check-suite-gating/`,
+          linkLabel: 'ADR 005',
+        },
+        {
+          question: 'Why is Coolify optional?',
+          answer:
+            'It is a deployment target and an optional repository source, not the product. Skip it and everything works the same: checks still come from an App you register, and jobs still run here or on any Docker engine you point <code>CI_DOCKER_HOST</code> at.',
+          href: `${DOCS}/setup/coolify/`,
+          linkLabel: 'Coolify',
+        },
+        {
+          question: 'Does it work with GitHub Enterprise Server?',
+          answer:
+            'The plumbing is there and it has not been tested against a real instance. Each App row carries an API URL and the git origin is derived from it. What is untested is everything specific to a GHE deployment.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+        {
+          question: 'Does the project use itself for CI?',
+          answer:
+            'No — <code>openpreflight/openpreflight</code> runs GitHub Actions. A public demo instance runs Check Runs for openpreflight/demo; that is not CI for the product repo. Releases have to publish multi-arch images, which this tool does not do.',
+          href: `${DOCS}/start/faq/`,
+          linkLabel: 'FAQ',
+        },
+      ]}
+    />
+  </Section>
+
 </MarketingPage>

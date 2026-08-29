@@ -1,57 +1,290 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
+import PageHero from '../components/marketing/PageHero.astro';
+import Section from '../components/marketing/Section.astro';
+import Grid from '../components/marketing/Grid.astro';
+import Card from '../components/marketing/Card.astro';
+import CodePanel from '../components/marketing/CodePanel.astro';
+import Actions from '../components/marketing/Actions.astro';
+import CtaLink from '../components/marketing/CtaLink.astro';
+import Callout from '../components/marketing/Callout.astro';
+import MarkList from '../components/marketing/MarkList.astro';
+import Faq from '../components/marketing/Faq.astro';
 import { CTA, DOCS, REPO } from '../lib/site';
+
+const yours = [
+  { label: 'compose / binary', detail: 'UI · API · webhook · runner' },
+  { label: 'SQLite in DATA_DIR', detail: 'apps · bindings · jobs' },
+  { label: 'logs on disk', detail: 'served by /runs/{id}' },
+];
+
+const theirs = [
+  { label: 'HTTPS webhooks', detail: 'GitHub → your public URL' },
+  { label: 'Check Runs', detail: 'your worker → the commit' },
+  { label: 'details_url', detail: 'points back at your host' },
+];
+
+const state = [
+  {
+    path: 'DATA_DIR/ci.db',
+    holds: 'Settings, users, GitHub Apps, bindings, job rows — with the secret columns encrypted inside it.',
+    keep: 'Yes',
+    tone: true,
+  },
+  {
+    path: 'DATA_DIR/logs/',
+    holds: 'One file per job, the full build log.',
+    keep: 'If you want history',
+    tone: true,
+  },
+  {
+    path: 'CI_SECRET_KEY',
+    holds: 'The AES-256-GCM key for those encrypted columns. Store it wherever your other secrets live — not next to the backup.',
+    keep: 'Yes, separately',
+    tone: true,
+  },
+  {
+    path: 'WORKSPACE_DIR',
+    holds: 'Per-job checkouts, deleted when the job ends.',
+    keep: 'No',
+    tone: false,
+  },
+];
+
+const operate = [
+  {
+    title: 'A public HTTPS URL',
+    body: 'Something GitHub can reach, with a reverse proxy in front of port 8080.',
+  },
+  {
+    title: '<code>CI_SECRET_KEY</code>',
+    body: 'The only required env var. It decrypts your secret columns — keep it forever.',
+  },
+  {
+    title: 'A volume that persists',
+    body: 'SQLite and job logs live under <code>DATA_DIR</code>. Lose it and you lose history.',
+  },
+  {
+    title: 'A GitHub App you register',
+    body: 'The worker does not create Apps for you. You own it, in your org.',
+  },
+];
 ---
 
 <MarketingPage
   title="Self-hosted · openpreflight"
   description="Self-hosting is the product: Compose or a binary, SQLite in DATA_DIR, GitHub reaching your HTTPS URL."
 >
-  <p class="kicker">Self-hosted</p>
-  <h1>You run the worker. GitHub shows the Check Run.</h1>
-  <p class="lead">
-    There is no hosted openpreflight control plane. Compose or the binary on
-    your server is the whole deployment.
-  </p>
+  <PageHero
+    kicker="Self-hosted"
+    title="You run the worker. GitHub shows the Check Run."
+    lead="There is no hosted openpreflight control plane. Compose or the binary on your server is the whole deployment."
+    crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Self-hosted' }]}
+  >
+    <Actions slot="actions">
+      <CtaLink href={CTA.quickstart} variant="primary" size="lg">Quickstart</CtaLink>
+      <CtaLink href={`${DOCS}/understanding/deployment/`} variant="outline" size="lg">
+        Deployment
+      </CtaLink>
+    </Actions>
+  </PageHero>
 
-  <h2>The diagram</h2>
-  <pre class="diagram">{`Your infra                         GitHub
-─────────                         ──────
-compose / binary
-  UI + API + webhook + runner  ◄── HTTPS webhooks
-  SQLite in DATA_DIR           ──► Check Runs
-  logs on disk                 ──► details_url (your host)`}</pre>
+  <Section badge="The split" title="What sits where">
+    <div class="mt-12 grid gap-4 md:grid-cols-2">
+      {
+        [
+          { heading: 'Your infrastructure', nodes: yours, accent: true },
+          { heading: 'GitHub', nodes: theirs, accent: false },
+        ].map((column) => (
+          <div
+            class={`rounded-[1.5rem] border p-6 sm:p-7 ${column.accent ? 'border-primary/25 bg-primary/[.04]' : 'border-foreground/10'}`}
+          >
+            <p class="font-mono text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+              {column.heading}
+            </p>
+            <ul class="mt-5 space-y-3">
+              {column.nodes.map((node) => (
+                <li class="rounded-2xl border border-foreground/10 bg-background px-4 py-3">
+                  <p class="font-mono text-sm text-foreground">{node.label}</p>
+                  <p class="mt-1 font-mono text-xs text-muted-foreground">{node.detail}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
 
-  <h2>What you operate</h2>
-  <ul>
-    <li>A public HTTPS URL GitHub can reach (reverse proxy in front of port 8080).</li>
-    <li><code>CI_SECRET_KEY</code> — the only required env var. Keep it forever.</li>
-    <li>SQLite and logs under <code>DATA_DIR</code>. That volume must persist.</li>
-    <li>A GitHub App you register. The worker does not create Apps for you.</li>
-  </ul>
-  <p>
-    Walkthrough:
-    <a href={`${DOCS}/start/quickstart/`}>quickstart</a>
-    and
-    <a href={`${DOCS}/understanding/deployment/`}>deployment</a>.
-  </p>
+  <Section
+    badge="What you operate"
+    title="Four things, and none of them are a control plane"
+    tone="dark"
+  >
+    <Grid class="mt-12" cols={4}>
+      {
+        operate.map((item, index) => (
+          <Card index={index + 1} tone="dark">
+            <h3 class="text-base font-semibold tracking-[-.02em] text-background [&_code]:font-mono [&_code]:text-[0.85em]">
+              <span set:html={item.title} />
+            </h3>
+            <p class="mt-3 [&_code]:font-mono [&_code]:text-[0.85em] [&_code]:text-background">
+              <span set:html={item.body} />
+            </p>
+          </Card>
+        ))
+      }
+    </Grid>
+  </Section>
 
-  <h2>Docker and Coolify are optional</h2>
-  <p>
-    Process executor is the default. <code>runtime:</code> and fork PRs need a
-    Docker engine (<code>CI_DOCKER_HOST</code> or a mounted socket). Coolify is
-    optional inventory, a repo picker, and an install-worker API — not required
-    to run CI, and not a job runner.
-  </p>
-  <p>
-    There is no first-class Kubernetes operator and no air-gap product. If you
-    put the binary on an isolated network, that is ordinary self-hosting, not a
-    documented mode.
-  </p>
+  <Section badge="Requirements" title="What the box has to have">
+    <div class="mt-12 grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-start">
+      <MarkList
+        cols={1}
+        items={[
+          'A public HTTPS URL GitHub can reach — a reverse proxy in front of port 8080',
+          'A GitHub App you registered, installed on the repos you want checked',
+          'A volume that persists, for the database and the logs',
+          '<code>CI_SECRET_KEY</code>, generated once and kept forever',
+        ]}
+        mark="check"
+      />
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">What ships in the image</h3>
+        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+          A static Go binary plus <code class="font-mono text-[0.85em]">git</code>, Node, and the
+          Docker CLI. It runs as an unprivileged user, and pipeline shells are
+          reaped by the init process rather than left behind.
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+          Node matters only when a job has no <code class="font-mono text-[0.85em]">runtime:</code> and
+          runs as a process. A Docker engine matters only for
+          <code class="font-mono text-[0.85em]">runtime:</code> jobs and fork pull requests — the
+          service boots and reports checks without one.
+        </p>
+      </div>
+    </div>
+  </Section>
 
-  <div class="cta-row">
-    <a class="primary" href={CTA.quickstart}>Quickstart</a>
-    <a class="secondary" href={`${DOCS}/understanding/deployment/`}>Deployment</a>
-    <a class="secondary" href={REPO}>GitHub</a>
-  </div>
+  <Section
+    badge="State"
+    title="What has to survive a redeploy"
+    description="Everything worth keeping is DATA_DIR plus the key, and neither is much use without the other. Nothing else on the box holds state."
+  >
+    <div class="mt-12 overflow-hidden rounded-[1.5rem] border border-foreground/10">
+      {
+        state.map((row, i) => (
+          <div class={`grid gap-2 p-5 sm:grid-cols-[13rem_1fr_9rem] sm:gap-6 sm:p-6 ${i > 0 ? 'border-t border-foreground/10' : ''}`}>
+            <code class="font-mono text-sm font-semibold text-foreground">{row.path}</code>
+            <p class="text-sm leading-relaxed text-muted-foreground">{row.holds}</p>
+            <span
+              class={`w-fit rounded-lg border px-2.5 py-1.5 font-mono text-[0.62rem] font-semibold uppercase leading-none tracking-[0.06em] ${row.tone ? 'border-primary/20 bg-primary/10 text-primary' : 'border-foreground/12 text-muted-foreground'}`}
+            >
+              {row.keep}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+    <Callout class="mt-8" title="A backup without the key">
+      <p>
+        It restores your bindings and job history, but no credentials — the App
+        PEM and webhook secrets stay unreadable and have to be pasted in again.
+        Back both up, and back them up separately.
+      </p>
+    </Callout>
+  </Section>
+
+  <Section badge="Install" title="One variable and a compose file">
+    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-center">
+      <CodePanel
+        label="bash"
+        code={`curl -O https://raw.githubusercontent.com/openpreflight/openpreflight/main/compose.prod.yaml
+export CI_SECRET_KEY="$(openssl rand -base64 48)"
+docker compose -f compose.prod.yaml up -d`}
+      />
+      <div>
+        <p class="max-w-xl text-base leading-relaxed text-muted-foreground">
+          Nothing to clone — the file pulls the published image. Then open the
+          UI, run the first-boot wizard, register your GitHub App, and enable
+          the repos you want checks on.
+        </p>
+        <Actions>
+          <CtaLink href={CTA.quickstart} variant="primary">Full quickstart</CtaLink>
+          <CtaLink href={`${DOCS}/understanding/operations/`} variant="outline">
+            Day-two operations
+          </CtaLink>
+        </Actions>
+      </div>
+    </div>
+  </Section>
+
+  <Section badge="Day two" title="What owning this actually involves" tone="dark">
+    <Faq
+      class="mt-12"
+      tone="dark"
+      items={[
+        {
+          question: 'What does a restart do to a running job?',
+          answer:
+            'Nothing in progress survives — there is no checkpointing. On a clean signal the job notices the cancelled context, writes itself <strong>cancelled</strong>, and is not retried on its own. On a kill it stays in progress and the next boot runs it again from the beginning, which opens a second Check Run on that commit.',
+          href: `${DOCS}/understanding/operations/`,
+          linkLabel: 'Operations',
+        },
+        {
+          question: 'How do upgrades work?',
+          answer:
+            'Pull the new image and bring it up. Migrations run on boot and are forward-only — there are no down migrations, so rolling a release back is not supported and the way out of a bad upgrade is the backup you took before it.',
+          href: `${DOCS}/understanding/operations/`,
+          linkLabel: 'Operations',
+        },
+        {
+          question: 'How much machine does it need?',
+          answer:
+            'Less than you would expect for a handful of repos, and it will not stretch further than one box. Every concurrent job holds its own checkout and its own log, so disk scales with concurrency, and there is no cap on checkout size — size the workspace for your largest repo.',
+          href: `${DOCS}/start/configuration/`,
+          linkLabel: 'Configuration',
+        },
+        {
+          question: 'What cleans up after itself?',
+          answer:
+            'An hourly pass prunes expired sessions, then old job rows and their log files past the retention window. Queued and running jobs are never pruned. Nothing else is cleaned up automatically.',
+          href: `${DOCS}/understanding/operations/`,
+          linkLabel: 'Operations',
+        },
+        {
+          question: 'What should the proxy watch?',
+          answer:
+            '<code>GET /health</code>. A 503 means the process cannot read SQLite. Honour <code>X-Forwarded-Proto</code> too — session and CSRF cookies set <code>Secure</code> when that header says https.',
+          href: `${DOCS}/understanding/deployment/`,
+          linkLabel: 'Deployment',
+        },
+      ]}
+    />
+  </Section>
+
+  <Section badge="Optional" title="Docker and Coolify are not requirements">
+    <Grid class="mt-12" cols={3}>
+      <Card eyebrow="Default" title="Process executor">
+        Steps run in the worker. This is what you get with no extra
+        infrastructure at all.
+      </Card>
+      <Card eyebrow="Optional" title="Docker engine">
+        Needed for <code>runtime:</code> and for fork PRs, via
+        <code>CI_DOCKER_HOST</code> or a mounted socket.
+      </Card>
+      <Card eyebrow="Optional" title="Coolify">
+        Inventory, a repo picker, and an install-worker API. It never executes
+        jobs.
+      </Card>
+    </Grid>
+    <Callout class="mt-8" title="Not offered">
+      <p>
+        There is no first-class Kubernetes operator and no air-gap product. If
+        you put the binary on an isolated network, that is ordinary
+        self-hosting — not a documented mode with support behind it.
+      </p>
+    </Callout>
+  </Section>
+
 </MarketingPage>
