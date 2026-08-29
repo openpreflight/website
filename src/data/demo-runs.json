@@ -1,6 +1,6 @@
 {
   "repo": "openpreflight/demo",
-  "updatedAt": "2026-08-29T02:14:18.799Z",
+  "updatedAt": "2026-08-29T02:25:16.474Z",
   "runs": [
     {
       "id": "passing",
@@ -8,7 +8,7 @@
       "outcome": "three steps, all green",
       "branch": "demo/passing",
       "conclusion": "success",
-      "prUrl": "https://github.com/openpreflight/demo/pull/1",
+      "prUrl": "https://github.com/openpreflight/demo/pull/7",
       "runUrl": null
     },
     {
@@ -17,7 +17,7 @@
       "outcome": "real node:test assertion failure",
       "branch": "demo/failing-test",
       "conclusion": "failure",
-      "prUrl": "https://github.com/openpreflight/demo/pull/2",
+      "prUrl": "https://github.com/openpreflight/demo/pull/8",
       "runUrl": null
     },
     {
@@ -26,7 +26,7 @@
       "outcome": "real build / syntax error",
       "branch": "demo/failing-build",
       "conclusion": "failure",
-      "prUrl": "https://github.com/openpreflight/demo/pull/3",
+      "prUrl": "https://github.com/openpreflight/demo/pull/9",
       "runUrl": null
     },
     {
@@ -35,7 +35,7 @@
       "outcome": "pipeline deadline (timeout: 5s, sleep 60)",
       "branch": "demo/timeout",
       "conclusion": "timed_out",
-      "prUrl": "https://github.com/openpreflight/demo/pull/4",
+      "prUrl": "https://github.com/openpreflight/demo/pull/10",
       "runUrl": null
     },
     {
@@ -44,7 +44,7 @@
       "outcome": "nothing to run → Check Run skipped",
       "branch": "demo/skipped",
       "conclusion": "skipped",
-      "prUrl": "https://github.com/openpreflight/demo/pull/5",
+      "prUrl": "https://github.com/openpreflight/demo/pull/11",
       "runUrl": null
     },
     {
@@ -53,7 +53,7 @@
       "outcome": "runtime: node:24 via Docker",
       "branch": "demo/container",
       "conclusion": "success",
-      "prUrl": "https://github.com/openpreflight/demo/pull/6",
+      "prUrl": "https://github.com/openpreflight/demo/pull/12",
       "runUrl": null
     }
   ]
