@@ -1,0 +1,32 @@
+---
+import MarketingPage from '../../layouts/MarketingPage.astro';
+import { CTA, DOCS } from '../../lib/site';
+---
+
+<MarketingPage
+  title="GitHub App · openpreflight"
+  description="Install a GitHub App you own, bind a repo, and get the first Check Run. How-to lives in the docs."
+>
+  <p class="kicker"><a href="/integrations/">Integrations</a> / GitHub App</p>
+  <h1>Install, bind, first Check Run</h1>
+  <p class="lead">
+    openpreflight does not create the App for you. You register it, paste the
+    PEM and webhook secret into the UI, enable a binding, and push.
+  </p>
+  <ol>
+    <li>Register the App with the permissions and events in the docs.</li>
+    <li>Point the webhook at <code>https://your-host/webhook/&#123;slug&#125;</code>.</li>
+    <li>Install the App on the org or repos you care about.</li>
+    <li>Enable a binding. Push a commit (or open a PR).</li>
+  </ol>
+  <p>
+    The full checklist, permission table, and event list:
+    <a href={`${DOCS}/setup/github-app/`}>Register a GitHub App</a>.
+    Bindings:
+    <a href={`${DOCS}/setup/bindings/`}>enable repos</a>.
+  </p>
+  <div class="cta-row">
+    <a class="primary" href={`${DOCS}/setup/github-app/`}>Setup docs</a>
+    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
+  </div>
+</MarketingPage>

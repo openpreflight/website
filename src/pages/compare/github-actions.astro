@@ -1,0 +1,46 @@
+---
+import MarketingPage from '../../layouts/MarketingPage.astro';
+import { CTA, DOCS, REPO } from '../../lib/site';
+---
+
+<MarketingPage
+  title="openpreflight and GitHub Actions"
+  description="Actions orchestrates. openpreflight is a small self-hosted Check Runs worker. They can coexist; this does not replace workflow YAML."
+>
+  <p class="kicker">Compare</p>
+  <h1>Choose the right layer</h1>
+  <p class="lead">
+    GitHub Actions is orchestration: matrices, caches, artifacts, marketplace
+    actions, hosted or self-hosted <code>actions/runner</code>. openpreflight is
+    a Check Runs worker you host. Use them together when that matches the setup.
+    Do not treat this product as a replacement for Actions YAML.
+  </p>
+
+  <h2>What openpreflight is</h2>
+  <ul>
+    <li>One binary, one SQLite file, on your server</li>
+    <li>A GitHub App you register</li>
+    <li>install / test / build from <code>.ci.yml</code></li>
+    <li>One Check Run per commit, logs on your disk</li>
+  </ul>
+
+  <h2>What it is not</h2>
+  <ul>
+    <li>GitHub Actions YAML or <code>actions/runner</code></li>
+    <li>Matrices, caches, or artifacts</li>
+    <li>A hosted runner fleet</li>
+    <li>Creating GitHub Apps for you</li>
+  </ul>
+  <p>
+    Those sit on
+    <a href={`${REPO}#not-in-v1`}>Not in v1</a>.
+    Neighbors (Woodpecker, Drone, Jenkins) are compared in the
+    <a href={`${DOCS}/start/comparison/`}>docs</a>, not as fake “we replace
+    Actions” copy.
+  </p>
+
+  <div class="cta-row">
+    <a class="primary" href={CTA.quickstart}>Quickstart</a>
+    <a class="secondary" href="/why/">Why this shape</a>
+  </div>
+</MarketingPage>

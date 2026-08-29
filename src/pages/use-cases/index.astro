@@ -1,0 +1,36 @@
+---
+import MarketingPage from '../../layouts/MarketingPage.astro';
+import { CTA } from '../../lib/site';
+---
+
+<MarketingPage
+  title="Use cases · openpreflight"
+  description="Where self-hosted GitHub Check Runs CI actually fits: private repos, teams that keep the runner, open-source contributors."
+>
+  <p class="kicker">Use cases</p>
+  <h1>Who this is for</h1>
+  <p class="lead">
+    Three honest stories. Not a policy engine, and not one YAML across GitLab
+    and Jenkins.
+  </p>
+
+  <div class="card-grid cols-3">
+    <a href="/use-cases/private-repos/">
+      <h3>Private GitHub repos</h3>
+      <p>Check Runs on private code without Actions runners.</p>
+    </a>
+    <a href="/use-cases/self-hosted-teams/">
+      <h3>Self-hosted teams</h3>
+      <p>Keep the worker, the database, and the logs on your box.</p>
+    </a>
+    <a href="/use-cases/open-source/">
+      <h3>Open-source contributors</h3>
+      <p>Public demo PRs and the same log pages you get behind auth.</p>
+    </a>
+  </div>
+
+  <div class="cta-row">
+    <a class="primary" href={CTA.quickstart}>Quickstart</a>
+    <a class="secondary" href="/product/">How it works</a>
+  </div>
+</MarketingPage>

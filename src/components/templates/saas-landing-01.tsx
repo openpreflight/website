@@ -17,11 +17,8 @@ import { SiteHeader01 } from "@/components/blocks/site-header-01";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { CTA, DOCS, REPO, DEMO_REPO, footerGroups, navLinks, tagline } from "@/lib/site";
 import demoRuns from "@/data/demo-runs.json";
-
-const DOCS = "https://docs.openpreflight.xyz";
-const REPO = "https://github.com/openpreflight/openpreflight";
-const DEMO_REPO = "https://github.com/openpreflight/demo";
 
 function outcomeLabel(conclusion: string) {
   switch (conclusion) {
@@ -117,15 +114,9 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
       </a>
       <SiteHeader01
         brand="openpreflight"
-        links={[
-          { label: "Product", href: "#product" },
-          { label: "How it runs", href: "#how" },
-          { label: "Pipeline", href: "#pipeline" },
-          { label: "Demo", href: "#demo" },
-          { label: "Docs", href: DOCS },
-        ]}
+        links={navLinks}
         ctaLabel="Quickstart"
-        ctaHref={`${DOCS}/start/quickstart/`}
+        ctaHref={CTA.quickstart}
         showProfile={false}
       />
       <main id="content">
@@ -275,8 +266,8 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   Actions workflow to write and no pipeline DSL to learn.
                 </p>
                 <Button asChild className="mt-6" variant="outline">
-                  <a href={`${DOCS}/understanding/security-model/`}>
-                    Security model <ArrowRight />
+                  <a href="/product/">
+                    How it works <ArrowRight />
                   </a>
                 </Button>
               </div>
@@ -491,13 +482,57 @@ docker compose -f compose.prod.yaml up -d`}</code>
           </div>
         </section>
 
+        <section className="px-5 py-24 sm:px-8 sm:py-32" id="before-after">
+          <div className="mx-auto max-w-7xl">
+            <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
+              Before and after
+            </h2>
+            <p className="mt-5 max-w-2xl text-muted-foreground">
+              Same private GitHub repo. Different place the Check Run comes from.
+            </p>
+            <div className="mt-10 grid gap-4 md:grid-cols-2">
+              <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
+                <p className="font-mono text-xs text-muted-foreground">Without</p>
+                <h3 className="mt-3 text-xl font-semibold tracking-[-.03em]">
+                  Actions-only private CI
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  Workflow YAML, hosted or self-hosted <code className="font-mono text-xs">actions/runner</code>,
+                  matrices and caches if you need them. Fine when you want that
+                  orchestration layer.
+                </p>
+              </article>
+              <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
+                <p className="font-mono text-xs text-muted-foreground">With</p>
+                <h3 className="mt-3 text-xl font-semibold tracking-[-.03em]">
+                  Worker you host + Check Run
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  One binary, SQLite, a GitHub App you register, and{" "}
+                  <code className="font-mono text-xs">.ci.yml</code>. Logs stay
+                  on your disk. Not a unification of GitLab and Jenkins.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
         <section className="px-5 py-24 sm:px-8 sm:py-32" id="scope">
           <div className="mx-auto max-w-7xl">
             <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
               What it isn't
             </h2>
             <p className="mt-5 max-w-2xl text-muted-foreground">
-              If any of these are requirements for you, this is the wrong
+              This is not another CI provider and not a replacement for GitHub
+              Actions. Actions orchestrates. openpreflight is a small Check Runs
+              runner you host. They can coexist. See{" "}
+              <a
+                className="underline underline-offset-4 hover:text-foreground"
+                href="/compare/github-actions/"
+              >
+                openpreflight and GitHub Actions
+              </a>
+              . If any of these are requirements for you, this is the wrong
               tool. None of them are in v1:
             </p>
             <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -575,42 +610,8 @@ docker compose -f compose.prod.yaml up -d`}</code>
       </main>
       <Footer01
         brand="openpreflight"
-        description="A small CI provider for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit."
-        groups={[
-          {
-            title: "Product",
-            links: [
-              { label: "Quickstart", href: `${DOCS}/start/quickstart/` },
-              { label: "Pipelines", href: `${DOCS}/using/pipelines/` },
-              { label: "API", href: `${DOCS}/using/api/` },
-              { label: "FAQ", href: `${DOCS}/start/faq/` },
-            ],
-          },
-          {
-            title: "Project",
-            links: [
-              { label: "GitHub", href: REPO },
-              { label: "Releases", href: `${REPO}/releases` },
-              { label: "Security", href: `${REPO}/blob/main/SECURITY.md` },
-              { label: "License", href: `${REPO}/blob/main/LICENSE` },
-            ],
-          },
-          {
-            title: "Docs",
-            links: [
-              { label: "Documentation", href: DOCS },
-              {
-                label: "Configuration",
-                href: `${DOCS}/start/configuration/`,
-              },
-              {
-                label: "Troubleshooting",
-                href: `${DOCS}/using/troubleshooting/`,
-              },
-              { label: "ADRs", href: `${DOCS}/adr/003-github-app/` },
-            ],
-          },
-        ]}
+        description={tagline}
+        groups={footerGroups}
         showNewsletter={false}
       />
     </div>

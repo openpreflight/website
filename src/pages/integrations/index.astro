@@ -1,0 +1,40 @@
+---
+import MarketingPage from '../../layouts/MarketingPage.astro';
+import { CTA, DOCS } from '../../lib/site';
+---
+
+<MarketingPage
+  title="Integrations · openpreflight"
+  description="What actually connects: GitHub App, optional Coolify, Docker runtime, process executor. Not a CI-provider catalog."
+>
+  <p class="kicker">Integrations</p>
+  <h1>Surfaces that exist in v1</h1>
+  <p class="lead">
+    This is not a grid of CI vendors. GitLab CI, Jenkins, CircleCI, Buildkite,
+    and Azure DevOps are not adapters here.
+  </p>
+
+  <div class="card-grid cols-2">
+    <a href="/integrations/github-app/">
+      <h3>GitHub App</h3>
+      <p>Required. Webhooks, installation tokens, Check Runs.</p>
+    </a>
+    <a href={`${DOCS}/setup/coolify/`}>
+      <h3>Coolify</h3>
+      <p>Optional API: inventory, repo picker, install-worker. Not a job runner.</p>
+    </a>
+    <a href={`${DOCS}/adr/004-docker-executor/`}>
+      <h3>Docker</h3>
+      <p><code>runtime:</code> and fork jobs via <code>docker run</code>.</p>
+    </a>
+    <div>
+      <h3>Process executor</h3>
+      <p>Default when <code>runtime</code> is empty. Steps run in the worker.</p>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <a class="primary" href="/integrations/github-app/">GitHub App</a>
+    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
+  </div>
+</MarketingPage>

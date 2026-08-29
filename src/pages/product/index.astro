@@ -1,0 +1,84 @@
+---
+import MarketingPage from '../../layouts/MarketingPage.astro';
+import { CTA, DOCS, REPO } from '../../lib/site';
+---
+
+<MarketingPage
+  title="Product · openpreflight"
+  description="Self-hosted Check Runs for private repos — one binary, one database file, a GitHub App you register, and a .ci.yml you write."
+>
+  <p class="kicker">Product</p>
+  <h1>Self-hosted Check Runs for private repos</h1>
+  <p class="lead">
+    One Go binary and one SQLite file. You register a GitHub App, bind repos in
+    the UI, and every commit gets a Check Run with logs that live on your server.
+  </p>
+
+  <h2>Fit</h2>
+  <p>
+    You want CI on private GitHub repositories without GitHub Actions runners
+    and without a pipeline DSL. You already have a machine. The worker is the
+    product, not a mode.
+  </p>
+  <p>
+    Full platforms, hosted control planes, and Kubernetes-oriented runners
+    already fill a different slot. This one does not replace them. See
+    <a href="/why/">why it is this shape</a> and
+    <a href={`${DOCS}/start/faq/`}>the FAQ</a>.
+  </p>
+
+  <h2>What it is not</h2>
+  <p>v1 does not include GitHub Actions YAML, <code>actions/runner</code>, matrices, caches, artifacts, or creating GitHub Apps for you. Those stay on <a href={`${REPO}#not-in-v1`}>Not in v1</a>.</p>
+
+  <h2>How a run happens</h2>
+  <p>The same loop as the docs, in marketing nouns:</p>
+  <pre class="diagram">{`GitHub ──POST /webhook/{slug}──► api ──enqueue──► queue.Runner
+                                      │                │
+Browser / CLI ──session/Bearer──► api │                ├── GitHub App (Check Run)
+                                      │                ├── workspace (exact SHA)
+                                      └── SQLite       ├── pipeline (.ci.yml)
+                                                       └── executor (process or docker run)`}</pre>
+  <p>
+    Webhook → queue → checkout of the immutable SHA → install/test/build → one
+    Check Run. One live run per commit. Details:
+    <a href={`${DOCS}/understanding/architecture/`}>architecture</a>
+    and
+    <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a>.
+  </p>
+
+  <h2>Portable in the real sense</h2>
+  <p>
+    The same <code>.ci.yml</code> and the same worker run on <em>your</em> host.
+    That is not “any CI vendor.” There are no GitLab, Jenkins, or CircleCI
+    adapters.
+  </p>
+
+  <h2>Configuration</h2>
+  <p>
+    Bindings and Apps are rows in SQLite, edited in the web UI. Optional
+    <code>.ci.yml</code> in the repo supplies commands; binding overrides and
+    <code>package.json</code> scripts fill gaps. Resolution order lives in
+    <a href={`${DOCS}/using/pipelines/`}>pipelines</a>. Marketing summary:
+    <a href="/pipeline/">/pipeline</a>.
+  </p>
+
+  <h2>Results</h2>
+  <p>
+    GitHub shows the Check Run. The details URL is <code>GET /runs/&#123;id&#125;</code>
+    on your instance — session by default, or a shareable log if that binding
+    opted in.
+  </p>
+
+  <h2>Security</h2>
+  <p>
+    Claims match the docs only:
+    <a href={`${DOCS}/understanding/security-model/`}>security model</a>.
+    Marketing page: <a href="/security/">/security</a>.
+  </p>
+
+  <div class="cta-row">
+    <a class="primary" href={CTA.quickstart}>Quickstart</a>
+    <a class="secondary" href={REPO}>GitHub</a>
+    <a class="secondary" href="/#demo">See demo</a>
+  </div>
+</MarketingPage>

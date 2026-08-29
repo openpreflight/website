@@ -1,0 +1,72 @@
+---
+import MarketingPage from '../layouts/MarketingPage.astro';
+import { CTA, DOCS } from '../lib/site';
+---
+
+<MarketingPage
+  title="Concepts · openpreflight"
+  description="Check Run, Binding, Pipeline, GitHub App, Job, Executor, Shareable log — nouns the product actually uses."
+>
+  <p class="kicker">Concepts</p>
+  <h1>Words the binary uses</h1>
+  <p class="lead">
+    A glossary that matches the docs. Each entry is the thing in v1, not a
+    metaphor for a future platform.
+  </p>
+
+  <h2>Check Run</h2>
+  <p>
+    GitHub’s status object on a commit. openpreflight creates one per job and
+    writes conclusion plus a log tail. It is the product’s hero artifact.
+    <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a>.
+  </p>
+
+  <h2>Binding</h2>
+  <p>
+    A row that says this App, this repo, these branches, these optional command
+    overrides. No enabled binding, no job.
+    <a href={`${DOCS}/setup/bindings/`}>Bindings</a>.
+  </p>
+
+  <h2>Pipeline (<code>.ci.yml</code>)</h2>
+  <p>
+    Repo file with <code>install</code>, <code>test</code>, <code>build</code>,
+    optional <code>runtime</code> and <code>timeout</code>. Commands you write,
+    not a marketplace of named checks.
+    <a href="/pipeline/">Pipeline</a>,
+    <a href={`${DOCS}/using/pipelines/`}>docs</a>.
+  </p>
+
+  <h2>GitHub App</h2>
+  <p>
+    An App you register. Webhooks, installation tokens, Check Runs. Not OAuth,
+    not Coolify’s GitHub connector.
+    <a href={`${DOCS}/setup/github-app/`}>Setup</a>,
+    <a href={`${DOCS}/adr/003-github-app/`}>ADR 003</a>.
+  </p>
+
+  <h2>Job</h2>
+  <p>
+    One queued or running attempt for an <code>(app, repo, sha)</code>. Logs
+    are files under <code>DATA_DIR</code>.
+    <a href={`${DOCS}/using/logs/`}>Logs</a>.
+  </p>
+
+  <h2>Executor</h2>
+  <p>
+    Process (default) or <code>docker run</code> when <code>runtime:</code> is
+    set or the job is a fork PR.
+    <a href={`${DOCS}/adr/004-docker-executor/`}>ADR 004</a>.
+  </p>
+
+  <h2>Shareable log</h2>
+  <p>
+    Per-binding opt-in so <code>GET /runs/&#123;id&#125;</code> works without a
+    session. Treat the URL as a secret.
+  </p>
+
+  <div class="cta-row">
+    <a class="primary" href={CTA.quickstart}>Quickstart</a>
+    <a class="secondary" href={`${DOCS}/understanding/architecture/`}>Architecture</a>
+  </div>
+</MarketingPage>

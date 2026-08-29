@@ -1,0 +1,58 @@
+---
+import MarketingPage from '../layouts/MarketingPage.astro';
+import { CTA, DOCS, REPO } from '../lib/site';
+---
+
+<MarketingPage
+  title="Pipeline · openpreflight"
+  description="What runs before the Check Run completes: .ci.yml fields, resolution order, skipped vs failed. Commands you write, not a check marketplace."
+>
+  <p class="kicker">Pipeline</p>
+  <h1>What runs before the Check Run completes</h1>
+  <p class="lead">
+    There is no check registry. Steps are shell commands in
+    <code>.ci.yml</code> — illustrations like <code>go test</code> or
+    <code>npm test</code> are commands you author, not first-class products.
+  </p>
+
+  <h2>The file</h2>
+  <pre>{`runtime: node:24
+install: npm ci
+test: npm test
+build: npm run build
+timeout: 15m`}</pre>
+  <p>
+    Sample in the code repo:
+    <a href={`${REPO}/blob/main/examples/.ci.yml`}>examples/.ci.yml</a>.
+    Default filename is <code>.ci.yml</code>, not <code>openpreflight.yaml</code>.
+  </p>
+
+  <h2>Resolution order</h2>
+  <p>Highest first:</p>
+  <ol>
+    <li>the repo’s pipeline file</li>
+    <li>the binding’s command overrides</li>
+    <li>
+      Node defaults from <code>package.json</code> (lockfile install, then
+      <code>test</code> / <code>build</code> only if those scripts exist)
+    </li>
+    <li>nothing to run → the check is <strong>skipped</strong>, not failed</li>
+  </ol>
+  <p>A failing step stops the run; later steps are reported skipped.</p>
+
+  <h2>Runtime</h2>
+  <p>
+    Omit <code>runtime</code> to run in-process. A non-empty image uses
+    <code>docker run --rm</code>. If the engine is unreachable, the job fails
+    instead of falling back. Fork jobs always use Docker.
+  </p>
+  <p>
+    The contract, not this page, is source of truth:
+    <a href={`${DOCS}/using/pipelines/`}>pipelines</a>.
+  </p>
+
+  <div class="cta-row">
+    <a class="primary" href={`${DOCS}/using/pipelines/`}>Pipeline docs</a>
+    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
+  </div>
+</MarketingPage>

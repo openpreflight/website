@@ -1,35 +1,17 @@
 ---
-import Layout from '../layouts/Layout.astro';
-
-const DOCS = 'https://docs.openpreflight.xyz';
+import MarketingPage from '../layouts/MarketingPage.astro';
+import { CTA, DOCS, REPO } from '../lib/site';
 ---
 
-<Layout title="Not found · openpreflight" description="That URL is not on this site.">
-  <div class="mx-auto max-w-3xl px-6 py-24">
-    <p class="font-mono text-sm text-primary">404</p>
-    <h1 class="mt-4 text-4xl font-semibold tracking-tight">Page not found</h1>
-    <p class="mt-5 text-lg text-muted-foreground">
-      That URL is not on this site. The links below cover everything that is.
-    </p>
-    <div class="mt-8 flex flex-wrap gap-3">
-      <a
-        href="/"
-        class="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-      >
-        Home
-      </a>
-      <a
-        href={DOCS}
-        class="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium"
-      >
-        Documentation
-      </a>
-      <a
-        href={`${DOCS}/start/quickstart/`}
-        class="inline-flex items-center rounded-md border border-border px-4 py-2 text-sm font-medium"
-      >
-        Quickstart
-      </a>
-    </div>
+<MarketingPage title="Not found · openpreflight" description="That URL is not on this site.">
+  <p class="kicker">404</p>
+  <h1>Page not found</h1>
+  <p class="lead">That URL is not on this site. The links below cover everything that is.</p>
+  <div class="cta-row">
+    <a class="primary" href="/">Home</a>
+    <a class="secondary" href="/product/">Product</a>
+    <a class="secondary" href={DOCS}>Docs</a>
+    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
+    <a class="secondary" href={REPO}>GitHub</a>
   </div>
-</Layout>
+</MarketingPage>
