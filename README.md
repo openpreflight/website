@@ -40,10 +40,12 @@ npm run dev
 - `src/pages/404.astro`: branded not-found
 - `src/layouts/MarketingPage.astro`: header/footer chrome for inner pages; the
   pages themselves compose full-bleed sections
-- `src/lib/site.ts`: nav, footer groups, CTAs
+- `src/lib/site.ts`: `siteSections` is the canonical site map — the header nav,
+  the footer, and the 404 all render it, so a route cannot exist without being
+  reachable from every page
 - `src/components/marketing/`: the subpage system — `PageHero`, `Section`,
   `Card`/`Grid`, `Steps`, `MarkList`, `CodePanel`, `CheckRunPanel`, `Callout`,
-  `Prose`, `CtaLink`/`Actions`, `NextSteps`
+  `Faq`, `Prose`, `CtaLink`/`Actions`
 - `src/components/blocks/`, `src/components/ui/`: Rivelle blocks and primitives
   used by the homepage template
 - `src/layouts/Layout.astro`: head, meta, OG tags, header/footer chrome

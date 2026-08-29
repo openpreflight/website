@@ -9,7 +9,6 @@ import Actions from '../components/marketing/Actions.astro';
 import CtaLink from '../components/marketing/CtaLink.astro';
 import Callout from '../components/marketing/Callout.astro';
 import MarkList from '../components/marketing/MarkList.astro';
-import NextSteps from '../components/marketing/NextSteps.astro';
 import Faq from '../components/marketing/Faq.astro';
 import { CTA, DOCS, REPO } from '../lib/site';
 
@@ -288,38 +287,4 @@ docker compose -f compose.prod.yaml up -d`}
     </Callout>
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Security',
-        href: '/security/',
-        description: 'Secrets at rest, job env, and fork PRs.',
-      },
-      {
-        label: 'Self-hosted teams',
-        href: '/use-cases/self-hosted-teams/',
-        description: 'The use case this page was written for.',
-      },
-      {
-        label: 'Product',
-        href: '/product/',
-        description: 'What the worker does once it is up.',
-      },
-      {
-        label: 'Deployment',
-        href: `${DOCS}/understanding/deployment/`,
-        description: 'Reverse proxy, volumes, and env reference.',
-      },
-      {
-        label: 'Operations',
-        href: `${DOCS}/understanding/operations/`,
-        description: 'Backups, upgrades, restarts mid-job.',
-      },
-      {
-        label: 'Source',
-        href: REPO,
-        description: 'The binary you are about to run.',
-      },
-    ]}
-  />
 </MarketingPage>

@@ -10,7 +10,6 @@ import CtaLink from '../components/marketing/CtaLink.astro';
 import Prose from '../components/marketing/Prose.astro';
 import Callout from '../components/marketing/Callout.astro';
 import Faq from '../components/marketing/Faq.astro';
-import NextSteps from '../components/marketing/NextSteps.astro';
 import { CTA, DOCS, REPO, RELEASE } from '../lib/site';
 
 const positions = [
@@ -282,11 +281,9 @@ const weaknesses = [
     <MarkList class="mt-6" cols={3} items={ceiling} mark="cross" />
     <Callout class="mt-8">
       <p>
-        Jobs on another machine use a Docker engine (<code>CI_DOCKER_HOST</code>),
-        not Coolify as a job runner. The <a href={`${DOCS}/start/comparison/`}>docs comparison</a> says
-        which neighbour to reach for instead — Woodpecker and Drone for a real
-        pipeline DSL, a self-hosted <code>actions/runner</code> to keep your
-        existing workflows, Jenkins for everything else.
+        If one of these is a dealbreaker, that is useful information rather than
+        a dead end — <a href="/compare/github-actions/">the comparison</a> works
+        through which tool to reach for instead.
       </p>
     </Callout>
   </Section>
@@ -295,13 +292,6 @@ const weaknesses = [
     <Faq
       class="mt-12"
       items={[
-        {
-          question: 'Why a GitHub App and not OAuth?',
-          answer:
-            'Only a GitHub App can create Check Runs — user and OAuth tokens are refused. An App also has exactly one webhook URL, which is why Coolify\u2019s own GitHub connector cannot do this job: its webhook belongs to Coolify\u2019s deploy pipeline.',
-          href: `${DOCS}/adr/003-github-app/`,
-          linkLabel: 'ADR 003',
-        },
         {
           question: 'Why gate on the check suite instead of push?',
           answer:
@@ -334,38 +324,4 @@ const weaknesses = [
     />
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Product',
-        href: '/product/',
-        description: 'The run loop, configuration, and where results land.',
-      },
-      {
-        label: 'vs GitHub Actions',
-        href: '/compare/github-actions/',
-        description: 'A side-by-side of the two layers.',
-      },
-      {
-        label: 'Self-hosted',
-        href: '/self-hosted/',
-        description: 'What running it actually costs you.',
-      },
-      {
-        label: 'Use cases',
-        href: '/use-cases/',
-        description: 'Three teams this shape is built for.',
-      },
-      {
-        label: 'Security',
-        href: '/security/',
-        description: 'What the worker is allowed to do.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'One secret key and a compose file.',
-      },
-    ]}
-  />
 </MarketingPage>

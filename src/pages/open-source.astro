@@ -7,7 +7,6 @@ import Card from '../components/marketing/Card.astro';
 import Actions from '../components/marketing/Actions.astro';
 import CtaLink from '../components/marketing/CtaLink.astro';
 import Callout from '../components/marketing/Callout.astro';
-import NextSteps from '../components/marketing/NextSteps.astro';
 import CodePanel from '../components/marketing/CodePanel.astro';
 import Prose from '../components/marketing/Prose.astro';
 import Faq from '../components/marketing/Faq.astro';
@@ -234,38 +233,4 @@ examples/            a sample .ci.yml
     />
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Security',
-        href: '/security/',
-        description: 'The claims the source is there to verify.',
-      },
-      {
-        label: 'Open-source contributors',
-        href: '/use-cases/open-source/',
-        description: 'The public demo repo and its pull requests.',
-      },
-      {
-        label: 'Product',
-        href: '/product/',
-        description: 'What the code you are reading actually does.',
-      },
-      {
-        label: 'Releases',
-        href: `${REPO}/releases`,
-        description: 'v1.0.0 linux binaries and the changelog.',
-      },
-      {
-        label: 'Development',
-        href: `${DOCS}/contributing/development/`,
-        description: 'Clone, test offline, run it locally.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'Run the thing before you patch it.',
-      },
-    ]}
-  />
 </MarketingPage>

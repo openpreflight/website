@@ -5,7 +5,6 @@ import Section from '../components/marketing/Section.astro';
 import Actions from '../components/marketing/Actions.astro';
 import CtaLink from '../components/marketing/CtaLink.astro';
 import Callout from '../components/marketing/Callout.astro';
-import NextSteps from '../components/marketing/NextSteps.astro';
 import Steps from '../components/marketing/Steps.astro';
 import { CTA, DOCS } from '../lib/site';
 
@@ -182,7 +181,7 @@ const groups = [
         {
           title: 'A <b>job</b> is queued for that <code>(app, repo, sha)</code>',
           detail:
-            'One live run per commit. A second delivery for the same commit is answered <i>already queued</i>, or supersedes the run in flight if a human pressed Re-run.',
+            'A job is the unit of work, keyed on that triple. What happens when a second delivery arrives for the same commit is on <a class="underline underline-offset-4" href="/product/">the product page</a>.',
         },
         {
           title: 'An <b>installation token</b> fills a <b>workspace</b>',
@@ -301,38 +300,4 @@ const groups = [
     </Callout>
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Product',
-        href: '/product/',
-        description: 'These nouns assembled into one run.',
-      },
-      {
-        label: 'Pipeline',
-        href: '/pipeline/',
-        description: 'The file, its fields, and resolution order.',
-      },
-      {
-        label: 'Security',
-        href: '/security/',
-        description: 'What the executor is allowed to touch.',
-      },
-      {
-        label: 'GitHub App',
-        href: '/integrations/github-app/',
-        description: 'Register one and bind your first repo.',
-      },
-      {
-        label: 'Architecture',
-        href: `${DOCS}/understanding/architecture/`,
-        description: 'The same loop, at reference depth.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'From zero to a first Check Run.',
-      },
-    ]}
-  />
 </MarketingPage>

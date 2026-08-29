@@ -12,7 +12,6 @@ import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Prose from '../../components/marketing/Prose.astro';
 import Callout from '../../components/marketing/Callout.astro';
-import NextSteps from '../../components/marketing/NextSteps.astro';
 import Faq from '../../components/marketing/Faq.astro';
 import { CTA, DOCS, REPO, RELEASE } from '../../lib/site';
 
@@ -29,11 +28,11 @@ const fit = [
   'You already have a machine to run it on',
 ];
 
-const notInV1 = [
-  'GitHub Actions YAML',
-  '<code>actions/runner</code>',
-  'Matrices, caches, artifacts',
-  'Creating GitHub Apps for you',
+const lookElsewhere = [
+  'Your build is more than three commands',
+  'You need more than one machine',
+  'Your workflows are already Actions YAML',
+  'More than one person configures CI',
 ];
 
 const runSteps = [
@@ -45,7 +44,7 @@ const runSteps = [
   {
     title: 'The runner takes the job',
     detail:
-      'One live run per commit. The worker checks out the immutable SHA into a workspace, then reads the pipeline.',
+      'The worker checks out the immutable SHA into a fresh workspace, strips the remote, and reads the pipeline.',
   },
   {
     title: 'install / test / build',
@@ -159,11 +158,12 @@ const outbound = [
         </p>
       </div>
       <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
-        <h3 class="text-lg font-semibold tracking-[-.03em]">Not in v1</h3>
-        <MarkList class="mt-5" cols={1} items={notInV1} mark="cross" />
+        <h3 class="text-lg font-semibold tracking-[-.03em]">Look elsewhere when</h3>
+        <MarkList class="mt-5" cols={1} items={lookElsewhere} mark="cross" />
         <p class="mt-5 text-sm leading-relaxed text-muted-foreground">
-          The full list stays on <a class="text-primary underline underline-offset-4" href={`${REPO}#not-in-v1`}>Not in v1</a>.
-          If one of those is a requirement, <a class="text-primary underline underline-offset-4" href={`${DOCS}/start/comparison/`}>the docs comparison</a> names a better tool.
+          Each of those is a real limit rather than a missing feature.{' '}
+          <a class="text-primary underline underline-offset-4" href="/why/">Why this shape</a>{' '}
+          works through all of them and names what to reach for instead.
         </p>
       </div>
     </div>
@@ -241,12 +241,6 @@ const outbound = [
           <strong>binding → App → settings</strong>.
         </p>
         <p>
-          <strong>The bindings table is the allow-list.</strong> A webhook for a
-          repo with no enabled binding is acknowledged and dropped, however
-          valid its signature. Only enable repos you trust — a pipeline runs
-          that repo’s own commands.
-        </p>
-        <p>
           Resolution order and the full field list live in{' '}
           <a href={`${DOCS}/using/pipelines/`}>the pipeline docs</a>; the short
           version is on <a href="/pipeline/">/pipeline</a>.
@@ -290,8 +284,8 @@ timeout: 15m`}
       </Card>
       <Card title="The details URL">
         <code>GET /runs/&#123;id&#125;</code> on your instance. GitHub never fetches
-        it — the reader’s browser does, so it needs a session unless that
-        binding opted into shareable logs.
+        it — the reader’s browser does, which is why who may open it is a{' '}
+        <a class="text-primary underline underline-offset-4" href="/security/">security</a> question.
       </Card>
       <Card title="The full log">
         Written to a file per job on your disk, capped so one runaway build
@@ -307,76 +301,33 @@ timeout: 15m`}
 
   <Section
     badge="Honest scope"
-    title="What running it actually costs you"
-    description="The parts worth knowing before you install, not after."
+    title="Behaviour worth knowing up front"
+    description="Answers to what people ask after reading the run loop. What it costs to operate is on self-hosted; where the ceiling is, on why."
   >
     <Faq
       class="mt-12"
       items={[
         {
-          question: 'How many jobs run at once?',
+          question: 'What does a commit actually trigger?',
           answer:
-            'One, by default. <code>max_concurrent_jobs</code> is a settings row that starts at 1 and can only be raised after first boot — and raising it adds concurrency on this one machine. Jobs never spread across hosts.',
-          href: `${DOCS}/start/configuration/`,
-          linkLabel: 'Configuration',
+            'A check suite, and only a check suite. Never a <code>push</code> event and never <code>pull_request</code> — a suite is already scoped to one commit and one App, so it is the unit of work.',
+          href: `${DOCS}/adr/005-check-suite-gating/`,
+          linkLabel: 'ADR 005',
         },
         {
-          question: 'What happens if you restart mid-job?',
+          question: 'What if a repo has no pipeline file?',
           answer:
-            'Nothing in progress survives. On a clean signal the job writes itself <strong>cancelled</strong> and is not retried; on a kill it is requeued from the beginning on the next boot, which opens a second Check Run on that commit.',
-          href: `${DOCS}/understanding/operations/`,
-          linkLabel: 'Operations',
+            'Commands fall back to the binding’s overrides, then to Node defaults inferred from <code>package.json</code>. With nothing to run at all the check reports <strong>skipped</strong> rather than failed.',
+          href: '/pipeline/',
+          linkLabel: 'Pipeline',
         },
         {
-          question: 'What has to be backed up?',
+          question: 'Can it re-run a job?',
           answer:
-            '<code>DATA_DIR</code> plus <code>CI_SECRET_KEY</code>, and neither is much use without the other. A backup without the key restores your bindings and job history but no credentials.',
-          href: `${DOCS}/understanding/operations/`,
-          linkLabel: 'Operations',
-        },
-        {
-          question: 'Does it work for monorepos?',
-          answer:
-            'It runs, but it runs everything on every push. There is no path filter, and a plan is three steps in a fixed order — so the usual monorepo answer, one job per affected package, has nothing to express itself with.',
-          href: `${DOCS}/start/faq/`,
-          linkLabel: 'FAQ',
+            'Yes, from GitHub’s Re-run button or from the job page. A re-run supersedes anything still in flight for that commit and opens a fresh Check Run.',
         },
       ]}
     />
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Why this shape',
-        href: '/why/',
-        description: 'The problem that produces a binary and a SQLite file.',
-      },
-      {
-        label: 'Pipeline',
-        href: '/pipeline/',
-        description: 'Fields, resolution order, and skipped vs failed.',
-      },
-      {
-        label: 'Self-hosted',
-        href: '/self-hosted/',
-        description: 'What you actually operate, and what has to persist.',
-      },
-      {
-        label: 'vs GitHub Actions',
-        href: '/compare/github-actions/',
-        description: 'Which layer each one is, and how they coexist.',
-      },
-      {
-        label: 'Concepts',
-        href: '/concepts/',
-        description: 'Check Run, binding, pipeline, executor — defined.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'Compose file, one secret key, first Check Run.',
-      },
-    ]}
-  />
 </MarketingPage>

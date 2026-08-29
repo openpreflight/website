@@ -8,7 +8,6 @@ import CodePanel from '../components/marketing/CodePanel.astro';
 import Actions from '../components/marketing/Actions.astro';
 import CtaLink from '../components/marketing/CtaLink.astro';
 import Callout from '../components/marketing/Callout.astro';
-import NextSteps from '../components/marketing/NextSteps.astro';
 import Faq from '../components/marketing/Faq.astro';
 import MarkList from '../components/marketing/MarkList.astro';
 import Prose from '../components/marketing/Prose.astro';
@@ -227,10 +226,10 @@ timeout: 15m`}
     <MarkList class="mt-10" cols={3} items={cannot} mark="cross" tone="dark" />
     <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
       Every job is a fresh shallow clone, so nothing is carried between runs or
-      handed to a later step. If your build needs any of the above, a pipeline
-      engine like Woodpecker or Drone is the right tool — the{' '}
-      <a class="text-primary underline underline-offset-4" href={`${DOCS}/start/comparison/`}>docs comparison</a>{' '}
-      makes that call explicitly.
+      handed to a later step. If your build needs any of the above, you want a
+      pipeline engine rather than this —{' '}
+      <a class="text-primary underline underline-offset-4" href="/compare/github-actions/">the comparison</a>{' '}
+      names the candidates.
     </p>
   </Section>
 
@@ -262,49 +261,8 @@ timeout: 15m`}
           href: `${DOCS}/using/logs/`,
           linkLabel: 'Logs',
         },
-        {
-          question: 'Can a fork PR run my pipeline?',
-          answer:
-            'Not by default — fork pull requests are skipped. Opting in requires a reachable Docker engine and a <code>default_runtime</code>, and fork jobs then always run in Docker, never as a process on the host.',
-          href: `${DOCS}/adr/004-docker-executor/`,
-          linkLabel: 'ADR 004',
-        },
       ]}
     />
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Product',
-        href: '/product/',
-        description: 'How a run gets from webhook to Check Run.',
-      },
-      {
-        label: 'Concepts',
-        href: '/concepts/',
-        description: 'Binding, job, executor — the nouns used here.',
-      },
-      {
-        label: 'Security',
-        href: '/security/',
-        description: 'What a step can and cannot reach.',
-      },
-      {
-        label: 'GitHub App',
-        href: '/integrations/github-app/',
-        description: 'Install, bind, and get the first Check Run.',
-      },
-      {
-        label: 'Example .ci.yml',
-        href: `${REPO}/blob/main/examples/.ci.yml`,
-        description: 'The file in the code repo, kept current.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'Stand the worker up, then add this file.',
-      },
-    ]}
-  />
 </MarketingPage>

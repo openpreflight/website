@@ -9,7 +9,6 @@ import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
 import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
-import NextSteps from '../../components/marketing/NextSteps.astro';
 import Faq from '../../components/marketing/Faq.astro';
 import MarkList from '../../components/marketing/MarkList.astro';
 import { CTA, DOCS } from '../../lib/site';
@@ -75,8 +74,8 @@ const steps = [
         request, and in branch protection.
       </Card>
       <Card title="Logs on your server" tone="dark">
-        The details URL is <code>GET /runs/{'{id}'}</code> on your instance, behind
-        a session unless that binding opted into shareable logs.
+        The details URL is <code>GET /runs/{'{id}'}</code> on your own instance.
+        Nothing beyond the conclusion and a tail leaves the box.
       </Card>
       <Card title="No workflow language" tone="dark">
         <code>.ci.yml</code> holds the same commands you already run locally.
@@ -113,12 +112,11 @@ const steps = [
         />
       </div>
     </div>
-    <Callout class="mt-8" title="The clone credential">
+    <Callout class="mt-8" title="How the clone is authenticated">
       <p>
-        A short-lived installation token is handed to git through
-        <code>GIT_CONFIG_*</code>, never in the remote URL, <code>.git/config</code>,
-        or a command line — and the remote is removed before your first command
-        runs. Details on <a href="/security/">/security</a>.
+        With a short-lived installation token that never reaches your pipeline
+        steps. The mechanics — and everything else the worker is allowed to do —
+        are on <a href="/security/">security</a>.
       </p>
     </Callout>
   </Section>
@@ -155,37 +153,28 @@ const steps = [
     </Actions>
   </Section>
 
-  <Section badge="Expectations" title="Before you point it at the whole org">
+  <Section badge="Expectations" title="Questions this raises">
     <Faq
       class="mt-12"
       items={[
         {
-          question: 'How many of these repos can it keep up with?',
+          question: 'Which branches does it check?',
           answer:
-            'One job runs at a time by default, on one machine. That suits a handful of repos pushing a few times an hour; a second commit waits for the first to finish.',
-          href: `${DOCS}/start/configuration/`,
-          linkLabel: 'Configuration',
+            'Whatever the binding says. The branch list takes exact names or a <code>release/*</code> style prefix, and an empty list means every branch the App sees.',
+          href: `${DOCS}/setup/bindings/`,
+          linkLabel: 'Bindings',
         },
         {
-          question: 'Can I filter which paths trigger a run?',
+          question: 'Can two repos run different commands?',
           answer:
-            'No. A binding matches a repo and optionally a branch list — exact names, or a <code>release/*</code> prefix. Do path filtering inside your own <code>test</code> command.',
-          href: `${DOCS}/start/faq/`,
-          linkLabel: 'FAQ',
+            'Yes. Each repo can carry its own <code>.ci.yml</code>, or the binding can override install, test, and build for a repo you would rather not add a file to.',
+          href: '/pipeline/',
+          linkLabel: 'Pipeline',
         },
         {
-          question: 'What about pull requests from forks?',
+          question: 'How do I try it on one repo first?',
           answer:
-            'Skipped by default. Opting in requires a reachable Docker engine and a default runtime, and those jobs then always run in a container rather than as a process on your host.',
-          href: `${DOCS}/adr/004-docker-executor/`,
-          linkLabel: 'ADR 004',
-        },
-        {
-          question: 'Who can read the logs?',
-          answer:
-            'Anyone with a session on your instance. A single binding can opt into shareable log pages if you want to hand a link to someone without an account — treat that link as a secret.',
-          href: `${DOCS}/using/logs/`,
-          linkLabel: 'Logs',
+            'Enable exactly one binding. Nothing else the App is installed on will run, because a repo with no enabled binding is ignored — so a trial stays a trial.',
         },
       ]}
     />
@@ -202,38 +191,4 @@ const steps = [
     </div>
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'All use cases',
-        href: '/use-cases/',
-        description: 'The other two stories.',
-      },
-      {
-        label: 'Pipeline',
-        href: '/pipeline/',
-        description: 'What runs, and where the commands come from.',
-      },
-      {
-        label: 'Security',
-        href: '/security/',
-        description: 'How the clone token is handled.',
-      },
-      {
-        label: 'Self-hosted',
-        href: '/self-hosted/',
-        description: 'What you operate to keep this running.',
-      },
-      {
-        label: 'Product',
-        href: '/product/',
-        description: 'Webhook to Check Run, end to end.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'Stand it up in a few minutes.',
-      },
-    ]}
-  />
 </MarketingPage>

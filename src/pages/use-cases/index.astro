@@ -5,7 +5,6 @@ import Section from '../../components/marketing/Section.astro';
 import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
-import NextSteps from '../../components/marketing/NextSteps.astro';
 import Grid from '../../components/marketing/Grid.astro';
 import Card from '../../components/marketing/Card.astro';
 import Faq from '../../components/marketing/Faq.astro';
@@ -90,13 +89,12 @@ const cases = [
   <Section badge="In common" title="What all three actually get" tone="dark">
     <Grid class="mt-12" cols={3}>
       <Card title="One Check Run per commit" tone="dark">
-        Gated on the check suite and the immutable SHA, with one live run per
-        commit — so a required check behaves under force-pushes and rapid
-        pushes.
+        The same artifact GitHub already shows for any other check, on the
+        commit and in the pull request.
       </Card>
       <Card title="Logs on hardware you own" tone="dark">
         GitHub gets a conclusion and a tail. The full log is a file on your
-        disk, served by your instance at a details URL.
+        disk, served by your own instance.
       </Card>
       <Card title="No second workflow language" tone="dark">
         Three shell commands in <code>.ci.yml</code> — or nothing at all, if a
@@ -192,13 +190,6 @@ const cases = [
       class="mt-12"
       items={[
         {
-          question: 'How many repos is this good for?',
-          answer:
-            'A handful that push a few times an hour. One process on one box runs one job at a time by default, and raising that adds concurrency on the same machine — never across hosts.',
-          href: `${DOCS}/start/configuration/`,
-          linkLabel: 'Configuration',
-        },
-        {
           question: 'Does it work on public repos?',
           answer:
             'Yes. Repository visibility is read from the webhook payload but never gates anything — “private repos” is what this is aimed at, not a restriction it enforces.',
@@ -213,48 +204,14 @@ const cases = [
           linkLabel: 'Compare',
         },
         {
-          question: 'What is the worst case?',
+          question: 'Is there a team this does not suit?',
           answer:
-            'A busy monorepo. There is no path filter, so every commit runs the same three commands over everything, and the serial default means those runs queue behind each other.',
-          href: `${DOCS}/start/faq/`,
-          linkLabel: 'FAQ',
+            'Yes — and it is worth reading the limits before the stories. Busy monorepos, teams needing per-person access, and anything wanting matrices or artifacts are all poor fits.',
+          href: '/why/',
+          linkLabel: 'Where the ceiling is',
         },
       ]}
     />
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Private repos',
-        href: '/use-cases/private-repos/',
-        description: 'Check Runs on private code, without Actions.',
-      },
-      {
-        label: 'Self-hosted teams',
-        href: '/use-cases/self-hosted-teams/',
-        description: 'Runner, database, and logs on your box.',
-      },
-      {
-        label: 'Open-source contributors',
-        href: '/use-cases/open-source/',
-        description: 'Real pull requests you can inspect.',
-      },
-      {
-        label: 'Product',
-        href: '/product/',
-        description: 'The run loop behind all three.',
-      },
-      {
-        label: 'Why',
-        href: '/why/',
-        description: 'The gap these stories share.',
-      },
-      {
-        label: 'Live demo',
-        href: '/#demo',
-        description: 'Check Runs from a real instance.',
-      },
-    ]}
-  />
 </MarketingPage>

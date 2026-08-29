@@ -7,7 +7,6 @@ import Card from '../../components/marketing/Card.astro';
 import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
-import NextSteps from '../../components/marketing/NextSteps.astro';
 import Prose from '../../components/marketing/Prose.astro';
 import CodePanel from '../../components/marketing/CodePanel.astro';
 import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
@@ -170,39 +169,45 @@ const panelSteps = [
     </Callout>
   </Section>
 
-  <Section badge="Contributing" title="The test suite runs offline">
+  <Section badge="Contributing" title="If the demo makes you want to poke at it">
     <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-center">
       <Prose>
         <p>
-          <code>go test ./...</code> needs no network and no credentials. The
-          GitHub and Coolify APIs are faked, and the clone and pipeline tests
-          run against a real <code>git-http-backend</code> server over a fixture
-          repository — so the interesting paths are actually exercised, not
-          stubbed away.
+          The same repository you are looking at is the one contributors work
+          in, and the demo branches double as fixtures for the behaviour they
+          exercise — a failing test, a build error, a pipeline that runs out of
+          time.
         </p>
         <p>
-          That is what makes a bug report with a failing test the most useful
-          thing you can send. The whole implementation is one
-          <code>internal/</code> tree with no plugin surface, so there is no
-          extension API to learn before you can read it.
+          What the project will take, how the repositories are laid out, and why
+          the test suite needs no credentials are all on{' '}
+          <a href="/open-source/">open source</a>.
         </p>
       </Prose>
-      <CodePanel
-        label="clone and test"
-        code={`git clone https://github.com/openpreflight/openpreflight
-cd openpreflight
-
-go build ./...
-go test ./...
-go vet ./...`}
-      />
+      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
+        <h3 class="text-lg font-semibold tracking-[-.03em]">Useful contributions</h3>
+        <ul class="mt-5 space-y-3">
+          {
+            [
+              'A bug report with a failing test',
+              'A gap in v1 the code does not cover yet',
+              'Docs corrected to match the code',
+            ].map((item) => (
+              <li class="flex items-start gap-2.5 text-sm leading-relaxed text-muted-foreground">
+                <span aria-hidden="true" class="mt-0.5 font-mono text-primary">✓</span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+        <a
+          class="mt-6 inline-block font-mono text-xs text-primary underline underline-offset-4"
+          href={`${REPO}/blob/main/CONTRIBUTING.md`}
+        >
+          CONTRIBUTING.md →
+        </a>
+      </div>
     </div>
-    <Actions>
-      <CtaLink href={`${REPO}/blob/main/CONTRIBUTING.md`} variant="primary">
-        CONTRIBUTING.md
-      </CtaLink>
-      <CtaLink href="/open-source/" variant="outline">Repos and licences</CtaLink>
-    </Actions>
   </Section>
 
   <Section>
@@ -212,49 +217,7 @@ go vet ./...`}
         once retention prunes the job — the pull request always stays. Until the
         demo App is bound, run URLs are left empty rather than invented.
       </p>
-      <p>
-        For the same reason the project is honest about not dogfooding:
-        <code>openpreflight/openpreflight</code> runs GitHub Actions. Dogfooding
-        needs a permanently reachable HTTPS instance and an App registered
-        against the org, and releases have to publish multi-arch images — which
-        this tool does not do at all. It reports a check; it does not ship
-        artifacts.
-      </p>
     </Callout>
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Live demo',
-        href: '/#demo',
-        description: 'The same runs, on the homepage.',
-      },
-      {
-        label: 'Open source',
-        href: '/open-source/',
-        description: 'Repos, licences, and how to contribute.',
-      },
-      {
-        label: 'All use cases',
-        href: '/use-cases/',
-        description: 'The other two stories.',
-      },
-      {
-        label: 'Pipeline',
-        href: '/pipeline/',
-        description: 'What each demo branch changes.',
-      },
-      {
-        label: 'Contributing',
-        href: `${REPO}/blob/main/CONTRIBUTING.md`,
-        description: 'What the project will take.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'Run the same worker yourself.',
-      },
-    ]}
-  />
 </MarketingPage>

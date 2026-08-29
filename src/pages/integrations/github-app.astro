@@ -9,7 +9,6 @@ import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
 import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
-import NextSteps from '../../components/marketing/NextSteps.astro';
 import Faq from '../../components/marketing/Faq.astro';
 import Prose from '../../components/marketing/Prose.astro';
 import { CTA, DOCS } from '../../lib/site';
@@ -129,8 +128,9 @@ const panelSteps = [
         before anything is enqueued.
       </Card>
       <Card title="Cloning the commit">
-        A short-lived installation token clones the exact SHA. It never lands in
-        the remote URL, and the remote is stripped before steps run.
+        A short-lived installation token clones the exact SHA, then goes no
+        further — how it is handled is on{' '}
+        <a class="text-primary underline underline-offset-4" href="/security/">security</a>.
       </Card>
       <Card title="Writing the Check Run">
         The same App reports the conclusion and a log tail back onto the commit.
@@ -142,8 +142,11 @@ const panelSteps = [
     <div class="mt-12 grid gap-4 md:grid-cols-3">
       <Card index={1} title="Make it required">
         One job produces one Check Run, so there is a single entry to tick in
-        branch protection. Pick the check name before you rely on it — renaming
-        one strands the rule that referenced it.
+        branch protection.{' '}
+        <a class="text-primary underline underline-offset-4" href="/use-cases/private-repos/">
+          Private repos
+        </a>{' '}
+        covers the naming trap worth avoiding first.
       </Card>
       <Card index={2} title="Add the rest of the repos">
         The same App can cover everything it is installed on. Each repo still
@@ -177,9 +180,9 @@ const panelSteps = [
         {
           question: 'I pushed and nothing happened.',
           answer:
-            'A delivery for a repo with no <strong>enabled binding</strong> is acknowledged and dropped, however valid its signature. That is the allow-list working, not a failure — check the binding first.',
-          href: `${DOCS}/setup/bindings/`,
-          linkLabel: 'Bindings',
+            'Check the binding first: a repo you have not enabled is ignored by design, not by accident.',
+          href: '/security/',
+          linkLabel: 'Why that is the boundary',
         },
         {
           question: 'Where did my PEM go?',
@@ -204,38 +207,4 @@ const panelSteps = [
     />
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Integrations',
-        href: '/integrations/',
-        description: 'The other three surfaces, and what they cost.',
-      },
-      {
-        label: 'Pipeline',
-        href: '/pipeline/',
-        description: 'What the run does once the binding fires.',
-      },
-      {
-        label: 'Security',
-        href: '/security/',
-        description: 'How the PEM and webhook secret are stored.',
-      },
-      {
-        label: 'Concepts',
-        href: '/concepts/',
-        description: 'App, binding, job — how they relate.',
-      },
-      {
-        label: 'Bindings docs',
-        href: `${DOCS}/setup/bindings/`,
-        description: 'Enable repos, branches, and overrides.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'The whole path from empty server to green check.',
-      },
-    ]}
-  />
 </MarketingPage>

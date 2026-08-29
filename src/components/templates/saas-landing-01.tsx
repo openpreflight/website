@@ -17,7 +17,7 @@ import { SiteHeader01 } from "@/components/blocks/site-header-01";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CTA, DOCS, REPO, DEMO_REPO, RELEASE, footerGroups, navLinks, tagline } from "@/lib/site";
+import { CTA, DOCS, REPO, DEMO_REPO, RELEASE, footerGroups, navGroups, navLinks, tagline } from "@/lib/site";
 import demoRuns from "@/data/demo-runs.json";
 
 function outcomeLabel(conclusion: string) {
@@ -114,6 +114,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
       </a>
       <SiteHeader01
         brand="openpreflight"
+        groups={navGroups}
         links={navLinks}
         ctaLabel="Quickstart"
         ctaHref={CTA.quickstart}

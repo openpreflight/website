@@ -7,7 +7,6 @@ import Card from '../../components/marketing/Card.astro';
 import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
-import NextSteps from '../../components/marketing/NextSteps.astro';
 import Prose from '../../components/marketing/Prose.astro';
 import { CTA, DOCS, REPO } from '../../lib/site';
 
@@ -247,60 +246,17 @@ const rows = [
     </Prose>
   </Section>
 
-  <Section badge="Scope" title="What is not in v1">
-    <div class="grid gap-4 md:grid-cols-2">
-      <Card title="Not built, on purpose">
-        GitHub Actions YAML, <code>actions/runner</code>, matrices, caches,
-        artifacts, a hosted runner fleet, or creating GitHub Apps for you. The
-        list stays on <a class="text-primary underline underline-offset-4" href={`${REPO}#not-in-v1`}>Not in v1</a>.
-      </Card>
-      <Card title="Other neighbours">
-        Woodpecker, Drone, and Jenkins all do more than this. They are compared
-        in the <a class="text-primary underline underline-offset-4" href={`${DOCS}/start/comparison/`}>docs</a>,
-        not with fake “we replace Actions” copy.
-      </Card>
-    </div>
-    <Callout class="mt-8" title="Honest summary">
+  <Section badge="Scope" title="Where that leaves this one">
+    <Callout title="Honest summary">
       <p>
-        If you need orchestration, use Actions or one of its neighbours. If you
-        need a private commit checked by a worker you own, this is the smaller
-        answer.
+        If you need orchestration, use Actions or one of the neighbours above.
+        If you need a private commit checked by a worker you own, this is the
+        smaller answer. The exclusions that make it smaller — and the limits
+        that come with them — are worked through on{' '}
+        <a href="/why/">why this shape</a>, and the canonical list is{' '}
+        <a href={`${REPO}#not-in-v1`}>Not in v1</a> in the code repository.
       </p>
     </Callout>
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Why this shape',
-        href: '/why/',
-        description: 'The gap this sits in, and why it stays small.',
-      },
-      {
-        label: 'Product',
-        href: '/product/',
-        description: 'The run loop, end to end.',
-      },
-      {
-        label: 'Pipeline',
-        href: '/pipeline/',
-        description: 'What replaces workflow YAML here.',
-      },
-      {
-        label: 'Self-hosted',
-        href: '/self-hosted/',
-        description: 'What you take on by hosting the worker.',
-      },
-      {
-        label: 'Docs comparison',
-        href: `${DOCS}/start/comparison/`,
-        description: 'Woodpecker, Drone, Jenkins, and when to pick them.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'Try it next to your existing workflows.',
-      },
-    ]}
-  />
 </MarketingPage>

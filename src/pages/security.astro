@@ -5,7 +5,6 @@ import Section from '../components/marketing/Section.astro';
 import Actions from '../components/marketing/Actions.astro';
 import CtaLink from '../components/marketing/CtaLink.astro';
 import Callout from '../components/marketing/Callout.astro';
-import NextSteps from '../components/marketing/NextSteps.astro';
 import Grid from '../components/marketing/Grid.astro';
 import Card from '../components/marketing/Card.astro';
 import MarkList from '../components/marketing/MarkList.astro';
@@ -142,10 +141,11 @@ const topics = [
         secret columns are re-sealed under the new key. A row that opens with
         neither key fails startup rather than serving broken.
       </Card>
-      <Card title="Lose it and the credentials go" tone="dark">
-        A backup without the key still restores bindings and job history — but
-        the App has to be pasted in again. Store the key where your other
-        secrets live, not beside the backup.
+      <Card title="Nothing else can open them" tone="dark">
+        The key is the only thing that decrypts those columns — there is no
+        recovery path and no escrow. Store it where your other secrets live, and
+        see <a class="underline underline-offset-4" href="/self-hosted/">self-hosted</a> for what
+        that means at backup time.
       </Card>
     </Grid>
   </Section>
@@ -222,38 +222,4 @@ const topics = [
     </Callout>
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Self-hosted',
-        href: '/self-hosted/',
-        description: 'The one env var you must keep, and what must persist.',
-      },
-      {
-        label: 'Product',
-        href: '/product/',
-        description: 'Where the token is used and where it is stripped.',
-      },
-      {
-        label: 'Concepts',
-        href: '/concepts/',
-        description: 'Binding, job, executor, shareable log.',
-      },
-      {
-        label: 'Open source',
-        href: '/open-source/',
-        description: 'Licences, repositories, and how to contribute.',
-      },
-      {
-        label: 'Security model',
-        href: `${DOCS}/understanding/security-model/`,
-        description: 'The reference version of this page.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'Generate CI_SECRET_KEY and boot the worker.',
-      },
-    ]}
-  />
 </MarketingPage>

@@ -31,10 +31,13 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-type SiteHeaderLink = { label: string; href: string };
+type SiteHeaderLink = { label: string; href: string; description?: string };
+
+type SiteHeaderGroup = { title: string; links: readonly SiteHeaderLink[] };
 
 type SiteHeader01Props = React.ComponentProps<"header"> & {
   brand?: string;
+  groups?: readonly SiteHeaderGroup[];
   links?: SiteHeaderLink[];
   ctaLabel?: string;
   ctaHref?: string;
@@ -60,6 +63,7 @@ function BrandMark() {
 
 function SiteHeader01({
   brand = "openpreflight",
+  groups = [],
   links = defaultLinks,
   ctaLabel = "Quickstart",
   ctaHref = "https://docs.openpreflight.xyz/start/quickstart/",
@@ -93,10 +97,34 @@ function SiteHeader01({
           <BrandMark />
           {brand}
         </a>
-        <nav
-          className="hidden items-center gap-1 lg:flex"
-          aria-label="Main"
-        >
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+          {groups.map((group) => (
+            <DropdownMenu key={group.title}>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="group inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground outline-none transition-colors hover:bg-foreground/[.045] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/55 data-[state=open]:bg-foreground/[.045] data-[state=open]:text-foreground"
+                  type="button"
+                >
+                  {group.title}
+                  <ChevronDown className="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-80 p-1.5">
+                {group.links.map((link) => (
+                  <DropdownMenuItem asChild key={link.label}>
+                    <a className="flex-col items-start gap-0.5 py-2.5" href={link.href}>
+                      <span className="text-sm font-semibold">{link.label}</span>
+                      {link.description ? (
+                        <span className="text-xs leading-snug text-muted-foreground">
+                          {link.description}
+                        </span>
+                      ) : null}
+                    </a>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ))}
           {links.map((link) => (
             <a
               className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-foreground/[.045] hover:text-foreground"
@@ -180,16 +208,36 @@ function SiteHeader01({
                   A small CI provider for private repos.
                 </SheetDescription>
               </SheetHeader>
-              <nav className="mt-8 grid gap-1" aria-label="Mobile">
-                {links.map((link) => (
-                  <a
-                    className="rounded-xl px-3 py-3 text-sm font-semibold hover:bg-muted"
-                    href={link.href}
-                    key={link.label}
-                  >
-                    {link.label}
-                  </a>
+              <nav className="mt-8 grid gap-6 overflow-y-auto pb-4" aria-label="Mobile">
+                {groups.map((group) => (
+                  <div key={group.title}>
+                    <p className="px-3 font-mono text-[0.68rem] font-semibold uppercase tracking-[0.06em] text-primary">
+                      {group.title}
+                    </p>
+                    <div className="mt-1.5 grid gap-0.5">
+                      {group.links.map((link) => (
+                        <a
+                          className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-muted"
+                          href={link.href}
+                          key={link.label}
+                        >
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                 ))}
+                <div className="grid gap-0.5 border-t border-foreground/10 pt-4">
+                  {links.map((link) => (
+                    <a
+                      className="rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-muted"
+                      href={link.href}
+                      key={link.label}
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
               </nav>
               <Button asChild className="mt-6 w-full" variant="signature">
                 <a href={ctaHref}>
@@ -205,4 +253,4 @@ function SiteHeader01({
 }
 
 export { SiteHeader01 };
-export type { SiteHeader01Props, SiteHeaderLink };
+export type { SiteHeader01Props, SiteHeaderGroup, SiteHeaderLink };

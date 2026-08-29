@@ -7,7 +7,6 @@ import CtaLink from '../../components/marketing/CtaLink.astro';
 import MarkList from '../../components/marketing/MarkList.astro';
 import Steps from '../../components/marketing/Steps.astro';
 import Callout from '../../components/marketing/Callout.astro';
-import NextSteps from '../../components/marketing/NextSteps.astro';
 import Grid from '../../components/marketing/Grid.astro';
 import Card from '../../components/marketing/Card.astro';
 import Prose from '../../components/marketing/Prose.astro';
@@ -116,7 +115,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
         {
           title: 'Bind the repositories',
           detail:
-            'The bindings table is the allow-list. A signed webhook for an unbound repo is acknowledged and dropped.',
+            'Ticking a repo is what turns a webhook into a job — and <a class="underline underline-offset-4" href="/security/">the trust boundary</a> worth understanding before you tick a lot of them.',
         },
         {
           title: 'Leave the executor alone',
@@ -183,9 +182,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
         {
           question: 'Do job containers get the Docker socket?',
           answer:
-            'No. Job containers drop capabilities, set <code>no-new-privileges</code>, and never receive the engine socket. Image names are allow-listed.',
-          href: `${DOCS}/understanding/security-model/`,
-          linkLabel: 'Security model',
+            'No — a job never gets a handle on the engine that started it. What a container is and is not given is on <a class="underline underline-offset-4" href="/security/">security</a>.',
         },
         {
           question: 'What is Coolify used for?',
@@ -220,38 +217,4 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
     </Callout>
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'GitHub App',
-        href: '/integrations/github-app/',
-        description: 'Register, install, bind, first Check Run.',
-      },
-      {
-        label: 'Pipeline',
-        href: '/pipeline/',
-        description: 'When runtime turns a step into a container.',
-      },
-      {
-        label: 'Self-hosted',
-        href: '/self-hosted/',
-        description: 'Where Docker and Coolify fit in a deployment.',
-      },
-      {
-        label: 'Security',
-        href: '/security/',
-        description: 'What a container job is allowed to reach.',
-      },
-      {
-        label: 'Coolify setup',
-        href: `${DOCS}/setup/coolify/`,
-        description: 'The optional integration, documented.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'Get the worker running first.',
-      },
-    ]}
-  />
 </MarketingPage>

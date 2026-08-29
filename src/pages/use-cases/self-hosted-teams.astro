@@ -9,7 +9,6 @@ import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
 import MarkList from '../../components/marketing/MarkList.astro';
 import Steps from '../../components/marketing/Steps.astro';
-import NextSteps from '../../components/marketing/NextSteps.astro';
 import Faq from '../../components/marketing/Faq.astro';
 import { CTA, DOCS } from '../../lib/site';
 
@@ -85,7 +84,7 @@ const stack = [
         {
           title: 'Tick the repos',
           detail:
-            'The bindings screen is the allow-list. Nothing runs for a repo you did not enable, however valid the webhook signature.',
+            'Nothing runs for a repo you did not enable — see <a class="underline underline-offset-4" href="/security/">security</a> for why that is the trust boundary.',
         },
         {
           title: 'Push',
@@ -116,9 +115,7 @@ const stack = [
         {
           question: 'How much disk?',
           answer:
-            'Every concurrent job holds its own checkout and its own log, so disk scales with concurrency. There is no cap on checkout size: size the workspace volume for your largest repository times however many jobs you allow at once.',
-          href: `${DOCS}/start/configuration/`,
-          linkLabel: 'Configuration',
+            'Enough for your largest checkout, times however many jobs you allow at once, plus the logs you keep. <a class="underline underline-offset-4" href="/self-hosted/">Self-hosted</a> has the sizing rule.',
         },
         {
           question: 'How much history does it keep?',
@@ -130,9 +127,7 @@ const stack = [
         {
           question: 'What does a deploy cost?',
           answer:
-            'A brief outage and any job that was mid-run. On a clean stop that job records itself cancelled and is not retried; deploy when the queue is empty if you care.',
-          href: `${DOCS}/understanding/operations/`,
-          linkLabel: 'Operations',
+            'A brief outage and whatever was mid-run. <a class="underline underline-offset-4" href="/self-hosted/">Self-hosted</a> covers exactly how an interrupted job is recorded.',
         },
         {
           question: 'Can jobs run on a different machine?',
@@ -157,8 +152,8 @@ const stack = [
         chat bot can list, re-run, and cancel jobs without a browser session.
       </Card>
       <Card eyebrow="For everyone else" title="Log links">
-        Reading a run needs a session — unless that binding opted into shareable
-        logs, which turns its log pages into anyone-with-the-link URLs.
+        Reading a run needs an account on your instance, with one per-repo
+        exception you can switch on. <a class="text-primary underline underline-offset-4" href="/security/">Security</a> covers it.
       </Card>
     </div>
     <Callout class="mt-8" title="Plan around the single account">
@@ -180,47 +175,13 @@ const stack = [
         Reverse proxy, volumes, and the environment reference.
       </Card>
     </div>
-    <Callout class="mt-8" title="On Coolify">
+    <Callout class="mt-8" title="If you already run Coolify">
       <p>
-        Coolify can inventory servers and install the worker for you. It is
-        optional, and it does not execute jobs — see{' '}
-        <a href="/integrations/">integrations</a> for where it actually sits.
+        It can inventory your servers and install the worker for you.{' '}
+        <a href="/integrations/">Integrations</a> covers what it does and does
+        not do here.
       </p>
     </Callout>
   </Section>
 
-  <NextSteps
-    links={[
-      {
-        label: 'Self-hosted',
-        href: '/self-hosted/',
-        description: 'The four things you operate.',
-      },
-      {
-        label: 'Security',
-        href: '/security/',
-        description: 'Secrets at rest and job isolation.',
-      },
-      {
-        label: 'All use cases',
-        href: '/use-cases/',
-        description: 'The other two stories.',
-      },
-      {
-        label: 'Integrations',
-        href: '/integrations/',
-        description: 'Docker, Coolify, and the process executor.',
-      },
-      {
-        label: 'Operations',
-        href: `${DOCS}/understanding/operations/`,
-        description: 'The day-two reference.',
-      },
-      {
-        label: 'Quickstart',
-        href: CTA.quickstart,
-        description: 'Compose up and register an App.',
-      },
-    ]}
-  />
 </MarketingPage>
