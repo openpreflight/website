@@ -1,6 +1,6 @@
 {
   "repo": "openpreflight/demo",
-  "updatedAt": "2026-08-29T04:57:40.500Z",
+  "updatedAt": "2026-08-29T06:17:25.659Z",
   "runs": [
     {
       "id": "passing",
@@ -52,9 +52,9 @@
       "title": "Container",
       "outcome": "runtime: node:24 via Docker",
       "branch": "demo/container",
-      "conclusion": "failure",
+      "conclusion": "success",
       "prUrl": "https://github.com/openpreflight/demo/pull/12",
-      "runUrl": "https://ci.openpreflight.xyz/runs/bab651e6-cbaf-469d-a894-a8517d17da9f"
+      "runUrl": "https://ci.openpreflight.xyz/runs/1f76b689-7e53-4c6f-84d8-95d7867ec1d5"
     }
   ]
 }
