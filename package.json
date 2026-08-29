@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check-links": "node scripts/check-links.mjs",
+    "refresh-demo-runs": "node scripts/refresh-demo-runs.mjs",
     "astro": "astro"
   },
   "dependencies": {

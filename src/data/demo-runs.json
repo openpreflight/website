@@ -1,0 +1,60 @@
+{
+  "repo": "openpreflight/demo",
+  "updatedAt": "2026-08-29T02:14:18.799Z",
+  "runs": [
+    {
+      "id": "passing",
+      "title": "Passing",
+      "outcome": "three steps, all green",
+      "branch": "demo/passing",
+      "conclusion": "success",
+      "prUrl": "https://github.com/openpreflight/demo/pull/1",
+      "runUrl": null
+    },
+    {
+      "id": "failing-test",
+      "title": "Failing test",
+      "outcome": "real node:test assertion failure",
+      "branch": "demo/failing-test",
+      "conclusion": "failure",
+      "prUrl": "https://github.com/openpreflight/demo/pull/2",
+      "runUrl": null
+    },
+    {
+      "id": "failing-build",
+      "title": "Failing build",
+      "outcome": "real build / syntax error",
+      "branch": "demo/failing-build",
+      "conclusion": "failure",
+      "prUrl": "https://github.com/openpreflight/demo/pull/3",
+      "runUrl": null
+    },
+    {
+      "id": "timeout",
+      "title": "Timeout",
+      "outcome": "pipeline deadline (timeout: 5s, sleep 60)",
+      "branch": "demo/timeout",
+      "conclusion": "timed_out",
+      "prUrl": "https://github.com/openpreflight/demo/pull/4",
+      "runUrl": null
+    },
+    {
+      "id": "skipped",
+      "title": "Skipped",
+      "outcome": "nothing to run → Check Run skipped",
+      "branch": "demo/skipped",
+      "conclusion": "skipped",
+      "prUrl": "https://github.com/openpreflight/demo/pull/5",
+      "runUrl": null
+    },
+    {
+      "id": "container",
+      "title": "Container",
+      "outcome": "runtime: node:24 via Docker",
+      "branch": "demo/container",
+      "conclusion": "success",
+      "prUrl": "https://github.com/openpreflight/demo/pull/6",
+      "runUrl": null
+    }
+  ]
+}

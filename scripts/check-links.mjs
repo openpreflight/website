@@ -35,6 +35,27 @@ const allowedExternalOrigins = [
   'https://www.apache.org/licenses/LICENSE-2.0',
 ];
 
+// Shareable demo log pages live on whatever host public_base_url is. Allow
+// those origins from demo-runs.json so a refresh cannot break link CI.
+try {
+  const demoRuns = JSON.parse(
+    readFileSync(join(root, 'src', 'data', 'demo-runs.json'), 'utf8'),
+  );
+  for (const run of demoRuns.runs ?? []) {
+    if (typeof run.runUrl !== 'string' || !run.runUrl) continue;
+    try {
+      const origin = new URL(run.runUrl).origin;
+      if (origin.startsWith('https://') && !allowedExternalOrigins.includes(origin)) {
+        allowedExternalOrigins.push(origin);
+      }
+    } catch {
+      /* ignore unparseable runUrl; the HTML check will still flag it */
+    }
+  }
+} catch {
+  /* file missing until the demo section lands */
+}
+
 const missing = required.filter((p) => !existsSync(join(dist, p)));
 if (missing.length) {
   console.error('Missing required dist paths:');
