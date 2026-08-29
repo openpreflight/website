@@ -1,6 +1,6 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
-import { CTA, DOCS, DOCS_REPO, REPO, WEBSITE_REPO } from '../lib/site';
+import { CTA, DOCS, DOCS_REPO, REPO, WEBSITE_REPO, RELEASE } from '../lib/site';
 ---
 
 <MarketingPage
@@ -35,9 +35,10 @@ import { CTA, DOCS, DOCS_REPO, REPO, WEBSITE_REPO } from '../lib/site';
 
   <h2>Releases</h2>
   <p>
-    Changelog lives in the code repo. GitHub Releases (when tagged) publish the
-    image and binaries. Until a tag exists, run from Compose build or a commit
-    you trust.
+    <strong>v1.0.0</strong> is tagged (29 August 2026). The changelog lives in
+    the code repo. The <a href={RELEASE}>GitHub Release</a> has linux amd64 and
+    arm64 binaries. Pin the published image with{" "}
+    <code>OPENPREFLIGHT_VERSION=1.0.0</code>.
   </p>
 
   <h2>Security reports</h2>

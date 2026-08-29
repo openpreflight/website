@@ -1,6 +1,6 @@
 ---
 import MarketingPage from '../../layouts/MarketingPage.astro';
-import { CTA, DOCS, REPO } from '../../lib/site';
+import { CTA, DOCS, REPO, RELEASE } from '../../lib/site';
 ---
 
 <MarketingPage
@@ -12,6 +12,11 @@ import { CTA, DOCS, REPO } from '../../lib/site';
   <p class="lead">
     One Go binary and one SQLite file. You register a GitHub App, bind repos in
     the UI, and every commit gets a Check Run with logs that live on your server.
+  </p>
+  <p>
+    <strong>v1.0.0</strong> is the tagged v1 release.{" "}
+    <a href={RELEASE}>GitHub Release</a> ·{" "}
+    <a href={`${REPO}/blob/v1.0.0/CHANGELOG.md`}>Changelog</a>.
   </p>
 
   <h2>Fit</h2>

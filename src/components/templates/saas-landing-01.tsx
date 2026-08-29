@@ -17,7 +17,7 @@ import { SiteHeader01 } from "@/components/blocks/site-header-01";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CTA, DOCS, REPO, DEMO_REPO, footerGroups, navLinks, tagline } from "@/lib/site";
+import { CTA, DOCS, REPO, DEMO_REPO, RELEASE, footerGroups, navLinks, tagline } from "@/lib/site";
 import demoRuns from "@/data/demo-runs.json";
 
 function outcomeLabel(conclusion: string) {
@@ -128,7 +128,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           <div className="mx-auto max-w-7xl">
             <div className="hero-copy mx-auto max-w-3xl text-center">
               <p className="hero-kicker font-mono text-sm font-medium tracking-wide text-primary">
-                openpreflight
+                v1.0.0 is out
               </p>
               <h1 className="mt-5 text-balance text-[2.75rem] font-semibold leading-[0.95] tracking-[-0.055em] sm:text-6xl lg:text-[4.75rem]">
                 A small CI provider for{" "}
@@ -150,6 +150,22 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   </a>
                 </Button>
               </div>
+              <p className="mt-5 font-mono text-xs text-muted-foreground">
+                Tagged 29 August 2026.{" "}
+                <a
+                  className="underline underline-offset-4 hover:text-foreground"
+                  href={RELEASE}
+                >
+                  Linux binaries
+                </a>
+                {" · "}
+                <a
+                  className="underline underline-offset-4 hover:text-foreground"
+                  href={`${REPO}/blob/v1.0.0/CHANGELOG.md`}
+                >
+                  Changelog
+                </a>
+              </p>
             </div>
 
             <figure className="hero-panel relative mx-auto mt-14 w-full max-w-2xl sm:mt-16">

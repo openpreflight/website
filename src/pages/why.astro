@@ -1,6 +1,6 @@
 ---
 import MarketingPage from '../layouts/MarketingPage.astro';
-import { CTA, DOCS, REPO } from '../lib/site';
+import { CTA, DOCS, REPO, RELEASE } from '../lib/site';
 ---
 
 <MarketingPage
@@ -22,6 +22,11 @@ import { CTA, DOCS, REPO } from '../lib/site';
     self-hosted platforms exist for teams that need matrices, caches, and
     artifacts. Plenty of people want something in between: the commit is gated,
     the logs stay here, and the operator is a binary.
+  </p>
+  <p>
+    <strong>v1.0.0</strong> is out. Linux binaries are on the{" "}
+    <a href={RELEASE}>GitHub Release</a>. The ceiling below is still the
+    product boundary, not a backlog.
   </p>
 
   <h2>The shape</h2>
