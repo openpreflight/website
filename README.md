@@ -15,7 +15,8 @@
 # openpreflight website
 
 The marketing site, published at **https://openpreflight.xyz**. Astro +
-Tailwind v4, static output, one page plus a branded 404.
+Tailwind v4, static output. Positioning pages plus a branded 404; how-to lives
+on [docs.openpreflight.xyz](https://docs.openpreflight.xyz).
 
 Reference documentation lives on a separate site,
 [openpreflight/docs](https://github.com/openpreflight/docs), at
@@ -32,9 +33,12 @@ npm run dev
 
 ## Structure
 
-- `src/pages/index.astro`: the marketing page
+- `src/pages/index.astro`: the marketing homepage
+- `src/pages/`: Product, Why, Self-hosted, Security, and the other hub routes
 - `src/pages/404.astro`: branded not-found
-- `src/components/`: Header, CheckRunPanel, RunFlow
+- `src/layouts/MarketingPage.astro`: shared header/footer chrome for inner pages
+- `src/lib/site.ts`: nav, footer groups, CTAs
+- `src/components/`: Header, CheckRunPanel, RunFlow, Rivelle blocks
 - `src/layouts/Layout.astro`: head, meta, OG tags, header/footer chrome
 - `src/styles/global.css`: product-green palette, JetBrains Mono, light/dark
   via `prefers-color-scheme`

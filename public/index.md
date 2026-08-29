@@ -38,6 +38,7 @@ See https://openpreflight.xyz/#demo
 
 ## Start here
 
+- [Product](https://openpreflight.xyz/product/)
 - [Quickstart](https://docs.openpreflight.xyz/start/quickstart/)
 - [Configuration](https://docs.openpreflight.xyz/start/configuration/)
 - [Register a GitHub App](https://docs.openpreflight.xyz/setup/github-app/)

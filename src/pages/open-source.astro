@@ -1,0 +1,53 @@
+---
+import MarketingPage from '../layouts/MarketingPage.astro';
+import { CTA, DOCS, DOCS_REPO, REPO, WEBSITE_REPO } from '../lib/site';
+---
+
+<MarketingPage
+  title="Open source · openpreflight"
+  description="Apache-2.0 worker, public repos, how to contribute, where security reports go. No invented governance."
+>
+  <p class="kicker">Open source</p>
+  <h1>Inspectable worker, public repos</h1>
+  <p class="lead">
+    The worker holds GitHub App PEMs. Open source is how you can read what it
+    does with them. License is Apache-2.0 on the binary; the two sites are MIT.
+  </p>
+
+  <h2>Repositories</h2>
+  <ul>
+    <li><a href={REPO}>openpreflight/openpreflight</a> — the Go binary</li>
+    <li><a href={DOCS_REPO}>openpreflight/docs</a> — docs.openpreflight.xyz</li>
+    <li><a href={WEBSITE_REPO}>openpreflight/website</a> — this site</li>
+    <li>
+      <a href="https://github.com/openpreflight/.github">openpreflight/.github</a>
+      — org profile
+    </li>
+  </ul>
+
+  <h2>Contribute</h2>
+  <p>
+    Issues and pull requests on the code repo. Development loop:
+    <a href={`${DOCS}/contributing/development/`}>development</a>.
+    Website and docs have their own CONTRIBUTING files. There is no foundation,
+    board, or RFC process to join.
+  </p>
+
+  <h2>Releases</h2>
+  <p>
+    Changelog lives in the code repo. GitHub Releases (when tagged) publish the
+    image and binaries. Until a tag exists, run from Compose build or a commit
+    you trust.
+  </p>
+
+  <h2>Security reports</h2>
+  <p>
+    <a href={`${REPO}/blob/main/SECURITY.md`}>SECURITY.md</a>
+    — not the public issue tracker for vulnerabilities.
+  </p>
+
+  <div class="cta-row">
+    <a class="primary" href={REPO}>GitHub</a>
+    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
+  </div>
+</MarketingPage>

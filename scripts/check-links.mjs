@@ -14,6 +14,20 @@ const dist = join(root, 'dist');
 const required = [
   'index.html',
   '404.html',
+  'product/index.html',
+  'why/index.html',
+  'self-hosted/index.html',
+  'security/index.html',
+  'open-source/index.html',
+  'use-cases/index.html',
+  'use-cases/private-repos/index.html',
+  'use-cases/self-hosted-teams/index.html',
+  'use-cases/open-source/index.html',
+  'concepts/index.html',
+  'integrations/index.html',
+  'integrations/github-app/index.html',
+  'pipeline/index.html',
+  'compare/github-actions/index.html',
   'favicon.svg',
   'favicon.ico',
   'favicon-32.png',
@@ -99,10 +113,12 @@ for (const file of walkHtml(dist)) {
     if (!href.startsWith('/')) continue;
     if (href.startsWith('//')) continue;
 
+    const pathOnly = href.split('#')[0] || '/';
     if (
-      href.startsWith('/_') ||
-      href === '/' ||
-      href.endsWith('.svg') ||
+      pathOnly.startsWith('/_') ||
+      pathOnly === '/' ||
+      pathOnly === '' ||
+      pathOnly.endsWith('.svg') ||
       href.endsWith('.png') ||
       href.endsWith('.ico') ||
       href.endsWith('.xml') ||
@@ -115,11 +131,11 @@ for (const file of walkHtml(dist)) {
       continue;
     }
 
-    const normalized = href.replace(/\/$/, '') || '';
+    const normalized = pathOnly.replace(/\/$/, '') || '';
     const candidates = [
-      join(dist, href.replace(/^\//, ''), 'index.html'),
+      join(dist, pathOnly.replace(/^\//, ''), 'index.html'),
       join(dist, `${normalized.replace(/^\//, '')}.html`),
-      join(dist, href.replace(/^\//, '')),
+      join(dist, pathOnly.replace(/^\//, '')),
     ];
     if (!candidates.some((c) => existsSync(c))) {
       broken.push(`${rel} → ${href}`);

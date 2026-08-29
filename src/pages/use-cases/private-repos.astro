@@ -1,0 +1,32 @@
+---
+import MarketingPage from '../../layouts/MarketingPage.astro';
+import { CTA, DOCS } from '../../lib/site';
+---
+
+<MarketingPage
+  title="Private repos · openpreflight"
+  description="Self-hosted Check Runs on private GitHub repositories without Actions YAML."
+>
+  <p class="kicker"><a href="/use-cases/">Use cases</a> / Private repos</p>
+  <h1>Check Runs on private code, without Actions</h1>
+  <p class="lead">
+    GitHub already stores the repo. You want a status on the commit. You do not
+    want to put that work on hosted Actions minutes or write workflow YAML for
+    install/test/build.
+  </p>
+  <p>
+    Register a GitHub App against those private repos, bind them in the UI, and
+    the worker clones with an installation token that never lands in the remote
+    URL. The Check Run is the artifact GitHub already knows how to display.
+  </p>
+  <p>
+    Setup:
+    <a href={`${DOCS}/setup/github-app/`}>GitHub App</a>
+    and
+    <a href={`${DOCS}/setup/bindings/`}>bindings</a>.
+  </p>
+  <div class="cta-row">
+    <a class="primary" href={CTA.quickstart}>Quickstart</a>
+    <a class="secondary" href="/use-cases/">All use cases</a>
+  </div>
+</MarketingPage>

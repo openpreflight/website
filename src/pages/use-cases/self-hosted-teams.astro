@@ -1,0 +1,30 @@
+---
+import MarketingPage from '../../layouts/MarketingPage.astro';
+import { CTA, DOCS } from '../../lib/site';
+---
+
+<MarketingPage
+  title="Self-hosted teams · openpreflight"
+  description="Keep the CI worker, SQLite file, and job logs on infrastructure you already operate."
+>
+  <p class="kicker"><a href="/use-cases/">Use cases</a> / Self-hosted teams</p>
+  <h1>Runner and logs stay on your box</h1>
+  <p class="lead">
+    The team already pays for a VPS or a home-lab machine. openpreflight is a
+    Compose stack on that machine: UI, webhook, runner, SQLite, logs.
+  </p>
+  <p>
+    GitHub only receives Check Run payloads and a details URL that points at
+    you. Shareable logs are opt-in per binding. Operations (backups, upgrades,
+    what a restart does to an in-flight job) are in
+    <a href={`${DOCS}/understanding/operations/`}>operations</a>.
+  </p>
+  <p>
+    Coolify can inventory servers and install the worker. It is not required,
+    and it does not execute jobs.
+  </p>
+  <div class="cta-row">
+    <a class="primary" href="/self-hosted/">Self-hosted</a>
+    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
+  </div>
+</MarketingPage>

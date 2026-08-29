@@ -58,7 +58,7 @@ function Footer01({
           <div>
             <a
               className="inline-flex items-center gap-2.5 font-semibold tracking-tight"
-              href="#top"
+              href="/"
             >
               <span className="grid size-9 place-items-center overflow-hidden rounded-xl bg-primary text-primary-foreground">
                 <img

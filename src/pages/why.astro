@@ -1,0 +1,61 @@
+---
+import MarketingPage from '../layouts/MarketingPage.astro';
+import { CTA, DOCS, REPO } from '../lib/site';
+---
+
+<MarketingPage
+  title="Why · openpreflight"
+  description="Private-repo CI without Actions YAML or a pipeline DSL: a binary and a SQLite file on a server you already pay for."
+>
+  <p class="kicker">Why</p>
+  <h1>CI for private repos, small enough to host</h1>
+  <p class="lead">
+    The problem is not “we need another CI platform.” It is: we want a Check
+    Run on our private code, on our machine, without learning a second
+    workflow language.
+  </p>
+
+  <h2>The problem</h2>
+  <p>
+    GitHub already knows how to show a Check Run. Hosted Actions is the default
+    path, and it brings YAML, hosted minutes, and a lot of surface area. Full
+    self-hosted platforms exist for teams that need matrices, caches, and
+    artifacts. Plenty of people want something in between: the commit is gated,
+    the logs stay here, and the operator is a binary.
+  </p>
+
+  <h2>The shape</h2>
+  <p>
+    One process is configurator and worker. One SQLite file holds Apps,
+    bindings, jobs, and encrypted secrets. You register a GitHub App you own.
+    Pipelines are install/test/build in <code>.ci.yml</code>, not a new DSL.
+    Runs are gated on the commit the way Zuul does it — trigger on the check
+    suite, build the immutable SHA, one live run per commit. The ceiling of
+    that model is in
+    <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a>.
+  </p>
+
+  <h2>Contrast</h2>
+  <p>
+    Hosted runners and full platforms solve orchestration. This product does
+    not. It reports Check Runs from a worker you host. GitHub Actions can still
+    orchestrate everything else. They can coexist; this does not replace
+    workflow YAML. See
+    <a href="/compare/github-actions/">openpreflight and GitHub Actions</a>.
+  </p>
+
+  <h2>The ceiling</h2>
+  <p>
+    Not in v1: Actions YAML, <code>actions/runner</code>, creating Apps for
+    you, matrices, caches, artifacts. Jobs on another machine use a Docker
+    engine (<code>CI_DOCKER_HOST</code>), not Coolify as a job runner. If those
+    are requirements, pick a different tool — the
+    <a href={`${DOCS}/start/comparison/`}>docs comparison</a> is honest about
+    that.
+  </p>
+
+  <div class="cta-row">
+    <a class="primary" href={CTA.quickstart}>Quickstart</a>
+    <a class="secondary" href={REPO}>GitHub</a>
+  </div>
+</MarketingPage>

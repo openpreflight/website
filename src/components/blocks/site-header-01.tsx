@@ -44,11 +44,10 @@ type SiteHeader01Props = React.ComponentProps<"header"> & {
 };
 
 const defaultLinks: SiteHeaderLink[] = [
-  { label: "Product", href: "#product" },
-  { label: "How it runs", href: "#how" },
-  { label: "Pipeline", href: "#pipeline" },
-  { label: "Demo", href: "#demo" },
+  { label: "Product", href: "/product/" },
+  { label: "Why", href: "/why/" },
   { label: "Docs", href: "https://docs.openpreflight.xyz" },
+  { label: "GitHub", href: "https://github.com/openpreflight/openpreflight" },
 ];
 
 function BrandMark() {
@@ -89,7 +88,7 @@ function SiteHeader01({
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-6 px-5 sm:px-8">
         <a
           className="flex shrink-0 items-center gap-2.5 font-semibold tracking-tight"
-          href="#top"
+          href="/"
         >
           <BrandMark />
           {brand}

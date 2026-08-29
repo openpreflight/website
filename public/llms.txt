@@ -11,6 +11,16 @@ License: Apache-2.0
 
 ## Product
 
+- [Product](https://openpreflight.xyz/product/): How a run happens, configuration, non-goals
+- [Why](https://openpreflight.xyz/why/): Problem, shape, ceiling
+- [Self-hosted](https://openpreflight.xyz/self-hosted/): You run the worker
+- [Security](https://openpreflight.xyz/security/): Claims from the security model only
+- [Open source](https://openpreflight.xyz/open-source/): Repos, license, contributing
+- [Pipeline](https://openpreflight.xyz/pipeline/): `.ci.yml`, not a check registry
+- [Integrations](https://openpreflight.xyz/integrations/): GitHub App, Coolify, Docker, process
+- [vs GitHub Actions](https://openpreflight.xyz/compare/github-actions/): Complement, do not replace
+- [Concepts](https://openpreflight.xyz/concepts/): Check Run, Binding, Job
+- [Use cases](https://openpreflight.xyz/use-cases/): Private repos, self-hosted teams, OSS
 - [Product overview (Markdown)](https://openpreflight.xyz/index.md): Positioning, what it does, what is out of scope for v1
 - [Marketing home](https://openpreflight.xyz/): Human-facing landing page
 

@@ -1,0 +1,57 @@
+---
+import MarketingPage from '../layouts/MarketingPage.astro';
+import { CTA, DOCS, REPO } from '../lib/site';
+---
+
+<MarketingPage
+  title="Self-hosted · openpreflight"
+  description="Self-hosting is the product: Compose or a binary, SQLite in DATA_DIR, GitHub reaching your HTTPS URL."
+>
+  <p class="kicker">Self-hosted</p>
+  <h1>You run the worker. GitHub shows the Check Run.</h1>
+  <p class="lead">
+    There is no hosted openpreflight control plane. Compose or the binary on
+    your server is the whole deployment.
+  </p>
+
+  <h2>The diagram</h2>
+  <pre class="diagram">{`Your infra                         GitHub
+─────────                         ──────
+compose / binary
+  UI + API + webhook + runner  ◄── HTTPS webhooks
+  SQLite in DATA_DIR           ──► Check Runs
+  logs on disk                 ──► details_url (your host)`}</pre>
+
+  <h2>What you operate</h2>
+  <ul>
+    <li>A public HTTPS URL GitHub can reach (reverse proxy in front of port 8080).</li>
+    <li><code>CI_SECRET_KEY</code> — the only required env var. Keep it forever.</li>
+    <li>SQLite and logs under <code>DATA_DIR</code>. That volume must persist.</li>
+    <li>A GitHub App you register. The worker does not create Apps for you.</li>
+  </ul>
+  <p>
+    Walkthrough:
+    <a href={`${DOCS}/start/quickstart/`}>quickstart</a>
+    and
+    <a href={`${DOCS}/understanding/deployment/`}>deployment</a>.
+  </p>
+
+  <h2>Docker and Coolify are optional</h2>
+  <p>
+    Process executor is the default. <code>runtime:</code> and fork PRs need a
+    Docker engine (<code>CI_DOCKER_HOST</code> or a mounted socket). Coolify is
+    optional inventory, a repo picker, and an install-worker API — not required
+    to run CI, and not a job runner.
+  </p>
+  <p>
+    There is no first-class Kubernetes operator and no air-gap product. If you
+    put the binary on an isolated network, that is ordinary self-hosting, not a
+    documented mode.
+  </p>
+
+  <div class="cta-row">
+    <a class="primary" href={CTA.quickstart}>Quickstart</a>
+    <a class="secondary" href={`${DOCS}/understanding/deployment/`}>Deployment</a>
+    <a class="secondary" href={REPO}>GitHub</a>
+  </div>
+</MarketingPage>

@@ -1,0 +1,33 @@
+---
+import MarketingPage from '../../layouts/MarketingPage.astro';
+import { CTA, DEMO_REPO } from '../../lib/site';
+---
+
+<MarketingPage
+  title="Open-source contributors · openpreflight"
+  description="The public demo repo shows real Check Runs from a self-hosted instance, not GitHub Actions."
+>
+  <p class="kicker"><a href="/use-cases/">Use cases</a> / Open source</p>
+  <h1>Public PRs, real Check Runs</h1>
+  <p class="lead">
+    <a href={DEMO_REPO}>openpreflight/demo</a>
+    is a small Node utility with six pull requests. Each is meant to produce a
+    Check Run on a self-hosted instance — passing, failing test, failing build,
+    timeout, skipped, container runtime.
+  </p>
+  <p>
+    The log pages are the same <code>/runs/&#123;id&#125;</code> pages you get
+    behind auth. Shareable logs are on for that binding only. Until the demo
+    App is bound, the site links the pull requests and leaves run URLs empty
+    rather than inventing them.
+  </p>
+  <p>
+    This is contributor-facing proof, not a hosted CI service for arbitrary
+    public repos. You still run your own worker.
+  </p>
+  <div class="cta-row">
+    <a class="primary" href="/#demo">Live demo</a>
+    <a class="secondary" href={DEMO_REPO}>Demo repo</a>
+    <a class="secondary" href={CTA.quickstart}>Quickstart</a>
+  </div>
+</MarketingPage>
