@@ -47,6 +47,7 @@ const defaultLinks: SiteHeaderLink[] = [
   { label: "Product", href: "#product" },
   { label: "How it runs", href: "#how" },
   { label: "Pipeline", href: "#pipeline" },
+  { label: "Demo", href: "#demo" },
   { label: "Docs", href: "https://docs.openpreflight.xyz" },
 ];
 
