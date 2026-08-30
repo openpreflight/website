@@ -27,10 +27,10 @@ const cases = [
   },
   {
     href: '/use-cases/open-source/',
-    eyebrow: 'Proof you can click',
+    eyebrow: 'Public repos too',
     title: 'Open-source contributors',
-    body: 'The public demo repo carries pull requests that produce real Check Runs from a self-hosted instance — pass, fail, timeout, skip.',
-    points: ['Six demo pull requests', 'Public run log pages', 'Same pages you get behind auth'],
+    body: 'Repository visibility never gates a run. Bind a public repo the same way you bind a private one — useful when contributors should see a check without standing up their own instance.',
+    points: ['Same App, same worker', 'Shareable logs are opt-in per binding', 'Contribute on the product repos'],
   },
 ];
 ---
@@ -120,7 +120,7 @@ const cases = [
           {
             who: 'Open-source contributors',
             href: '/use-cases/open-source/',
-            body: 'Nobody should have to install a CI tool to find out how it reports a failure. The demo repository carries pull requests that land on each conclusion, from an ordinary self-hosted instance, with log pages anyone can open — proof you can click before you commit an afternoon.',
+            body: 'Nobody should have to invent a second CI to check a public repository. Visibility is read from the webhook and never gates anything — bind the repo, and the same worker reports the Check Run.',
           },
         ].map((item) => (
           <a

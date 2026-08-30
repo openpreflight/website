@@ -17,37 +17,7 @@ import { SiteHeader01 } from "@/components/blocks/site-header-01";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CTA, DOCS, REPO, DEMO_REPO, RELEASE, footerGroups, navGroups, navLinks, tagline } from "@/lib/site";
-import demoRuns from "@/data/demo-runs.json";
-
-function outcomeLabel(conclusion: string) {
-  switch (conclusion) {
-    case "success":
-      return "passed";
-    case "failure":
-      return "failed";
-    case "timed_out":
-      return "timed out";
-    case "skipped":
-      return "skipped";
-    default:
-      return conclusion;
-  }
-}
-
-function outcomeClass(conclusion: string) {
-  switch (conclusion) {
-    case "success":
-      return "text-[var(--pass,#2f6f4f)]";
-    case "failure":
-    case "timed_out":
-      return "text-red-700 dark:text-red-400";
-    case "skipped":
-      return "text-muted-foreground";
-    default:
-      return "text-muted-foreground";
-  }
-}
+import { CTA, DOCS, REPO, RELEASE, footerGroups, navGroups, navLinks, tagline } from "@/lib/site";
 const checkSteps = [
   { name: "install", command: "npm ci", duration: "8s", width: "19%" },
   { name: "test", command: "go test ./...", duration: "21s", width: "50%" },
@@ -401,71 +371,6 @@ build: npm run build
 timeout: 15m`}</code>
               </pre>
             </div>
-          </div>
-        </section>
-
-        <section className="px-5 py-24 sm:px-8 sm:py-32" id="demo">
-          <div className="mx-auto max-w-7xl">
-            <Badge variant="secondary">
-              <Check className="size-3.5" /> Live demo
-            </Badge>
-            <h2 className="mt-6 max-w-3xl text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-              Real Check Runs, public log pages
-            </h2>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
-              These are real Check Runs on{" "}
-              <a
-                className="font-mono text-sm text-foreground underline-offset-4 hover:underline"
-                href={DEMO_REPO}
-              >
-                openpreflight/demo
-              </a>
-              , produced by a self-hosted instance — not GitHub Actions. The
-              log pages are the same pages you get behind auth; shareable logs
-              are on for that one binding. A run URL can 404 after retention
-              prunes the job — the pull request stays.
-            </p>
-            <ul className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {demoRuns.runs.map((entry) => (
-                <li key={entry.branch}>
-                  <p
-                    className={cn(
-                      "font-mono text-xs font-medium uppercase tracking-wide",
-                      outcomeClass(entry.conclusion),
-                    )}
-                  >
-                    {outcomeLabel(entry.conclusion)}
-                  </p>
-                  <h3 className="mt-2 font-mono text-lg font-semibold tracking-tight">
-                    {entry.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {entry.outcome}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-                    {entry.runUrl ? (
-                      <a
-                        className="text-foreground underline-offset-4 hover:underline"
-                        href={entry.runUrl}
-                      >
-                        run log
-                      </a>
-                    ) : null}
-                    <a
-                      className="text-muted-foreground underline-offset-4 hover:underline"
-                      href={entry.prUrl}
-                    >
-                      pull request
-                    </a>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-10 max-w-2xl text-sm text-muted-foreground">
-              The demo instance is a live box and may occasionally be down. If a
-              run link is missing, use the pull request — the Check Run on
-              GitHub still points at the details URL when the instance is up.
-            </p>
           </div>
         </section>
 

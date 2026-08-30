@@ -22,14 +22,6 @@ Configuration happens in the web UI: register GitHub Apps, bind repos, and mint 
 2. The worker mints an installation token, opens a Check Run, fetches the exact commit, detaches the checkout, and strips the remote before any step runs.
 3. Pipeline steps run in-process, or via `docker run` when `runtime:` is set. The Check Run carries a truncated log tail, and the full log stays on the details page.
 
-## Live demo
-
-Six pull requests on [openpreflight/demo](https://github.com/openpreflight/demo) produce real Check Runs on a self-hosted instance (not GitHub Actions). The log pages are the same `/runs/{id}` pages you get behind auth; shareable logs are on for that binding only.
-
-Outcomes: passing, failing test, failing build, timeout, skipped, container runtime. Links to individual run pages can 404 after log retention prunes a job — the site falls back to the pull request.
-
-See https://openpreflight.xyz/#demo
-
 ## Not in v1
 
 These are out of scope for the shipped v1.0.0, not unfinished work:

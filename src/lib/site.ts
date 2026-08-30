@@ -4,13 +4,11 @@ export const DOCS = "https://docs.openpreflight.xyz";
 export const REPO = "https://github.com/openpreflight/openpreflight";
 export const WEBSITE_REPO = "https://github.com/openpreflight/website";
 export const DOCS_REPO = "https://github.com/openpreflight/docs";
-export const DEMO_REPO = "https://github.com/openpreflight/demo";
 export const RELEASE = `${REPO}/releases/tag/v1.0.0`;
 
 export const CTA = {
   quickstart: `${DOCS}/start/quickstart/`,
   github: REPO,
-  demo: "/#demo",
 } as const;
 
 export const tagline =
@@ -103,11 +101,6 @@ export const siteSections = [
         label: "Open source",
         href: "/open-source/",
         description: "Repositories, licences, contributing",
-      },
-      {
-        label: "Live demo",
-        href: "/#demo",
-        description: "Real Check Runs on a public repo",
       },
     ],
   },

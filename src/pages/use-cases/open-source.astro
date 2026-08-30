@@ -8,17 +8,8 @@ import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
 import Prose from '../../components/marketing/Prose.astro';
-import CodePanel from '../../components/marketing/CodePanel.astro';
 import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
-import { CTA, DEMO_REPO, REPO } from '../../lib/site';
-import demoRuns from '../../data/demo-runs.json';
-
-const outcomes = {
-  success: { label: 'passed', tone: 'text-primary' },
-  failure: { label: 'failed', tone: 'text-destructive' },
-  timed_out: { label: 'timed out', tone: 'text-destructive' },
-  skipped: { label: 'skipped', tone: 'text-muted-foreground' },
-};
+import { CTA, REPO } from '../../lib/site';
 
 const panelSteps = [
   { name: 'install', command: 'npm ci', duration: '7s', width: '24%' },
@@ -29,12 +20,12 @@ const panelSteps = [
 
 <MarketingPage
   title="Open-source contributors · openpreflight"
-  description="The public demo repo shows real Check Runs from a self-hosted instance, not GitHub Actions."
+  description="The same worker checks a public GitHub repo if you bind one. Visibility never gates a run."
 >
   <PageHero
     kicker="Open source"
-    title="Public PRs, real Check Runs"
-    lead="openpreflight/demo is a small Node utility with six pull requests. Each is meant to produce a Check Run on a self-hosted instance — passing, failing test, failing build, timeout, skipped, container runtime."
+    title="Public repos work the same"
+    lead="Repository visibility is read from the webhook payload and never gates anything. Bind a public repo, opt that binding into shareable logs if you want, and contributors see the same Check Run an operator would."
     crumbs={[
       { label: 'openpreflight', href: '/' },
       { label: 'Use cases', href: '/use-cases/' },
@@ -42,13 +33,13 @@ const panelSteps = [
     ]}
   >
     <Actions slot="actions">
-      <CtaLink href="/#demo" variant="primary" size="lg">See the live runs</CtaLink>
-      <CtaLink href={DEMO_REPO} variant="outline" size="lg">Demo repo</CtaLink>
+      <CtaLink href={CTA.quickstart} variant="primary" size="lg">Quickstart</CtaLink>
+      <CtaLink href="/open-source/" variant="outline" size="lg">Contributing</CtaLink>
     </Actions>
     <CheckRunPanel
       slot="visual"
-      label="Check Run · failing test"
-      repo="openpreflight/demo"
+      label="Check Run · public pull request"
+      repo="your-org/library"
       meta={['#3', 'failing-test']}
       conclusion="failed"
       duration="18s"
@@ -57,131 +48,30 @@ const panelSteps = [
     />
   </PageHero>
 
-  <Section
-    badge="The six"
-    title="One pull request per outcome"
-    description="Each branch is deliberately shaped to land on a different conclusion, so the failure modes are as visible as the passing one."
-  >
-    <ul class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {
-        demoRuns.runs.map((entry) => {
-          const outcome = outcomes[entry.conclusion] ?? outcomes.skipped;
-          return (
-            <li class="flex flex-col rounded-[1.5rem] border border-foreground/10 p-6">
-              <p class={`font-mono text-xs font-medium uppercase tracking-[0.06em] ${outcome.tone}`}>
-                {outcome.label}
-              </p>
-              <h3 class="mt-3 font-mono text-base font-semibold tracking-tight">{entry.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{entry.outcome}</p>
-              <div class="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-                {entry.runUrl && (
-                  <a class="text-primary underline underline-offset-4" href={entry.runUrl}>
-                    run log
-                  </a>
-                )}
-                <a class="text-muted-foreground underline underline-offset-4 hover:text-foreground" href={entry.prUrl}>
-                  pull request
-                </a>
-              </div>
-            </li>
-          );
-        })
-      }
-    </ul>
-  </Section>
-
-  <Section badge="What it proves" title="Contributor-facing evidence" tone="dark">
+  <Section badge="What you get" title="Same worker, public or private" tone="dark">
     <Grid class="mt-12" cols={3}>
-      <Card title="Not GitHub Actions" tone="dark">
-        These checks come from a self-hosted openpreflight instance reporting
-        through its own GitHub App.
+      <Card title="No second product" tone="dark">
+        There is no hosted openpreflight for arbitrary public repos. An instance
+        you run can check a public repo you bound.
       </Card>
-      <Card title="The same log pages" tone="dark">
-        <code>/runs/{'{id}'}</code> is the page you get behind auth. Shareable
-        logs are on for that one binding.
+      <Card title="Shareable logs are opt-in" tone="dark">
+        Per binding. Everywhere else the log page still needs a session on your
+        instance.
       </Card>
-      <Card title="Still your own worker" tone="dark">
-        This is proof you can inspect, not a hosted CI service for arbitrary
-        public repos.
+      <Card title="Contribute on the product" tone="dark">
+        Issues and pull requests belong on the Go repository, not on a fixture
+        you stood up to try it.
       </Card>
     </Grid>
   </Section>
 
-  <Section badge="How it is wired" title="What makes those pages public">
-    <div class="mt-12 grid gap-4 md:grid-cols-3">
-      {
-        [
-          {
-            n: '01',
-            title: 'A self-hosted instance',
-            body: 'An ordinary openpreflight box with a GitHub App registered against the demo repository. Nothing special is running.',
-          },
-          {
-            n: '02',
-            title: 'One binding, logs shareable',
-            body: 'Shareable logs are a per-binding opt-in, switched on for the demo repository only. Every other binding stays behind a session.',
-          },
-          {
-            n: '03',
-            title: 'Six branches, six conclusions',
-            body: 'The pull requests are shaped so that pass, failure, timeout, skip, and a container runtime each show up as themselves.',
-          },
-        ].map((item) => (
-          <div class="rounded-[1.5rem] border border-foreground/10 p-6">
-            <span class="font-mono text-xs text-primary">{item.n}</span>
-            <h3 class="mt-5 text-base font-semibold tracking-[-.02em]">{item.title}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
-          </div>
-        ))
-      }
-    </div>
-    <Callout class="mt-8" title="You can do the same">
-      <p>
-        Nothing about that setup is privileged. Point your own instance at a
-        public repository, opt that binding into shareable logs, and you have the
-        same thing — visibility is read from the payload but never gates
-        anything.
-      </p>
-    </Callout>
-  </Section>
-
-  <Section badge="Reading a run" title="What a contributor actually sees">
-    <div class="mt-12 grid gap-4 md:grid-cols-3">
-      <Card index={1} title="The check on the commit">
-        A conclusion and a step table in the run’s summary — install, test,
-        build, with the one that failed marked and the rest reported skipped.
-      </Card>
-      <Card index={2} title="A log tail">
-        Enough output attached to the Check Run to see what broke without
-        leaving GitHub.
-      </Card>
-      <Card index={3} title="The full log page">
-        The details URL, served by the instance that ran the job. For this
-        binding it opens without an account; everywhere else it needs a session.
-      </Card>
-    </div>
-    <Callout class="mt-8" title="A failing check is the interesting one">
-      <p>
-        Two of the six pull requests fail on purpose and one times out. That is
-        the part worth clicking — a green check tells you very little about
-        whether a CI tool reports failures usefully.
-      </p>
-    </Callout>
-  </Section>
-
-  <Section badge="Contributing" title="If the demo makes you want to poke at it">
+  <Section badge="Then what" title="If you want to poke at the code">
     <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-center">
       <Prose>
         <p>
-          The same repository you are looking at is the one contributors work
-          in, and the demo branches double as fixtures for the behaviour they
-          exercise — a failing test, a build error, a pipeline that runs out of
-          time.
-        </p>
-        <p>
-          What the project will take, how the repositories are laid out, and why
-          the test suite needs no credentials are all on{' '}
-          <a href="/open-source/">open source</a>.
+          The test suite runs offline. The most useful contributions are a bug
+          report with a failing test, a gap in v1 the code does not cover yet,
+          and docs corrected to match the code.
         </p>
       </Prose>
       <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
@@ -208,16 +98,15 @@ const panelSteps = [
         </a>
       </div>
     </div>
-  </Section>
-
-  <Section>
-    <Callout title="If a link is empty">
+    <Callout class="mt-8" title="This is not a hosted CI">
       <p>
-        The demo instance is a live box and can be down. A run URL may also 404
-        once retention prunes the job — the pull request always stays. Until the
-        demo App is bound, run URLs are left empty rather than invented.
+        Every instance is one someone runs, bound to repos they chose. The
+        <a href={CTA.quickstart}>quickstart</a> is how you get one.
       </p>
     </Callout>
+    <Actions>
+      <CtaLink href="/open-source/" variant="outline">Open source</CtaLink>
+      <CtaLink href="/product/" variant="outline">How it works</CtaLink>
+    </Actions>
   </Section>
-
 </MarketingPage>
