@@ -1,0 +1,5 @@
+runtime: node:22
+install: corepack enable && corepack prepare pnpm@10 --activate && pnpm install --frozen-lockfile
+test: pnpm run check-links
+build: pnpm run build
+timeout: 15m
