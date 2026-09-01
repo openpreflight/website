@@ -66,7 +66,6 @@ const runSteps = [
 const notInV1 = [
   "GitHub Actions YAML",
   "actions/runner",
-  "Creating GitHub Apps for you",
   "Matrices",
   "Caches",
   "Artifacts",
