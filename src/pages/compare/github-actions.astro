@@ -17,7 +17,7 @@ const shortVersion = [
     self: true,
   },
   {
-    want: 'A real pipeline DSL — stages, matrices, caches, artifacts, fan-out',
+    want: 'A real pipeline DSL: stages, matrices, caches, artifacts, fan-out',
     pick: 'Woodpecker or Drone',
     self: false,
   },
@@ -44,8 +44,8 @@ const neighbours = [
   {
     name: 'Drone',
     summary:
-      'The project Woodpecker forked from. Same shape — a server, runners, container-per-step pipelines, a mature plugin ecosystem, several forges.',
-    them: 'Licensing changed after the acquisition, which is worth checking against your own constraints.',
+      'The project Woodpecker forked from. Same shape: a server, runners, container-per-step pipelines, a mature plugin ecosystem, several forges.',
+    them: 'Licensing changed after the acquisition. Check that against your own constraints.',
     us: 'The trade-off against this is the same as Woodpecker’s.',
   },
   {
@@ -110,7 +110,7 @@ const rows = [
   <PageHero
     kicker="Compare"
     title="Choose the right layer"
-    lead="GitHub Actions is orchestration. openpreflight is a Check Runs worker you host. Use them together when that matches your setup — this is not a replacement for workflow YAML."
+    lead="GitHub Actions is orchestration. openpreflight is a Check Runs worker you host. Use them together when that matches your setup. This is not a replacement for workflow YAML."
     crumbs={[
       { label: 'openpreflight', href: '/' },
       { label: 'Compare' },
@@ -127,7 +127,7 @@ const rows = [
 
   <Section
     badge="The short version"
-    title="Pick by what you actually want"
+    title="Pick by what you want"
     description="Actions is not the only neighbour. If one of the lower three rows describes you, the rest of this page is confirming a decision you have already made."
   >
     <div class="mt-12 overflow-hidden rounded-[1.5rem] border border-foreground/10">
@@ -238,7 +238,7 @@ const rows = [
     </div>
     <Prose class="mt-10">
       <p>
-        The full write-up, including where this is genuinely weaker than every
+        The full write-up, including where this is weaker than every
         one of them, is in the{' '}
         <a href={`${DOCS}/start/comparison/`}>docs comparison</a>. The short list
         of limits lives on <a href="/why/">why this shape</a>.
@@ -247,12 +247,12 @@ const rows = [
   </Section>
 
   <Section badge="Scope" title="Where that leaves this one">
-    <Callout title="Honest summary">
+    <Callout title="Summary">
       <p>
         If you need orchestration, use Actions or one of the neighbours above.
         If you need a private commit checked by a worker you own, this is the
-        smaller answer. The exclusions that make it smaller — and the limits
-        that come with them — are worked through on{' '}
+        smaller answer. The exclusions that make it smaller, and the limits
+        that come with them, are worked through on{' '}
         <a href="/why/">why this shape</a>, and the canonical list is{' '}
         <a href={`${REPO}#not-in-v1`}>Not in v1</a> in the code repository.
       </p>

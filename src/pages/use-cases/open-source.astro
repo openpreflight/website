@@ -14,7 +14,7 @@ import { CTA, REPO } from '../../lib/site';
 const panelSteps = [
   { name: 'install', command: 'npm ci', duration: '7s', width: '24%' },
   { name: 'test', command: 'npm test', duration: '11s', width: '38%', state: 'fail' as const },
-  { name: 'build', command: 'npm run build', duration: '—', width: '0%', state: 'skip' as const },
+  { name: 'build', command: 'npm run build', duration: '-', width: '0%', state: 'skip' as const },
 ];
 ---
 

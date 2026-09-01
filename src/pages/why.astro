@@ -138,7 +138,7 @@ const weaknesses = [
   <PageHero
     kicker="Why"
     title="CI for private repos, small enough to host"
-    lead="The problem is not “we need another CI platform.” It is: we want a Check Run on our private code, on our machine, without learning a second workflow language."
+    lead='The problem is not "we need another CI platform." It is: we want a Check Run on our private code, on our machine, without learning a second workflow language.'
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Why' }]}
   >
     <Actions slot="actions">
@@ -160,7 +160,7 @@ const weaknesses = [
     <Prose class="mt-10">
       <p>
         Both ends are the right answer for someone. Plenty of people want
-        neither: no hosted minutes to buy, no orchestration layer to run — just
+        neither: no hosted minutes to buy, no orchestration layer to run. Just
         the commit checked, on hardware that is already theirs.
       </p>
       <p>
@@ -186,7 +186,7 @@ const weaknesses = [
     </Grid>
     <Prose class="mt-12">
       <p>
-        Runs are gated on the commit the way Zuul does it — trigger on the
+        Runs are gated on the commit the way Zuul does it: trigger on the
         check suite, build the immutable SHA, one live run per commit. The
         ceiling of that model is written down in ADR 005 rather than discovered
         later.
@@ -262,7 +262,7 @@ const weaknesses = [
   <Section
     badge="The ceiling"
     title="Where this is the wrong tool"
-    description="Stated plainly, because these are the things that will bite. If one of them is a requirement, stop here and pick something else."
+    description="These are the things that will bite. If one of them is a requirement, stop here and pick something else."
   >
     <div class="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2">
       {weaknesses.map((item) => (
@@ -281,8 +281,7 @@ const weaknesses = [
     <MarkList class="mt-6" cols={3} items={ceiling} mark="cross" />
     <Callout class="mt-8">
       <p>
-        If one of these is a dealbreaker, that is useful information rather than
-        a dead end — <a href="/compare/github-actions/">the comparison</a> works
+        If one of these is a dealbreaker, <a href="/compare/github-actions/">the comparison</a> works
         through which tool to reach for instead.
       </p>
     </Callout>
@@ -295,7 +294,7 @@ const weaknesses = [
         {
           question: 'Is v1 released?',
           answer:
-            'Yes. <strong>v1.0.0</strong> was tagged 29 August 2026. Linux binaries are on the GitHub Release. What v1 still does not include is listed below — those things are out of scope, not unfinished.',
+            'Yes. <strong>v1.0.0</strong> was tagged 29 August 2026. Linux binaries are on the GitHub Release. What v1 still does not include is listed below. Those things are out of scope, not unfinished.',
           href: RELEASE,
           linkLabel: 'GitHub Release',
         },
@@ -323,7 +322,7 @@ const weaknesses = [
         {
           question: 'Does the project use itself for CI?',
           answer:
-            'No — <code>openpreflight/openpreflight</code> runs GitHub Actions. A self-hosted instance can check public repos the same way it checks private ones; that is not CI for the product repo. Releases have to publish multi-arch images, which this tool does not do.',
+            'No. <code>openpreflight/openpreflight</code> runs GitHub Actions. A self-hosted instance can check public repos the same way it checks private ones; that is not CI for the product repo. Releases have to publish multi-arch images, which this tool does not do.',
           href: `${DOCS}/start/faq/`,
           linkLabel: 'FAQ',
         },

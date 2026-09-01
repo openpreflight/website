@@ -21,7 +21,7 @@ const groups = [
       {
         id: 'check-suite',
         term: 'Check suite',
-        body: 'GitHub’s container for the runs on one commit. It is the only thing that triggers work here — never <code>push</code>, never <code>pull_request</code>. A suite is already scoped to one commit and one App.',
+        body: 'GitHub’s container for the runs on one commit. It is the only thing that triggers work here: never <code>push</code>, never <code>pull_request</code>. A suite is already scoped to one commit and one App.',
         links: [{ label: 'ADR 005', href: `${DOCS}/adr/005-check-suite-gating/` }],
       },
       {
@@ -101,7 +101,7 @@ const groups = [
 
 <MarketingPage
   title="Concepts · openpreflight"
-  description="Check Run, Binding, Pipeline, GitHub App, Job, Executor, Shareable log — nouns the product actually uses."
+  description="Check Run, Binding, Pipeline, GitHub App, Job, Executor, Shareable log: nouns the product uses."
 >
   <PageHero
     kicker="Concepts"
@@ -176,7 +176,7 @@ const groups = [
         {
           title: 'The <b>binding</b> decides whether anything happens',
           detail:
-            'No enabled binding for that repo, and the delivery is acknowledged and dropped — however valid its signature.',
+            'No enabled binding for that repo, and the delivery is acknowledged and dropped, however valid its signature.',
         },
         {
           title: 'A <b>job</b> is queued for that <code>(app, repo, sha)</code>',
@@ -186,7 +186,7 @@ const groups = [
         {
           title: 'An <b>installation token</b> fills a <b>workspace</b>',
           detail:
-            'The exact SHA is fetched, detached, and the remote stripped — before any of your commands run.',
+            'The exact SHA is fetched, detached, and the remote stripped, before any of your commands run.',
         },
         {
           title: 'The <b>executor</b> runs the <b>pipeline</b>',
@@ -196,7 +196,7 @@ const groups = [
         {
           title: 'A <b>Check Run</b> is completed',
           detail:
-            'Conclusion plus a log tail on the commit, with a details URL pointing at the full log — behind a session, unless that binding opted into a <b>shareable log</b>.',
+            'Conclusion plus a log tail on the commit, with a details URL pointing at the full log, behind a session unless that binding opted into a <b>shareable log</b>.',
         },
       ]}
     />
@@ -209,8 +209,8 @@ const groups = [
 
   <Section
     badge="Not in the vocabulary"
-    title="Words this product deliberately does not use"
-    description="If you are looking for one of these, you are looking at the wrong layer — and that is worth knowing before you install rather than after."
+    title="Words this product does not use"
+    description="If you are looking for one of these, you are looking at the wrong layer. Know that before you install, not after."
   >
     <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
@@ -292,7 +292,7 @@ const groups = [
     </div>
     <Callout class="mt-8" title="Commands are resolved separately">
       <p>
-        The install / test / build commands have their own order — repo file,
+        The install / test / build commands have their own order: repo file,
         then binding overrides, then Node defaults from <code>package.json</code>,
         then nothing to run, which reports skipped. That ladder is on{' '}
         <a href="/pipeline/">/pipeline</a>.

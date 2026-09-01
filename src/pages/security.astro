@@ -18,7 +18,7 @@ const topics = [
   },
   {
     title: 'Network',
-    body: 'GitHub POSTs webhooks to your public HTTPS URL, HMAC-verified against that App\u2019s secret. The worker clones with a short-lived installation token passed through <code>GIT_CONFIG_*</code> as Basic <code>x-access-token</code> — GitHub\u2019s git endpoint wants Basic, not the REST API\u2019s Bearer. It never enters the remote URL, <code>.git/config</code>, or a command line, and the remote is removed before any pipeline step runs.',
+    body: 'GitHub POSTs webhooks to your public HTTPS URL, HMAC-verified against that App\u2019s secret. The worker clones with a short-lived installation token passed through <code>GIT_CONFIG_*</code> as Basic <code>x-access-token</code>. GitHub\u2019s git endpoint wants Basic, not the REST API\u2019s Bearer. It never enters the remote URL, <code>.git/config</code>, or a command line, and the remote is removed before any pipeline step runs.',
   },
   {
     title: 'Secrets at rest',
@@ -39,7 +39,7 @@ const topics = [
   },
   {
     title: 'Shareable logs',
-    body: 'A binding can opt into unauthenticated <code>GET /runs/{id}</code>. Job ids are random UUIDs — treat the link as a secret.',
+    body: 'A binding can opt into unauthenticated <code>GET /runs/{id}</code>. Job ids are random UUIDs. Treat the link as a secret.',
   },
 ];
 ---
@@ -51,7 +51,7 @@ const topics = [
   <PageHero
     kicker="Security"
     title="What the worker is allowed to do"
-    lead="This page restates the published security model. It does not add claims — every line below has a source in the docs or the repository."
+    lead="This page restates the published security model. It does not add claims. Every line below has a source in the docs or the repository."
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Security' }]}
   >
     <Actions slot="actions">
@@ -104,9 +104,9 @@ const topics = [
         </p>
         <p>
           <strong>Enable only repos you trust.</strong> A pipeline runs that
-          repository’s own commands — in this process by default, or in a
-          container when <code>runtime:</code> is set. That is the trust boundary
-          worth thinking about before you tick a box in the picker.
+          repository’s own commands, in this process by default, or in a
+          container when <code>runtime:</code> is set. Think about that trust
+          boundary before you tick a box in the picker.
         </p>
         <p>
           Bindings and their overrides are documented in{' '}
@@ -142,7 +142,7 @@ const topics = [
         neither key fails startup rather than serving broken.
       </Card>
       <Card title="Nothing else can open them" tone="dark">
-        The key is the only thing that decrypts those columns — there is no
+        The key is the only thing that decrypts those columns. There is no
         recovery path and no escrow. Store it where your other secrets live, and
         see <a class="underline underline-offset-4" href="/self-hosted/">self-hosted</a> for what
         that means at backup time.
@@ -170,7 +170,7 @@ const topics = [
           },
           {
             route: 'GET /runs/{id}',
-            who: 'Session — or anyone, if opted in',
+            who: 'Session, or anyone if opted in',
             note: 'A binding can make its log pages readable by link holders. Job ids are random UUIDs; treat such a link as a secret.',
           },
           {
@@ -190,7 +190,7 @@ const topics = [
     <Callout class="mt-8" title="One admin user">
       <p>
         There are no teams, no roles, and no SSO. That is a real limit, listed
-        with the others on <a href="/why/">why this shape</a> — not something to
+        with the others on <a href="/why/">why this shape</a>, not something to
         discover after you have onboarded a team.
       </p>
     </Callout>
@@ -199,7 +199,7 @@ const topics = [
   <Section badge="Reporting" title="Found something?" tone="dark">
     <div class="mt-10 max-w-2xl">
       <p class="text-base leading-relaxed text-background/65">
-        Report vulnerabilities the way SECURITY.md describes — private reporting
+        Report vulnerabilities the way SECURITY.md describes: private reporting
         on the GitHub repository, or email. Not the public issue tracker.
       </p>
     </div>

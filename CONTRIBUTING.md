@@ -1,7 +1,7 @@
 # Contributing
 
-This repo is the marketing site at [openpreflight.xyz](https://openpreflight.xyz)
-— one Astro page, a Tailwind theme, and a small set of generated brand assets.
+This repo is the marketing site at [openpreflight.xyz](https://openpreflight.xyz):
+one Astro page, a Tailwind theme, and a small set of generated brand assets.
 Product docs live in [openpreflight/docs](https://github.com/openpreflight/docs);
 the tool itself lives in
 [openpreflight/openpreflight](https://github.com/openpreflight/openpreflight).
@@ -17,7 +17,7 @@ pnpm run check-links    # required paths + internal hrefs + external allow-list
 
 `check-links` runs against `dist/`, so build first. It fails on a missing
 required asset or an external link outside the allow-list in
-`scripts/check-links.mjs` — if you add an outbound domain, add it there too.
+`scripts/check-links.mjs`. If you add an outbound domain, add it there too.
 
 ## Brand assets
 
@@ -40,7 +40,7 @@ of all three repos, so do not rename or remove those files.
 
 ## What we will not take
 
-- New pages or sections without a reason to exist — the site is one page on purpose.
+- New pages or sections without a reason to exist. The site is one page on purpose.
 - Product claims that are not backed by the docs.
 
 ## Pull requests

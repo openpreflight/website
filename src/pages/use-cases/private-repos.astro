@@ -22,7 +22,7 @@ const panelSteps = [
 const steps = [
   {
     title: 'Register a GitHub App against those repos',
-    detail: 'It lives in your org, with the permissions the docs list — nothing broader.',
+    detail: 'It lives in your org, with the permissions the docs list. Nothing broader.',
   },
   {
     title: 'Bind the repos in the UI',
@@ -43,7 +43,7 @@ const steps = [
   <PageHero
     kicker="Private repos"
     title="Check Runs on private code, without Actions"
-    lead="GitHub already stores the repo. You want a status on the commit — without spending hosted Actions minutes or writing workflow YAML for install, test, and build."
+    lead="GitHub already stores the repo. You want a status on the commit without spending hosted Actions minutes or writing workflow YAML for install, test, and build."
     crumbs={[
       { label: 'openpreflight', href: '/' },
       { label: 'Use cases', href: '/use-cases/' },
@@ -70,7 +70,7 @@ const steps = [
   <Section badge="What you get" title="One artifact, in the place people already look" tone="dark">
     <Grid class="mt-12" cols={3}>
       <Card title="The Check Run" tone="dark">
-        GitHub already knows how to display it — on the commit, in the pull
+        GitHub already knows how to display it: on the commit, in the pull
         request, and in branch protection.
       </Card>
       <Card title="Logs on your server" tone="dark">
@@ -104,7 +104,7 @@ const steps = [
           class="mt-5"
           cols={1}
           items={[
-            'Push to your repository — Contents is read-only',
+            'Push to your repository. Contents is read-only',
             'Touch a repo with no enabled binding, signed webhook or not',
             'Leak the clone token into a step: the job environment is built from scratch',
           ]}
@@ -115,7 +115,7 @@ const steps = [
     <Callout class="mt-8" title="How the clone is authenticated">
       <p>
         With a short-lived installation token that never reaches your pipeline
-        steps. The mechanics — and everything else the worker is allowed to do —
+        steps. The mechanics, and everything else the worker is allowed to do,
         are on <a href="/security/">security</a>.
       </p>
     </Callout>
@@ -174,7 +174,7 @@ const steps = [
         {
           question: 'How do I try it on one repo first?',
           answer:
-            'Enable exactly one binding. Nothing else the App is installed on will run, because a repo with no enabled binding is ignored — so a trial stays a trial.',
+            'Enable exactly one binding. Nothing else the App is installed on will run, because a repo with no enabled binding is ignored. A trial stays a trial.',
         },
       ]}
     />
