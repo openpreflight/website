@@ -49,7 +49,7 @@ const runSteps = [
   {
     title: 'install / test / build',
     detail:
-      'Steps run through the executor — the worker process by default, or <code>docker run</code> when <code>runtime:</code> is set.',
+      'Steps run through the executor: the worker process by default, or <code>docker run</code> when <code>runtime:</code> is set.',
   },
   {
     title: 'One Check Run comes back',
@@ -67,7 +67,7 @@ const dedup = [
   {
     title: 'A human presses Re-run',
     detail:
-      'A <code>rerequested</code> delivery supersedes the run in flight — the old one is cancelled first, then the new one is queued.',
+      'A <code>rerequested</code> delivery supersedes the run in flight. The old one is cancelled first, then the new one is queued.',
   },
   {
     title: 'A newer commit lands',
@@ -116,7 +116,7 @@ const outbound = [
 
 <MarketingPage
   title="Product · openpreflight"
-  description="Self-hosted Check Runs for private repos — one binary, one database file, a GitHub App you register, and a .ci.yml you write."
+  description="Self-hosted Check Runs for private repos: one binary, one database file, a GitHub App you register, and a .ci.yml you write."
 >
   <PageHero
     kicker="Product"
@@ -140,7 +140,7 @@ const outbound = [
   <Section
     badge="Fit"
     title="Where it fits"
-    description="Full platforms, hosted control planes, and Kubernetes-oriented runners already fill a different slot. This one does not replace them — the worker is the product, not a mode."
+    description="Full platforms, hosted control planes, and Kubernetes-oriented runners already fill a different slot. This one does not replace them. The worker is the product, not a mode."
   >
     <Callout class="mt-12" title="v1.0.0 is out">
       <p>
@@ -222,7 +222,7 @@ const outbound = [
       <p>
         Branch protection reads whichever check finished last. Holding to one
         live run per <code>(app, repo, sha)</code> is what makes a required check
-        behave under force-pushes and rapid pushes — the argument is in{' '}
+        behave under force-pushes and rapid pushes. The argument is in{' '}
         <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a>.
       </p>
     </Callout>
@@ -232,7 +232,7 @@ const outbound = [
     <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
       <Prose>
         <p>
-          Bindings and Apps are rows in SQLite, edited in the web UI — not a
+          Bindings and Apps are rows in SQLite, edited in the web UI, not a
           block of environment variables per installation. The process reads a
           handful of env vars so it can start; everything after that is a row.
         </p>
@@ -286,7 +286,7 @@ timeout: 15m`}
       </Card>
       <Card title="The details URL">
         <code>GET /runs/&#123;id&#125;</code> on your instance. GitHub never fetches
-        it — the reader’s browser does, which is why who may open it is a{' '}
+        it. The reader’s browser does, which is why who may open it is a{' '}
         <a class="text-primary underline underline-offset-4" href="/security/">security</a> question.
       </Card>
       <Card title="The full log">
@@ -302,17 +302,17 @@ timeout: 15m`}
   </Section>
 
   <Section
-    badge="Honest scope"
-    title="Behaviour worth knowing up front"
+    badge="Scope"
+    title="Behaviour to know up front"
     description="Answers to what people ask after reading the run loop. What it costs to operate is on self-hosted; where the ceiling is, on why."
   >
     <Faq
       class="mt-12"
       items={[
         {
-          question: 'What does a commit actually trigger?',
+          question: 'What does a commit trigger?',
           answer:
-            'A check suite, and only a check suite. Never a <code>push</code> event and never <code>pull_request</code> — a suite is already scoped to one commit and one App, so it is the unit of work.',
+            'A check suite, and only a check suite. Never a <code>push</code> event and never <code>pull_request</code>. A suite is already scoped to one commit and one App, so it is the unit of work.',
           href: `${DOCS}/adr/005-check-suite-gating/`,
           linkLabel: 'ADR 005',
         },

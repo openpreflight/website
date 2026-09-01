@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
-// README banner — brand atoms from design.md: forest accent, olive ground,
+// README banner. Brand atoms from design.md: forest accent, olive ground,
 // Inter display, JetBrains Mono for the Check Run panel (the hero artifact).
 // Rendered through headless Chrome so the webfonts match the sites exactly;
 // sharp/librsvg cannot load the woff2 files @fontsource ships.
@@ -55,7 +55,7 @@ const THEMES = {
 };
 
 // The mark: rounded square, runway-check, caret at the apex. Always on forest
-// green with a white stroke — the mark does not invert between themes.
+// green with a white stroke. The mark does not invert between themes.
 const MARK = `
 <svg width="72" height="72" viewBox="0 0 32 32" fill="none" aria-hidden="true">
   <rect width="32" height="32" rx="7" fill="#2f6f4f"/>

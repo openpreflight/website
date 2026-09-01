@@ -74,7 +74,7 @@ const resolution = [
   {
     order: '04',
     title: 'Nothing to run',
-    detail: 'The check reports <strong>skipped</strong> — not failed.',
+    detail: 'The check reports <strong>skipped</strong>, not failed.',
   },
 ];
 ---
@@ -86,7 +86,7 @@ const resolution = [
   <PageHero
     kicker="Pipeline"
     title="What runs before the Check Run completes"
-    lead="There is no check registry. Steps are shell commands in .ci.yml — go test or npm test are commands you author, not first-class products."
+    lead="There is no check registry. Steps are shell commands in .ci.yml: go test or npm test are commands you author, not first-class products."
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Pipeline' }]}
   >
     <Actions slot="actions">
@@ -132,7 +132,7 @@ timeout: 15m`}
       <p>
         A file that only sets <code>runtime:</code> or <code>timeout:</code>
         still applies those, while the commands come from the binding or from
-        <code>package.json</code>. Image names are allow-listed — no shell
+        <code>package.json</code>. Image names are allow-listed: no shell
         metacharacters and no leading <code>-</code>.
       </p>
     </Callout>
@@ -172,14 +172,14 @@ timeout: 15m`}
           <p>
             With no pipeline file and no overrides, a Node repo is inferred from
             <code>package.json</code>: the install command follows the lockfile
-            — <code>npm ci</code>, <code>pnpm</code>, or <code>yarn</code> — and
+            (<code>npm ci</code>, <code>pnpm</code>, or <code>yarn</code>) and
             <code>test</code> and <code>build</code> run <strong>only if those
             scripts exist</strong>.
           </p>
           <p>
             That is the whole inference. No other language is guessed, and
-            nothing is invented for a repo that has neither a file nor scripts —
-            it reports skipped.
+            nothing is invented for a repo that has neither a file nor scripts.
+            It reports skipped.
           </p>
         </Prose>
       </div>
@@ -210,8 +210,8 @@ timeout: 15m`}
     </Grid>
     <Callout class="mt-8" title="Source of truth">
       <p>
-        This page is positioning. The contract — full field list, precedence
-        rules, and what each executor guarantees — is{' '}
+        This page is positioning. The contract (full field list, precedence
+        rules, and what each executor guarantees) is{' '}
         <a href={`${DOCS}/using/pipelines/`}>the pipeline reference</a>.
       </p>
     </Callout>
@@ -227,7 +227,7 @@ timeout: 15m`}
     <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
       Every job is a fresh shallow clone, so nothing is carried between runs or
       handed to a later step. If your build needs any of the above, you want a
-      pipeline engine rather than this —{' '}
+      pipeline engine rather than this.{' '}
       <a class="text-primary underline underline-offset-4" href="/compare/github-actions/">the comparison</a>{' '}
       names the candidates.
     </p>
@@ -245,7 +245,7 @@ timeout: 15m`}
         {
           question: 'What if there is nothing to run?',
           answer:
-            'The check reports <strong>skipped</strong>, not failed. That is a different signal on purpose — a repo with no pipeline is not a broken build.',
+            'The check reports <strong>skipped</strong>, not failed. That is a different signal on purpose: a repo with no pipeline is not a broken build.',
         },
         {
           question: 'How long can a run take?',

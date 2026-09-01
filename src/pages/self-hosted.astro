@@ -27,7 +27,7 @@ const theirs = [
 const state = [
   {
     path: 'DATA_DIR/ci.db',
-    holds: 'Settings, users, GitHub Apps, bindings, job rows — with the secret columns encrypted inside it.',
+    holds: 'Settings, users, GitHub Apps, bindings, job rows, with the secret columns encrypted inside it.',
     keep: 'Yes',
     tone: true,
   },
@@ -39,7 +39,7 @@ const state = [
   },
   {
     path: 'CI_SECRET_KEY',
-    holds: 'The AES-256-GCM key for those encrypted columns. Store it wherever your other secrets live — not next to the backup.',
+    holds: 'The AES-256-GCM key for those encrypted columns. Store it wherever your other secrets live, not next to the backup.',
     keep: 'Yes, separately',
     tone: true,
   },
@@ -58,7 +58,7 @@ const operate = [
   },
   {
     title: '<code>CI_SECRET_KEY</code>',
-    body: 'The only required env var. It decrypts your secret columns — keep it forever.',
+    body: 'The only required env var. It decrypts your secret columns. Keep it forever.',
   },
   {
     title: 'A volume that persists',
@@ -118,7 +118,7 @@ const operate = [
 
   <Section
     badge="What you operate"
-    title="Four things, and none of them are a control plane"
+    title="Four things, none of them a control plane"
     tone="dark"
   >
     <Grid class="mt-12" cols={4}>
@@ -142,7 +142,7 @@ const operate = [
       <MarkList
         cols={1}
         items={[
-          'A public HTTPS URL GitHub can reach — a reverse proxy in front of port 8080',
+          'A public HTTPS URL GitHub can reach, with a reverse proxy in front of port 8080',
           'A GitHub App you registered, installed on the repos you want checked',
           'A volume that persists, for the database and the logs',
           '<code>CI_SECRET_KEY</code>, generated once and kept forever',
@@ -159,7 +159,7 @@ const operate = [
         <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
           Node matters only when a job has no <code class="font-mono text-[0.85em]">runtime:</code> and
           runs as a process. A Docker engine matters only for
-          <code class="font-mono text-[0.85em]">runtime:</code> jobs and fork pull requests — the
+          <code class="font-mono text-[0.85em]">runtime:</code> jobs and fork pull requests. The
           service boots and reports checks without one.
         </p>
       </div>
@@ -188,7 +188,7 @@ const operate = [
     </div>
     <Callout class="mt-8" title="A backup without the key">
       <p>
-        It restores your bindings and job history, but no credentials — the App
+        It restores your bindings and job history, but no credentials. The App
         PEM and webhook secrets stay unreadable and have to be pasted in again.
         Back both up, and back them up separately.
       </p>
@@ -205,7 +205,7 @@ docker compose -f compose.prod.yaml up -d`}
       />
       <div>
         <p class="max-w-xl text-base leading-relaxed text-muted-foreground">
-          Nothing to clone — the file pulls the published image. Then open the
+          Nothing to clone. The file pulls the published image. Then open the
           UI, run the first-boot wizard, register your GitHub App, and enable
           the repos you want checks on.
         </p>
@@ -219,7 +219,7 @@ docker compose -f compose.prod.yaml up -d`}
     </div>
   </Section>
 
-  <Section badge="Day two" title="What owning this actually involves" tone="dark">
+  <Section badge="Day two" title="What owning this involves" tone="dark">
     <Faq
       class="mt-12"
       tone="dark"
@@ -227,21 +227,21 @@ docker compose -f compose.prod.yaml up -d`}
         {
           question: 'What does a restart do to a running job?',
           answer:
-            'Nothing in progress survives — there is no checkpointing. On a clean signal the job notices the cancelled context, writes itself <strong>cancelled</strong>, and is not retried on its own. On a kill it stays in progress and the next boot runs it again from the beginning, which opens a second Check Run on that commit.',
+            'Nothing in progress survives. There is no checkpointing. On a clean signal the job notices the cancelled context, writes itself <strong>cancelled</strong>, and is not retried on its own. On a kill it stays in progress and the next boot runs it again from the beginning, which opens a second Check Run on that commit.',
           href: `${DOCS}/understanding/operations/`,
           linkLabel: 'Operations',
         },
         {
           question: 'How do upgrades work?',
           answer:
-            'Pull the new image and bring it up. Migrations run on boot and are forward-only — there are no down migrations, so rolling a release back is not supported and the way out of a bad upgrade is the backup you took before it.',
+            'Pull the new image and bring it up. Migrations run on boot and are forward-only. There are no down migrations, so rolling a release back is not supported and the way out of a bad upgrade is the backup you took before it.',
           href: `${DOCS}/understanding/operations/`,
           linkLabel: 'Operations',
         },
         {
           question: 'How much machine does it need?',
           answer:
-            'Less than you would expect for a handful of repos, and it will not stretch further than one box. Every concurrent job holds its own checkout and its own log, so disk scales with concurrency, and there is no cap on checkout size — size the workspace for your largest repo.',
+            'Less than you would expect for a handful of repos, and it will not stretch further than one box. Every concurrent job holds its own checkout and its own log, so disk scales with concurrency, and there is no cap on checkout size. Size the workspace for your largest repo.',
           href: `${DOCS}/start/configuration/`,
           linkLabel: 'Configuration',
         },
@@ -255,7 +255,7 @@ docker compose -f compose.prod.yaml up -d`}
         {
           question: 'What should the proxy watch?',
           answer:
-            '<code>GET /health</code>. A 503 means the process cannot read SQLite. Honour <code>X-Forwarded-Proto</code> too — session and CSRF cookies set <code>Secure</code> when that header says https.',
+            '<code>GET /health</code>. A 503 means the process cannot read SQLite. Honour <code>X-Forwarded-Proto</code> too. Session and CSRF cookies set <code>Secure</code> when that header says https.',
           href: `${DOCS}/understanding/deployment/`,
           linkLabel: 'Deployment',
         },
@@ -282,7 +282,7 @@ docker compose -f compose.prod.yaml up -d`}
       <p>
         There is no first-class Kubernetes operator and no air-gap product. If
         you put the binary on an isolated network, that is ordinary
-        self-hosting — not a documented mode with support behind it.
+        self-hosting, not a documented mode with support behind it.
       </p>
     </Callout>
   </Section>

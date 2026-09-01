@@ -25,7 +25,7 @@ const surfaces = [
   {
     status: 'Default',
     title: 'Process executor',
-    body: 'Used whenever <code>runtime</code> is empty. Steps run in the worker process, on the host — no extra daemon.',
+    body: 'Used whenever <code>runtime</code> is empty. Steps run in the worker process, on the host. No extra daemon.',
     href: null,
     cta: null,
     primary: false,
@@ -53,7 +53,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
 
 <MarketingPage
   title="Integrations · openpreflight"
-  description="What actually connects: GitHub App, optional Coolify, Docker runtime, process executor. Not a CI-provider catalog."
+  description="What connects: GitHub App, optional Coolify, Docker runtime, process executor. Not a CI-provider catalog."
 >
   <PageHero
     kicker="Integrations"
@@ -115,7 +115,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
         {
           title: 'Bind the repositories',
           detail:
-            'Ticking a repo is what turns a webhook into a job — and <a class="underline underline-offset-4" href="/security/">the trust boundary</a> worth understanding before you tick a lot of them.',
+            'Ticking a repo is what turns a webhook into a job. Read <a class="underline underline-offset-4" href="/security/">the trust boundary</a> before you tick a lot of them.',
         },
         {
           title: 'Leave the executor alone',
@@ -125,7 +125,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
         {
           title: 'Add Docker only if you need it',
           detail:
-            'Set <code>CI_DOCKER_HOST</code> — or mount a socket — when you want container runtimes or fork pull requests.',
+            'Set <code>CI_DOCKER_HOST</code>, or mount a socket, when you want container runtimes or fork pull requests.',
         },
       ]}
     />
@@ -135,7 +135,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
     <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
       <Prose>
         <p>
-          User tokens and OAuth tokens are refused by GitHub for this — the
+          User tokens and OAuth tokens are refused by GitHub for this. The
           Check Runs API is App-only. That single fact is why the integration
           list starts and ends where it does.
         </p>
@@ -163,26 +163,26 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
     </Actions>
   </Section>
 
-  <Section badge="Precisely" title="What the two optional ones actually do">
+  <Section badge="Precisely" title="What the two optional ones do">
     <Faq
       class="mt-12"
       items={[
         {
           question: 'When does Docker get involved?',
           answer:
-            'When a pipeline sets <code>runtime:</code>, and for every fork pull request. The engine comes from <code>CI_DOCKER_HOST</code>, else <code>DOCKER_HOST</code>, else the default socket — and it can be a different machine, over Docker’s own remote API.',
+            'When a pipeline sets <code>runtime:</code>, and for every fork pull request. The engine comes from <code>CI_DOCKER_HOST</code>, else <code>DOCKER_HOST</code>, else the default socket. It can be a different machine, over Docker’s own remote API.',
           href: `${DOCS}/adr/004-docker-executor/`,
           linkLabel: 'ADR 004',
         },
         {
           question: 'What happens if the engine is unreachable?',
           answer:
-            'The job fails rather than quietly falling back to running your commands as a process on the host. The service itself boots and reports checks fine without an engine — only <code>runtime:</code> jobs and fork PRs need it.',
+            'The job fails rather than quietly falling back to running your commands as a process on the host. The service itself boots and reports checks fine without an engine. Only <code>runtime:</code> jobs and fork PRs need it.',
         },
         {
           question: 'Do job containers get the Docker socket?',
           answer:
-            'No — a job never gets a handle on the engine that started it. What a container is and is not given is on <a class="underline underline-offset-4" href="/security/">security</a>.',
+            'No. A job never gets a handle on the engine that started it. What a container is and is not given is on <a class="underline underline-offset-4" href="/security/">security</a>.',
         },
         {
           question: 'What is Coolify used for?',
@@ -194,7 +194,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
         {
           question: 'Can Coolify run the jobs?',
           answer:
-            'No. A Coolify token cannot start a <code>docker run</code>. To put jobs on another machine you point <code>CI_DOCKER_HOST</code> at that machine’s Docker engine — that is Docker’s remote API, not Coolify’s.',
+            'No. A Coolify token cannot start a <code>docker run</code>. To put jobs on another machine you point <code>CI_DOCKER_HOST</code> at that machine’s Docker engine. That is Docker’s remote API, not Coolify’s.',
           href: `${DOCS}/understanding/deployment/`,
           linkLabel: 'Deployment',
         },
@@ -210,8 +210,8 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
     <MarkList class="mt-10" cols={3} items={notAdapters} mark="cross" />
     <Callout class="mt-8">
       <p>
-        “Portable” here means the same <code>.ci.yml</code> and the same worker
-        on your own host — not one config that targets every CI vendor. See{' '}
+        "Portable" here means the same <code>.ci.yml</code> and the same worker
+        on your own host, not one config that targets every CI vendor. See{' '}
         <a href="/product/">the product page</a> for what that does and does not buy you.
       </p>
     </Callout>

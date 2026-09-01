@@ -29,7 +29,7 @@ const cases = [
     href: '/use-cases/open-source/',
     eyebrow: 'Public repos too',
     title: 'Open-source contributors',
-    body: 'Repository visibility never gates a run. Bind a public repo the same way you bind a private one — useful when contributors should see a check without standing up their own instance.',
+    body: 'Repository visibility never gates a run. Bind a public repo the same way you bind a private one, useful when contributors should see a check without standing up their own instance.',
     points: ['Same App, same worker', 'Shareable logs are opt-in per binding', 'Contribute on the product repos'],
   },
 ];
@@ -37,12 +37,12 @@ const cases = [
 
 <MarketingPage
   title="Use cases · openpreflight"
-  description="Where self-hosted GitHub Check Runs CI actually fits: private repos, teams that keep the runner, open-source contributors."
+  description="Where self-hosted GitHub Check Runs CI fits: private repos, teams that keep the runner, open-source contributors."
 >
   <PageHero
     kicker="Use cases"
     title="Who this is for"
-    lead="Three honest stories. Not a policy engine, and not one YAML across GitLab and Jenkins."
+    lead="Three stories. Not a policy engine, and not one YAML across GitLab and Jenkins."
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Use cases' }]}
   >
     <Actions slot="actions">
@@ -86,7 +86,7 @@ const cases = [
     </div>
   </Section>
 
-  <Section badge="In common" title="What all three actually get" tone="dark">
+  <Section badge="In common" title="What all three get" tone="dark">
     <Grid class="mt-12" cols={3}>
       <Card title="One Check Run per commit" tone="dark">
         The same artifact GitHub already shows for any other check, on the
@@ -97,7 +97,7 @@ const cases = [
         disk, served by your own instance.
       </Card>
       <Card title="No second workflow language" tone="dark">
-        Three shell commands in <code>.ci.yml</code> — or nothing at all, if a
+        Three shell commands in <code>.ci.yml</code>, or nothing at all, if a
         Node repo’s <code>package.json</code> already says enough.
       </Card>
     </Grid>
@@ -120,7 +120,7 @@ const cases = [
           {
             who: 'Open-source contributors',
             href: '/use-cases/open-source/',
-            body: 'Nobody should have to invent a second CI to check a public repository. Visibility is read from the webhook and never gates anything — bind the repo, and the same worker reports the Check Run.',
+            body: 'Nobody should have to invent a second CI to check a public repository. Visibility is read from the webhook and never gates anything. Bind the repo, and the same worker reports the Check Run.',
           },
         ].map((item) => (
           <a
@@ -155,7 +155,7 @@ const cases = [
           },
           {
             case: 'One config across GitLab, Jenkins, and CircleCI',
-            why: '“Portable” here means the same file and the same worker on your own host — there are no vendor adapters.',
+            why: '"Portable" here means the same file and the same worker on your own host. There are no vendor adapters.',
             go: 'See integrations',
             href: '/integrations/',
           },
@@ -192,7 +192,7 @@ const cases = [
         {
           question: 'Does it work on public repos?',
           answer:
-            'Yes. Repository visibility is read from the webhook payload but never gates anything — “private repos” is what this is aimed at, not a restriction it enforces.',
+            'Yes. Repository visibility is read from the webhook payload but never gates anything. "Private repos" is what this is aimed at, not a restriction it enforces.',
           href: `${DOCS}/start/faq/`,
           linkLabel: 'FAQ',
         },
@@ -206,7 +206,7 @@ const cases = [
         {
           question: 'Is there a team this does not suit?',
           answer:
-            'Yes — and it is worth reading the limits before the stories. Busy monorepos, teams needing per-person access, and anything wanting matrices or artifacts are all poor fits.',
+            'Yes, and read the limits before the stories. Busy monorepos, teams needing per-person access, and anything wanting matrices or artifacts are all poor fits.',
           href: '/why/',
           linkLabel: 'Where the ceiling is',
         },

@@ -21,6 +21,7 @@ export const tagline =
 export const siteSections = [
   {
     title: "Product",
+    description: "The binary, the pipeline, and how you wire GitHub.",
     links: [
       {
         label: "Overview",
@@ -51,6 +52,7 @@ export const siteSections = [
   },
   {
     title: "Why",
+    description: "The gap it fits, and who it is for.",
     links: [
       {
         label: "Why this shape",
@@ -65,7 +67,7 @@ export const siteSections = [
       {
         label: "Use cases",
         href: "/use-cases/",
-        description: "Who this is actually for",
+        description: "Who this is for",
       },
       {
         label: "Private repos",
@@ -86,6 +88,7 @@ export const siteSections = [
   },
   {
     title: "Trust",
+    description: "What you operate, and what the worker is allowed to do.",
     links: [
       {
         label: "Self-hosted",
@@ -106,11 +109,12 @@ export const siteSections = [
   },
   {
     title: "Reference",
+    description: "How-to lives on the docs site.",
     links: [
       {
         label: "Documentation",
         href: DOCS,
-        description: "The reference site — how-to lives there",
+        description: "The reference site. How-to lives there",
       },
       { label: "Quickstart", href: CTA.quickstart, description: "Zero to a first check" },
       { label: "GitHub", href: REPO, description: "The Go binary" },
@@ -119,11 +123,12 @@ export const siteSections = [
   },
 ] as const;
 
-/** Groups the header opens as menus; the rest render as direct links. */
+/** Groups the header opens as megamenus. */
 export const navGroups = siteSections.filter(
   (section) => section.title !== "Reference",
 );
 
+/** Header renders these as icons on the right, not as center nav text. */
 export const navLinks = [
   { label: "Docs", href: DOCS },
   { label: "GitHub", href: REPO },

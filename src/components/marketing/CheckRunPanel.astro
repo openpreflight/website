@@ -1,7 +1,7 @@
 ---
 /**
  * The product's hero artifact (design.md): a Check Run as GitHub renders it,
- * in the product's own mono voice. Illustrative values only — pass real ones
+ * in the product's own mono voice. Illustrative values only. Pass real ones
  * where the page has them.
  */
 interface Step {
@@ -37,7 +37,7 @@ const {
 const summary = {
   passed: { color: '#7cc79c', glyph: '✓', text: 'Passed' },
   failed: { color: '#e0857b', glyph: '✕', text: 'Failed' },
-  skipped: { color: '#9aa39a', glyph: '–', text: 'Skipped' },
+  skipped: { color: '#9aa39a', glyph: '-', text: 'Skipped' },
 }[conclusion];
 
 const stepColor = {
@@ -45,7 +45,7 @@ const stepColor = {
   fail: '#e0857b',
   skip: '#9aa39a',
 };
-const stepGlyph = { pass: '✓', fail: '✕', skip: '–' };
+const stepGlyph = { pass: '✓', fail: '✕', skip: '-' };
 ---
 
 <figure

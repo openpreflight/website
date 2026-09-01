@@ -96,8 +96,8 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           id="top"
         >
           <div aria-hidden="true" className="hero-atmosphere pointer-events-none absolute inset-0 -z-10" />
-          <div className="mx-auto max-w-7xl">
-            <div className="hero-copy mx-auto max-w-3xl text-center">
+          <div className="mx-auto w-full max-w-7xl">
+            <div className="hero-copy mx-auto max-w-4xl text-center">
               <p className="hero-kicker font-mono text-sm font-medium tracking-wide text-primary">
                 v1.0.0 is out
               </p>
@@ -139,10 +139,10 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
               </p>
             </div>
 
-            <figure className="hero-panel relative mx-auto mt-14 w-full max-w-2xl sm:mt-16">
+            <figure className="hero-panel relative mx-auto mt-14 w-full sm:mt-16">
               <div aria-hidden="true" className="hero-panel-glow pointer-events-none absolute -inset-10 -z-10" />
               <div className="overflow-hidden rounded-2xl border border-[#2a2f2a] bg-[#121412] text-left text-[#e8ebe6] shadow-[0_40px_100px_-60px_color-mix(in_srgb,var(--primary)_55%,transparent)]">
-                <div className="flex h-11 items-center gap-2.5 border-b border-white/10 bg-white/[0.03] px-4 sm:px-5">
+                <div className="flex h-11 items-center gap-2.5 border-b border-white/10 bg-white/[0.03] px-4 sm:px-6 lg:px-8">
                   <span
                     aria-hidden="true"
                     className="size-2 shrink-0 rounded-full bg-[#7cc79c]"
@@ -157,7 +157,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   in 42 seconds
                 </figcaption>
 
-                <div className="border-b border-white/10 px-4 py-4 sm:px-5">
+                <div className="border-b border-white/10 px-4 py-4 sm:px-6 lg:px-8">
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-white/55">
                     <span className="text-[#e8ebe6]">private/api</span>
                     <span className="text-white/25">·</span>
@@ -180,10 +180,10 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   </div>
                 </div>
 
-                <ul className="divide-y divide-white/[0.06] px-2 py-1 sm:px-3">
+                <ul className="divide-y divide-white/[0.06] px-2 py-1 sm:px-3 lg:grid lg:grid-cols-3 lg:divide-x lg:divide-y-0 lg:px-0 lg:py-0">
                   {checkSteps.map((step, i) => (
                     <li
-                      className="hero-line flex items-center gap-3 px-2 py-3 sm:gap-4 sm:px-2.5"
+                      className="hero-line flex items-center gap-3 px-2 py-3 sm:gap-4 sm:px-2.5 lg:px-8 lg:py-5"
                       key={step.name}
                       style={{ animationDelay: `${220 + i * 90}ms` }}
                     >
@@ -205,7 +205,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                           </code>
                           <span
                             aria-hidden="true"
-                            className="ml-auto hidden h-1 w-16 overflow-hidden rounded-full bg-white/10 sm:block sm:w-24"
+                            className="ml-auto hidden h-1 w-16 overflow-hidden rounded-full bg-white/10 sm:block sm:w-24 lg:w-full lg:max-w-28"
                           >
                             <span
                               className="block h-full rounded-full bg-[#7cc79c]/70"
@@ -218,7 +218,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   ))}
                 </ul>
 
-                <div className="border-t border-white/10 px-4 py-3 sm:px-5">
+                <div className="border-t border-white/10 px-4 py-3 sm:px-6 lg:px-8">
                   <span className="inline-flex items-center gap-1.5 font-mono text-xs text-[#7cc79c]">
                     View full logs
                     <ArrowRight className="size-3.5" />
@@ -384,7 +384,7 @@ timeout: 15m`}</code>
                 One variable and a compose file
               </h2>
               <p className="mt-4 text-muted-foreground">
-                Nothing to clone: the file pulls the published image. Then open
+                Nothing to clone. The file pulls the published image. Then open
                 the UI, run the first-boot wizard, register your GitHub App, and
                 enable the repos you want checks on.
               </p>
@@ -475,12 +475,12 @@ docker compose -f compose.prod.yaml up -d`}</code>
               <a className="underline underline-offset-4 hover:text-foreground" href={`${DOCS}/start/comparison/`}>
                 comparison
               </a>{" "}
-              says when to pick one of them instead, and what running this
+              says when to pick one of them instead. What running this
               costs you day to day is in{" "}
               <a className="underline underline-offset-4 hover:text-foreground" href={`${DOCS}/understanding/operations/`}>
                 operations
-              </a>{" "}
-              — backups, upgrades, and what a restart does to a running job.
+              </a>
+              : backups, upgrades, and what a restart does to a running job.
             </p>
           </div>
         </section>

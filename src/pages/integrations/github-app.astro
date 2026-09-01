@@ -17,7 +17,7 @@ const steps = [
   {
     title: 'Register the App',
     detail:
-      'In your org or user settings, with the permissions and events listed in the docs. You own it — openpreflight never creates one for you.',
+      'In your org or user settings, with the permissions and events listed in the docs. You own it. openpreflight never creates one for you.',
   },
   {
     title: 'Point the webhook at your instance',
@@ -93,7 +93,7 @@ const panelSteps = [
     <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
         [
-          { name: 'Checks', level: 'Read and write', why: 'Creating and completing the Check Run — the entire point.' },
+          { name: 'Checks', level: 'Read and write', why: 'Creating and completing the Check Run. That is the entire point.' },
           { name: 'Contents', level: 'Read-only', why: 'Cloning the commit being checked. Read-only: it never writes to your repo.' },
           { name: 'Metadata', level: 'Read-only', why: 'The mandatory baseline GitHub requires alongside the others.' },
           { name: 'Check suite', level: 'Event', why: 'The trigger. GitHub creates a suite per commit and delivers it here.' },
@@ -112,8 +112,8 @@ const panelSteps = [
       }
     </div>
     <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
-      The authoritative table — exact values, the webhook URL format, and the
-      order to do things in — is in the setup docs. It changes with the code, so
+      The authoritative table (exact values, the webhook URL format, and the
+      order to do things in) is in the setup docs. It changes with the code, so
       this page does not try to be the checklist.
     </p>
     <Actions>
@@ -129,7 +129,7 @@ const panelSteps = [
       </Card>
       <Card title="Cloning the commit">
         A short-lived installation token clones the exact SHA, then goes no
-        further — how it is handled is on{' '}
+        further. How it is handled is on{' '}
         <a class="text-primary underline underline-offset-4" href="/security/">security</a>.
       </Card>
       <Card title="Writing the Check Run">
@@ -146,7 +146,7 @@ const panelSteps = [
         <a class="text-primary underline underline-offset-4" href="/use-cases/private-repos/">
           Private repos
         </a>{' '}
-        covers the naming trap worth avoiding first.
+        covers the naming trap. Avoid it first.
       </Card>
       <Card index={2} title="Add the rest of the repos">
         The same App can cover everything it is installed on. Each repo still
@@ -155,14 +155,14 @@ const panelSteps = [
       </Card>
       <Card index={3} title="Override per repo">
         A binding can change the branch list, the commands, the timeout, the
-        check name, and whether logs are shareable — useful for the one repo
+        check name, and whether logs are shareable. Useful for the one repo
         that does not fit the default.
       </Card>
     </div>
     <Callout class="mt-8" title="Then mostly forget about it">
       <p>
         After the binding exists, the loop is automatic: a commit lands, a
-        check appears. The next thing worth reading is{' '}
+        check appears. Next, read{' '}
         <a href="/pipeline/">what runs inside it</a>.
       </p>
     </Callout>
