@@ -138,14 +138,13 @@ function MegaMenu({
 }) {
   return (
     <>
-      {groups.map((group, index) => {
+      {groups.map((group) => {
         const open = openTitle === group.title;
         const panelId = `mega-${group.title.toLowerCase()}`;
-        const alignEnd = index === groups.length - 1;
 
         return (
           <div
-            className="relative flex self-stretch items-center"
+            className="flex self-stretch items-center"
             key={group.title}
             onBlur={(event) => {
               if (!event.currentTarget.contains(event.relatedTarget as Node)) {
@@ -182,8 +181,7 @@ function MegaMenu({
             <div
               aria-hidden={!open}
               className={cn(
-                "absolute top-full z-50 pt-2 transition-[opacity,transform] duration-150 ease-[cubic-bezier(.16,1,.3,1)] motion-reduce:transition-none",
-                alignEnd ? "right-0" : "left-0",
+                "absolute inset-x-5 top-full z-50 pt-2 transition-[opacity,transform] duration-150 ease-[cubic-bezier(.16,1,.3,1)] motion-reduce:transition-none sm:inset-x-8",
                 open
                   ? "visible translate-y-0 opacity-100"
                   : "invisible pointer-events-none -translate-y-1 opacity-0",
@@ -192,10 +190,10 @@ function MegaMenu({
               inert={!open ? true : undefined}
             >
               <div
-                className="w-[min(40rem,calc(100vw-2.5rem))] overflow-hidden rounded-2xl border border-foreground/12 bg-popover/96 p-2 text-popover-foreground shadow-[0_24px_70px_-24px_color-mix(in_oklch,var(--foreground)_28%,transparent),inset_0_1px_0_color-mix(in_oklch,var(--background)_65%,transparent)] backdrop-blur-xl"
+                className="w-full overflow-hidden rounded-2xl border border-foreground/12 bg-popover/96 p-2 text-popover-foreground shadow-[0_24px_70px_-24px_color-mix(in_oklch,var(--foreground)_28%,transparent),inset_0_1px_0_color-mix(in_oklch,var(--background)_65%,transparent)] backdrop-blur-xl"
                 role="menu"
               >
-                <div className="grid gap-1 sm:grid-cols-[10.25rem_1fr]">
+                <div className="grid gap-1 sm:grid-cols-[14rem_1fr] lg:grid-cols-[17rem_1fr]">
                   <div className="rounded-xl bg-primary/[.06] px-3.5 py-3.5">
                     <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-primary">
                       {group.title}
@@ -206,7 +204,7 @@ function MegaMenu({
                       </p>
                     ) : null}
                   </div>
-                  <div className="grid gap-0.5 sm:grid-cols-2">
+                  <div className="grid gap-0.5 sm:grid-cols-2 lg:grid-cols-3">
                     {group.links.map((link) => {
                       const Icon = MEGA_ICONS[link.href];
                       return (
@@ -317,7 +315,7 @@ function SiteHeader01({
       ref={headerRef}
       {...props}
     >
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-6 px-5 sm:px-8">
+      <div className="relative mx-auto flex h-16 w-full max-w-7xl items-center gap-6 px-5 sm:px-8">
         <a
           className="flex shrink-0 items-center gap-2.5 font-semibold tracking-tight"
           href="/"
