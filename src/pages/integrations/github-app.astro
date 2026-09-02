@@ -15,18 +15,18 @@ import { CTA, DOCS } from '../../lib/site';
 
 const steps = [
   {
-    title: 'Register the App',
+    title: 'Create with GitHub',
     detail:
-      'In your org or user settings, with the permissions and events listed in the docs. You own it. openpreflight never creates one for you.',
+      'On the GitHub Apps page. GitHub shows a review screen with the permissions this worker needs. We store the App it returns. Paste remains under Advanced, including for GitHub Enterprise.',
   },
   {
-    title: 'Point the webhook at your instance',
-    detail: 'The URL is <code>https://your-host/webhook/{slug}</code>.',
+    title: 'Webhook URL is set for you',
+    detail: 'After conversion we point the App webhook at <code>https://your-host/webhook/{slug}</code>.',
   },
   {
-    title: 'Paste the PEM and webhook secret into the UI',
+    title: 'Credentials stay sealed',
     detail:
-      'They are stored as AES-256-GCM encrypted columns, and GET responses give back a redacted marker.',
+      'The PEM and webhook secret are stored as AES-256-GCM encrypted columns. GET responses give back a redacted marker.',
   },
   {
     title: 'Install it on the repos you care about',
@@ -52,7 +52,7 @@ const panelSteps = [
   <PageHero
     kicker="GitHub App"
     title="Install, bind, first Check Run"
-    lead="openpreflight does not create the App for you. You register it, paste the PEM and webhook secret into the UI, enable a binding, and push."
+    lead="Create the App with GitHub's review screen, or paste credentials. Enable a binding, and push."
     crumbs={[
       { label: 'openpreflight', href: '/' },
       { label: 'Integrations', href: '/integrations/' },

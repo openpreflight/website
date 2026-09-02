@@ -28,7 +28,6 @@ These are out of scope for the shipped v1.0.0, not unfinished work:
 
 - GitHub Actions YAML
 - `actions/runner`
-- Creating GitHub Apps for you
 - Matrices, caches, or artifacts
 
 ## Start here
