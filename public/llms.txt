@@ -1,13 +1,17 @@
 # openpreflight
 
-> A small CI provider for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit.
+> Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run.
 
-openpreflight is a small CI provider you run yourself. It does not wrap GitHub Actions or `actions/runner`. On github.com you can create the App with GitHub's review screen, or paste credentials (paste is how GitHub Enterprise works). UI, JSON API, webhook receiver, and job runner live in a single process, and secrets are AES-256-GCM encrypted at rest in SQLite.
+openpreflight is a CI provider you run yourself. It does not wrap GitHub Actions or `actions/runner`. Reporting happens through GitHub's own Check Runs API, so the result is a native check on the commit rather than a status posted by a bot.
+
+The gating model is the whole design: a GitHub event names an immutable SHA, that SHA gets one logical run, and that run gets one Check Run. Because a run binds to a commit and never to a branch, a force-push needs no cancellation, and a skipped pipeline still completes its check with a `skipped` conclusion, so a required check never hangs.
+
+GitHub must reach the webhook, so the worker needs a public HTTPS URL. Everything the run touches stays on infrastructure you control: builds, source, secrets and logs. On github.com you can create the App with GitHub's review screen, or paste credentials (paste is how GitHub Enterprise works). UI, JSON API, webhook receiver, and job runner live in a single process, and secrets are AES-256-GCM encrypted at rest in SQLite.
 
 Marketing site: https://openpreflight.xyz  
 Docs: https://docs.openpreflight.xyz  
 Source: https://github.com/openpreflight/openpreflight  
-Release: https://github.com/openpreflight/openpreflight/releases/tag/v2.0.0 (v2.0.0, 2 September 2026)  
+Release: https://github.com/openpreflight/openpreflight/releases/tag/v2.0.2 (v2.0.2, 2 September 2026)  
 License: Apache-2.0
 
 ## Product

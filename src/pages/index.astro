@@ -9,7 +9,7 @@ const jsonLd = {
   '@type': ['SoftwareApplication', 'SoftwareSourceCode'],
   name: 'openpreflight',
   description:
-    'A small CI provider for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit.',
+    'Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run.',
   license: 'https://www.apache.org/licenses/LICENSE-2.0',
   codeRepository: REPO,
   programmingLanguage: 'Go',
@@ -20,8 +20,8 @@ const jsonLd = {
 ---
 
 <Layout
-  title="openpreflight · self-hosted GitHub Check Runs CI"
-  description="A small CI provider for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit."
+  title="openpreflight · self-hosted CI without the CI platform"
+  description="Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run."
   bare
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

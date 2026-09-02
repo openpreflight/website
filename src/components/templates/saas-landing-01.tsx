@@ -8,6 +8,7 @@ import {
   Code2,
   Database,
   FileCode2,
+  GitCommitHorizontal,
   ShieldCheck,
   Terminal,
 } from "lucide-react";
@@ -17,7 +18,7 @@ import { SiteHeader01 } from "@/components/blocks/site-header-01";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CTA, DOCS, REPO, RELEASE, footerGroups, navGroups, navLinks, tagline } from "@/lib/site";
+import { CHANGELOG, CTA, DOCS, REPO, RELEASE, VERSION, footerGroups, navGroups, navLinks, tagline } from "@/lib/site";
 const checkSteps = [
   { name: "install", command: "npm ci", duration: "8s", width: "19%" },
   { name: "test", command: "go test ./...", duration: "21s", width: "50%" },
@@ -63,6 +64,36 @@ const runSteps = [
   },
 ];
 
+const gatingChain = [
+  {
+    label: "GitHub event",
+    detail: "A check suite is requested for a commit you pushed.",
+  },
+  {
+    label: "Immutable SHA",
+    detail: "The run binds to that commit, never to the branch name.",
+  },
+  {
+    label: "One logical run",
+    detail: "Same repo, same commit, same pipeline means one run, not two.",
+  },
+  {
+    label: "One Check Run",
+    detail: "Your App writes the result back, with the full log behind it.",
+  },
+];
+
+const gatingGuarantees = [
+  {
+    title: "Force-push correctness is free",
+    body: "Nothing is ever attached to a moving reference, so a force-push does not need to cancel anything. The old commit's check stays on the old commit, where it is now simply irrelevant, and the new commit gets its own.",
+  },
+  {
+    title: "A required check never hangs",
+    body: "When a path filter matches nothing, the check still completes \u2014 with a skipped conclusion rather than no check at all. Branch protection sees an answer either way, so a merge is never waiting on a run that was never going to arrive.",
+  },
+];
+
 const outOfScope = [
   "GitHub Actions YAML",
   "actions/runner",
@@ -98,15 +129,17 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           <div className="mx-auto w-full max-w-7xl">
             <div className="hero-copy mx-auto max-w-4xl text-center">
               <p className="hero-kicker font-mono text-sm font-medium tracking-wide text-primary">
-                v2.0.0 is out
+                v{VERSION} is out
               </p>
               <h1 className="mt-5 text-balance text-[2.75rem] font-semibold leading-[0.95] tracking-[-0.055em] sm:text-6xl lg:text-[4.75rem]">
-                A small CI provider for{" "}
-                <span className="text-primary">private repos.</span>
+                Self-hosted CI without the{" "}
+                <span className="text-primary">CI platform.</span>
               </h1>
-              <p className="mx-auto mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-                One Go binary and one SQLite file, on a server you already
-                run. Every commit gets a Check Run with full logs.
+              <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Every commit gets a native GitHub Check Run, written by a
+                GitHub App you own. There is no workflow engine and no runner
+                fleet to operate: one Go binary and one SQLite file on a
+                server you already run.
               </p>
               <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button asChild size="lg" variant="signature">
@@ -131,7 +164,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                 {" · "}
                 <a
                   className="underline underline-offset-4 hover:text-foreground"
-                  href={`${REPO}/blob/v2.0.0/CHANGELOG.md`}
+                  href={CHANGELOG}
                 >
                   Changelog
                 </a>
@@ -225,6 +258,72 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                 </div>
               </div>
             </figure>
+          </div>
+        </section>
+
+        <section className="px-5 py-24 sm:px-8 sm:py-32" id="gating">
+          <div className="mx-auto max-w-7xl">
+            <Badge variant="secondary">
+              <GitCommitHorizontal className="size-3.5" /> The gating model
+            </Badge>
+            <div className="mt-7 grid gap-6 lg:grid-cols-[.9fr_1.1fr] lg:items-end">
+              <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
+                One commit, one check
+              </h2>
+              <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Most of what a CI platform does is decide what to run, when, and
+                whether an earlier answer still counts. Gating on the commit
+                instead of the push makes those questions go away, which is the
+                reason a system this small can be trusted with a required check.
+              </p>
+            </div>
+
+            <ol className="mt-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {gatingChain.map(({ label, detail }, index) => (
+                <li
+                  className="rounded-[1.75rem] border border-foreground/10 bg-background p-6 sm:p-7"
+                  key={label}
+                >
+                  <span className="font-mono text-xs text-muted-foreground">
+                    0{index + 1}
+                  </span>
+                  <h3 className="mt-8 text-lg font-semibold tracking-[-.03em]">
+                    {label}
+                  </h3>
+                  <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
+                    {detail}
+                  </p>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              {gatingGuarantees.map(({ title, body }) => (
+                <article
+                  className="rounded-[1.75rem] border border-primary/25 bg-primary/[0.04] p-6 sm:p-8"
+                  key={title}
+                >
+                  <span className="grid size-11 place-items-center rounded-2xl bg-primary/10 text-primary">
+                    <Check className="size-5" />
+                  </span>
+                  <h3 className="mt-8 text-xl font-semibold tracking-[-.03em]">
+                    {title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {body}
+                  </p>
+                </article>
+              ))}
+            </div>
+
+            <p className="mt-8 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+              <ShieldCheck className="mr-1.5 inline size-4 -translate-y-px text-primary" />
+              GitHub has to reach the webhook, so the worker needs a public
+              HTTPS URL. That part is not private, and pretending otherwise
+              would be dishonest. What stays yours is everything the run
+              touches: builds, source, secrets and logs never leave
+              infrastructure you control.
+            </p>
           </div>
         </section>
 
