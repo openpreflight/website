@@ -248,8 +248,9 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   Full platforms, hosted control planes, and Kubernetes-oriented
                   runners already exist for teams that need them. openpreflight
                   is for the case where you just want a private repo checked: a
-                  binary and a SQLite file on a box you already pay for, with no
-                  Actions workflow to write and no pipeline DSL to learn.
+                  binary and a SQLite file on a box you already pay for. You
+                  write the same commands you run locally, and skip the workflow
+                  language entirely.
                 </p>
                 <Button asChild className="mt-6" variant="outline">
                   <a href="/product/">
@@ -383,9 +384,9 @@ timeout: 15m`}</code>
                 One variable and a compose file
               </h2>
               <p className="mt-4 text-muted-foreground">
-                Nothing to clone. The file pulls the published image. Then open
-                the UI, run the first-boot wizard, register your GitHub App, and
-                enable the repos you want checks on.
+                You do not clone anything: the file pulls the published image.
+                Then open the UI, run the first-boot wizard, register your GitHub
+                App, and enable the repos you want checks on.
               </p>
             </div>
             <pre className="mx-auto mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-foreground/10 bg-muted/40 p-5 font-mono text-sm leading-relaxed sm:p-6">
@@ -409,7 +410,8 @@ docker compose -f compose.prod.yaml up -d`}</code>
               Before and after
             </h2>
             <p className="mt-5 max-w-2xl text-muted-foreground">
-              Same private GitHub repo. Different place the Check Run comes from.
+              The same private GitHub repo, with the Check Run arriving from
+              somewhere else.
             </p>
             <div className="mt-10 grid gap-4 md:grid-cols-2">
               <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
@@ -419,8 +421,8 @@ docker compose -f compose.prod.yaml up -d`}</code>
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   Workflow YAML, hosted or self-hosted <code className="font-mono text-xs">actions/runner</code>,
-                  matrices and caches if you need them. Fine when you want that
-                  orchestration layer.
+                  matrices and caches if you need them. This is the right answer
+                  when you want that orchestration layer.
                 </p>
               </article>
               <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
@@ -431,7 +433,8 @@ docker compose -f compose.prod.yaml up -d`}</code>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   One binary, SQLite, a GitHub App you register, and{" "}
                   <code className="font-mono text-xs">.ci.yml</code>. Logs stay
-                  on your disk. Not a unification of GitLab and Jenkins.
+                  on your disk. It does not try to be one config that spans
+                  GitLab and Jenkins.
                 </p>
               </article>
             </div>
@@ -444,9 +447,9 @@ docker compose -f compose.prod.yaml up -d`}</code>
               What it isn't
             </h2>
             <p className="mt-5 max-w-2xl text-muted-foreground">
-              This is not another CI provider and not a replacement for GitHub
-              Actions. Actions orchestrates. openpreflight is a small Check Runs
-              runner you host. They can coexist. See{" "}
+              Actions is an orchestration layer and openpreflight is a small
+              Check Runs runner you host, so this does not replace it. The two
+              can sit on the same repository. See{" "}
               <a
                 className="underline underline-offset-4 hover:text-foreground"
                 href="/compare/github-actions/"

@@ -140,7 +140,7 @@ const outbound = [
   <Section
     badge="Fit"
     title="Where it fits"
-    description="Full platforms, hosted control planes, and Kubernetes-oriented runners already fill a different slot. This one does not replace them. The worker is the product, not a mode."
+    description="Full platforms, hosted control planes, and Kubernetes-oriented runners already fill a different slot, and this one does not replace them. Here the worker is the whole product."
   >
     <Callout class="mt-12" title="v2.0.0 is out">
       <p>
@@ -232,9 +232,10 @@ const outbound = [
     <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
       <Prose>
         <p>
-          Bindings and Apps are rows in SQLite, edited in the web UI, not a
-          block of environment variables per installation. The process reads a
-          handful of env vars so it can start; everything after that is a row.
+          Bindings and Apps are rows in SQLite that you edit in the web UI, so
+          an installation does not arrive with its own block of environment
+          variables. The process reads a handful of env vars so it can start;
+          everything after that is a row.
         </p>
         <p>
           A binding can override the branch list, the check name, the pipeline
@@ -259,7 +260,7 @@ timeout: 15m`}
     </div>
   </Section>
 
-  <Section badge="Surfaces" title="One process, four ways in" tone="dark">
+  <Section badge="Surfaces" title="Four ways into the same process" tone="dark">
     <Grid class="mt-12" cols={4}>
       {surfaces.map((item) => (
         <Card title={item.title} tone="dark">
@@ -269,8 +270,8 @@ timeout: 15m`}
     </Grid>
     <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
       The HTML UI and the JSON API come out of the same handlers, so anything
-      you can click you can also script. There is no separate frontend to
-      deploy and no second service to keep in sync.
+      you can click you can also script. You deploy no separate frontend and
+      keep no second service in sync.
     </p>
     <Actions>
       <CtaLink href={`${DOCS}/using/api/`} variant="onDark">API reference</CtaLink>

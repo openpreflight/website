@@ -93,7 +93,7 @@ const panelSteps = [
     <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
         [
-          { name: 'Checks', level: 'Read and write', why: 'Creating and completing the Check Run. That is the entire point.' },
+          { name: 'Checks', level: 'Read and write', why: 'Creating and completing the Check Run, which is what the App is here for.' },
           { name: 'Contents', level: 'Read-only', why: 'Cloning the commit being checked. Read-only: it never writes to your repo.' },
           { name: 'Metadata', level: 'Read-only', why: 'The mandatory baseline GitHub requires alongside the others.' },
           { name: 'Check suite', level: 'Event', why: 'The trigger. GitHub creates a suite per commit and delivers it here.' },
@@ -146,7 +146,7 @@ const panelSteps = [
         <a class="text-primary underline underline-offset-4" href="/use-cases/private-repos/">
           Private repos
         </a>{' '}
-        covers the naming trap. Avoid it first.
+        covers the naming trap, which is worth reading before you pick one.
       </Card>
       <Card index={2} title="Add the rest of the repos">
         The same App can cover everything it is installed on. Each repo still
@@ -180,7 +180,7 @@ const panelSteps = [
         {
           question: 'I pushed and nothing happened.',
           answer:
-            'Check the binding first: a repo you have not enabled is ignored by design, not by accident.',
+            'Check the binding first. A repo you have not enabled is ignored deliberately.',
           href: '/security/',
           linkLabel: 'Why that is the boundary',
         },

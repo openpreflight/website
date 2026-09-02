@@ -22,7 +22,7 @@ const panelSteps = [
 const steps = [
   {
     title: 'Register a GitHub App against those repos',
-    detail: 'It lives in your org, with the permissions the docs list. Nothing broader.',
+    detail: 'It lives in your org, with the permissions the docs list and no others.',
   },
   {
     title: 'Bind the repos in the UI',
@@ -174,7 +174,7 @@ const steps = [
         {
           question: 'How do I try it on one repo first?',
           answer:
-            'Enable exactly one binding. Nothing else the App is installed on will run, because a repo with no enabled binding is ignored. A trial stays a trial.',
+            'Enable exactly one binding. Nothing else the App is installed on will run, because a repo with no enabled binding is ignored, so the trial stays contained to that one repo.',
         },
       ]}
     />

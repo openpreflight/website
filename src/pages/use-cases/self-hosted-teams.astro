@@ -42,7 +42,7 @@ const stack = [
     </Actions>
   </PageHero>
 
-  <Section badge="The stack" title="One Compose file, on hardware you already have">
+  <Section badge="The stack" title="It runs on hardware you already have">
     <MarkList class="mt-10" cols={3} items={stack} mark="check" />
   </Section>
 
@@ -120,7 +120,7 @@ const stack = [
         {
           question: 'How much history does it keep?',
           answer:
-            'A retention window you set. An hourly pass deletes job rows and their log files past it. Queued and running jobs are never pruned. History is finite by design.',
+            'A retention window you set. An hourly pass deletes job rows and their log files past it. Queued and running jobs are never pruned, so history does not grow forever.',
           href: `${DOCS}/understanding/operations/`,
           linkLabel: 'Operations',
         },
@@ -158,8 +158,8 @@ const stack = [
     </div>
     <Callout class="mt-8" title="Plan around the single account">
       <p>
-        This is a genuine limit, not an oversight, and it is listed with the
-        others on <a href="/why/">why this shape</a>. If your team needs
+        This is a genuine limit rather than an oversight, and it is listed with
+        the others on <a href="/why/">why this shape</a>. If your team needs
         per-person access to CI configuration, that is a reason to pick
         something larger.
       </p>

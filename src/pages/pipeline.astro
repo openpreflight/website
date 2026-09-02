@@ -108,7 +108,7 @@ timeout: 15m`}
 
   <Section
     badge="The file"
-    title="Five keys, all of them optional"
+    title="Every key in the file is optional"
     description="The default filename is .ci.yml, not openpreflight.yaml. Everything in it is a command you already run locally."
   >
     <dl class="mt-12 divide-y divide-foreground/10 border-y border-foreground/10">
@@ -177,9 +177,9 @@ timeout: 15m`}
             scripts exist</strong>.
           </p>
           <p>
-            That is the whole inference. No other language is guessed, and
-            nothing is invented for a repo that has neither a file nor scripts.
-            It reports skipped.
+            That is the whole inference. No other language is guessed, and a
+            repo with neither a file nor scripts gets nothing invented for it.
+            The check reports skipped.
           </p>
         </Prose>
       </div>
@@ -200,7 +200,7 @@ timeout: 15m`}
     <Grid class="mt-12" cols={2}>
       <Card eyebrow="Default" title="In the worker process">
         Omit <code>runtime</code> and steps run as local processes on the host
-        that runs the binary. Nothing else to install.
+        that runs the binary. You install nothing else.
       </Card>
       <Card eyebrow="runtime: node:24" title="In a container">
         A non-empty image uses <code>docker run --rm</code>. If the engine is
@@ -257,7 +257,7 @@ timeout: 15m`}
         {
           question: 'How big can a log get?',
           answer:
-            'There is a byte cap; the log stops growing at it while the run continues. Logs and their job rows are pruned on a retention window, so history is finite by design.',
+            'There is a byte cap; the log stops growing at it while the run continues. Logs and their job rows are pruned on a retention window, so history stops at a horizon you set.',
           href: `${DOCS}/using/logs/`,
           linkLabel: 'Logs',
         },

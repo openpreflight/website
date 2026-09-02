@@ -118,7 +118,7 @@ const operate = [
 
   <Section
     badge="What you operate"
-    title="Four things, none of them a control plane"
+    title="What you actually operate"
     tone="dark"
   >
     <Grid class="mt-12" cols={4}>
@@ -205,9 +205,9 @@ docker compose -f compose.prod.yaml up -d`}
       />
       <div>
         <p class="max-w-xl text-base leading-relaxed text-muted-foreground">
-          Nothing to clone. The file pulls the published image. Then open the
-          UI, run the first-boot wizard, register your GitHub App, and enable
-          the repos you want checks on.
+          The file pulls the published image, so there is no repository to
+          clone. Then open the UI, run the first-boot wizard, register your
+          GitHub App, and enable the repos you want checks on.
         </p>
         <Actions>
           <CtaLink href={CTA.quickstart} variant="primary">Full quickstart</CtaLink>

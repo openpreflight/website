@@ -51,7 +51,7 @@ const topics = [
   <PageHero
     kicker="Security"
     title="What the worker is allowed to do"
-    lead="This page restates the published security model. It does not add claims. Every line below has a source in the docs or the repository."
+    lead="This page restates the published security model without adding to it. Every line below has a source in the docs or the repository."
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Security' }]}
   >
     <Actions slot="actions">
@@ -153,7 +153,7 @@ const topics = [
   <Section
     badge="Auth surface"
     title="What is reachable without a session"
-    description="Three routes are public by design. Everything else needs a session cookie from the UI or a bearer token from the API."
+    description="Three routes are meant to be public. Everything else needs a session cookie from the UI or a bearer token from the API."
   >
     <div class="mt-12 overflow-hidden rounded-[1.5rem] border border-foreground/10">
       {
@@ -189,9 +189,9 @@ const topics = [
     </div>
     <Callout class="mt-8" title="One admin user">
       <p>
-        There are no teams, no roles, and no SSO. That is a real limit, listed
-        with the others on <a href="/why/">why this shape</a>, not something to
-        discover after you have onboarded a team.
+        There are no teams, no roles, and no SSO. That is a real limit and it
+        is listed with the others on <a href="/why/">why this shape</a>. Better
+        to know it before you onboard a team.
       </p>
     </Callout>
   </Section>
@@ -200,7 +200,8 @@ const topics = [
     <div class="mt-10 max-w-2xl">
       <p class="text-base leading-relaxed text-background/65">
         Report vulnerabilities the way SECURITY.md describes: private reporting
-        on the GitHub repository, or email. Not the public issue tracker.
+        on the GitHub repository, or email. Please do not use the public issue
+        tracker.
       </p>
     </div>
     <Actions>

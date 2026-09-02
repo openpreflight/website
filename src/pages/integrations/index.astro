@@ -58,7 +58,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
   <PageHero
     kicker="Integrations"
     title="Surfaces that exist"
-    lead="Four things connect to openpreflight. One is required, one is the default, and two are optional. That is the entire list."
+    lead="Four things connect to openpreflight. One is required, one is the default, and two are optional, and there is nothing else on the list."
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Integrations' }]}
   >
     <Actions slot="actions">
@@ -136,8 +136,8 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
       <Prose>
         <p>
           User tokens and OAuth tokens are refused by GitHub for this. The
-          Check Runs API is App-only. That single fact is why the integration
-          list starts and ends where it does.
+          Check Runs API is App-only. The rest of the integration list follows
+          from that.
         </p>
         <p>
           A GitHub App also has exactly <strong>one</strong> webhook URL, which
@@ -187,7 +187,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
         {
           question: 'What is Coolify used for?',
           answer:
-            'Server inventory, a repository picker for the bindings screen, and an install-worker call that creates the compose application for you. That is the whole surface.',
+            'Server inventory, a repository picker for the bindings screen, and an install-worker call that creates the compose application for you. Those three things are all it does.',
           href: `${DOCS}/setup/coolify/`,
           linkLabel: 'Coolify',
         },

@@ -15,7 +15,7 @@ const groups = [
       {
         id: 'check-run',
         term: 'Check Run',
-        body: 'GitHub’s status object on a commit. openpreflight creates one per job and writes the conclusion plus a log tail. It is the product’s hero artifact.',
+        body: 'GitHub’s status object on a commit. openpreflight creates one per job and writes the conclusion plus a log tail. Producing one is the point of the whole product.',
         links: [{ label: 'ADR 005', href: `${DOCS}/adr/005-check-suite-gating/` }],
       },
       {
@@ -27,7 +27,7 @@ const groups = [
       {
         id: 'github-app',
         term: 'GitHub App',
-        body: 'An App you register. Webhooks, installation tokens, Check Runs. Not OAuth, and not Coolify’s GitHub connector.',
+        body: 'An App you register, which handles webhooks, installation tokens, and Check Runs. This is not OAuth, and it is not Coolify’s GitHub connector.',
         links: [
           { label: 'Setup', href: `${DOCS}/setup/github-app/` },
           { label: 'ADR 003', href: `${DOCS}/adr/003-github-app/` },
@@ -53,7 +53,7 @@ const groups = [
       {
         id: 'pipeline',
         term: 'Pipeline (<code>.ci.yml</code>)',
-        body: 'Repo file with <code>install</code>, <code>test</code>, <code>build</code>, and optional <code>runtime</code> and <code>timeout</code>. Commands you write, not a marketplace of named checks.',
+        body: 'Repo file with <code>install</code>, <code>test</code>, <code>build</code>, and optional <code>runtime</code> and <code>timeout</code>. You write the commands yourself; there is no marketplace of named checks.',
         links: [
           { label: 'Pipeline', href: '/pipeline/' },
           { label: 'Docs', href: `${DOCS}/using/pipelines/` },
@@ -106,7 +106,7 @@ const groups = [
   <PageHero
     kicker="Concepts"
     title="Words the binary uses"
-    lead="A glossary that matches the docs. Each entry is the thing in this product, not a metaphor for a future platform."
+    lead="A glossary that matches the docs. Each entry describes what the word means in this product today."
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Concepts' }]}
   >
     <Actions slot="actions">
@@ -176,7 +176,7 @@ const groups = [
         {
           title: 'The <b>binding</b> decides whether anything happens',
           detail:
-            'No enabled binding for that repo, and the delivery is acknowledged and dropped, however valid its signature.',
+            'With no enabled binding for that repo, the delivery is acknowledged and then dropped, whatever its signature says.',
         },
         {
           title: 'A <b>job</b> is queued for that <code>(app, repo, sha)</code>',
@@ -210,7 +210,7 @@ const groups = [
   <Section
     badge="Not in the vocabulary"
     title="Words this product does not use"
-    description="If you are looking for one of these, you are looking at the wrong layer. Know that before you install, not after."
+    description="If you are looking for one of these, you are looking at the wrong layer. It is worth checking that before you install."
   >
     <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
@@ -229,7 +229,7 @@ const groups = [
           },
           {
             word: 'Matrix',
-            why: 'One pipeline per commit, never one per version combination.',
+            why: 'One pipeline runs per commit. There is no way to expand it across a set of versions.',
           },
           {
             word: 'Artifact',

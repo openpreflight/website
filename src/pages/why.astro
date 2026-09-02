@@ -16,7 +16,7 @@ const positions = [
   {
     eyebrow: 'One end',
     title: 'Hosted Actions',
-    body: 'The default path. Workflow YAML, hosted minutes, and a lot of surface area.',
+    body: 'The default path: workflow YAML, hosted minutes, and a lot of surface area.',
   },
   {
     eyebrow: 'Other end',
@@ -26,14 +26,14 @@ const positions = [
   {
     eyebrow: 'This',
     title: 'In between',
-    body: 'The commit is gated, the logs stay here, and the operator is a binary.',
+    body: 'The commit gets gated, the logs stay on your machine, and the thing you operate is one binary.',
   },
 ];
 
 const shape = [
   {
     title: 'One process',
-    body: 'Configurator and worker are the same program. Nothing else to schedule.',
+    body: 'Configurator and worker are the same program, so there is nothing else to schedule.',
   },
   {
     title: 'One SQLite file',
@@ -74,11 +74,11 @@ const rejected = [
 const strengths = [
   {
     title: 'Operationally small',
-    body: 'One container, one SQLite file, one process. No broker, no agent registration, no database server.',
+    body: 'One container, one SQLite file, one process. You do not run a broker, register agents, or stand up a database server.',
   },
   {
     title: 'Native Check Runs',
-    body: 'Not a status API shim. Gating on the check suite is what makes required checks behave under force-pushes and rapid pushes.',
+    body: 'These are real Check Runs rather than a shim over the status API. Gating on the check suite is what makes required checks behave under force-pushes and rapid pushes.',
   },
   {
     title: 'Configured in a UI',
@@ -137,7 +137,7 @@ const weaknesses = [
   <PageHero
     kicker="Why"
     title="CI for private repos, small enough to host"
-    lead='The problem is not "we need another CI platform." It is: we want a Check Run on our private code, on our machine, without learning a second workflow language.'
+    lead="Most people who land here do not want another CI platform. They want a Check Run on their private code, on their own machine, without learning a second workflow language."
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Why' }]}
   >
     <Actions slot="actions">
@@ -159,13 +159,14 @@ const weaknesses = [
     <Prose class="mt-10">
       <p>
         Both ends are the right answer for someone. Plenty of people want
-        neither: no hosted minutes to buy, no orchestration layer to run. Just
-        the commit checked, on hardware that is already theirs.
+        neither. They would rather not buy hosted minutes or run an
+        orchestration layer, and the hardware to check the commit on is already
+        sitting there.
       </p>
       <p>
         <strong>v2.0.0</strong> is out. Linux binaries are on the{' '}
-        <a href={RELEASE}>GitHub Release</a>. The ceiling below is still the
-        product boundary, not a backlog.
+        <a href={RELEASE}>GitHub Release</a>. The ceiling described below is
+        where the product stops, rather than a list of things being worked on.
       </p>
     </Prose>
   </Section>
@@ -199,7 +200,7 @@ const weaknesses = [
   <Section
     badge="Prior art"
     title="Zuul's trigger model, at one server's scale"
-    description="The gating idea is borrowed on purpose, and named so you can go read the original. The architecture around it is not."
+    description="The gating idea is borrowed on purpose, and named so you can go read the original. The architecture around it was built separately."
   >
     <div class="mt-12 grid gap-4 lg:grid-cols-2">
       <div class="rounded-[1.5rem] border border-primary/25 bg-primary/[.04] p-6 sm:p-7">
