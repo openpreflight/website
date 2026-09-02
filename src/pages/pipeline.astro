@@ -41,12 +41,12 @@ const cannot = [
   'Caches between runs',
   'Artifacts between steps',
   'Build matrices',
-  'Path filters for monorepos',
   'Steps that are not install / test / build',
 ];
 
 const overrides = [
   'the branch list',
+  'the path list',
   'the check name',
   'the pipeline file path',
   'the timeout',
@@ -221,7 +221,7 @@ timeout: 15m`}
     badge="Limits"
     title="What a pipeline here cannot do"
     tone="dark"
-    description="Three steps in a fixed order is the whole plan format. None of the following exists, and none of it is coming in v1."
+    description="Three steps in a fixed order is the whole plan format. None of the following exists, and none of it is coming."
   >
     <MarkList class="mt-10" cols={3} items={cannot} mark="cross" tone="dark" />
     <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">

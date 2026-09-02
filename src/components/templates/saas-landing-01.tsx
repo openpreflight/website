@@ -63,7 +63,7 @@ const runSteps = [
   },
 ];
 
-const notInV1 = [
+const outOfScope = [
   "GitHub Actions YAML",
   "actions/runner",
   "Matrices",
@@ -98,7 +98,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           <div className="mx-auto w-full max-w-7xl">
             <div className="hero-copy mx-auto max-w-4xl text-center">
               <p className="hero-kicker font-mono text-sm font-medium tracking-wide text-primary">
-                v1.0.0 is out
+                v2.0.0 is out
               </p>
               <h1 className="mt-5 text-balance text-[2.75rem] font-semibold leading-[0.95] tracking-[-0.055em] sm:text-6xl lg:text-[4.75rem]">
                 A small CI provider for{" "}
@@ -121,7 +121,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                 </Button>
               </div>
               <p className="mt-5 font-mono text-xs text-muted-foreground">
-                Tagged 29 August 2026.{" "}
+                Tagged 2 September 2026.{" "}
                 <a
                   className="underline underline-offset-4 hover:text-foreground"
                   href={RELEASE}
@@ -131,7 +131,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                 {" · "}
                 <a
                   className="underline underline-offset-4 hover:text-foreground"
-                  href={`${REPO}/blob/v1.0.0/CHANGELOG.md`}
+                  href={`${REPO}/blob/v2.0.0/CHANGELOG.md`}
                 >
                   Changelog
                 </a>
@@ -454,10 +454,10 @@ docker compose -f compose.prod.yaml up -d`}</code>
                 openpreflight and GitHub Actions
               </a>
               . If any of these are requirements for you, this is the wrong
-              tool. None of them are in v1:
+              tool. None of them are in this product:
             </p>
             <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {notInV1.map((item) => (
+              {outOfScope.map((item) => (
                 <li
                   className="flex items-center gap-3 rounded-2xl border border-foreground/10 px-4 py-3 text-sm text-muted-foreground"
                   key={item}
@@ -505,7 +505,7 @@ docker compose -f compose.prod.yaml up -d`}</code>
                   <code className="font-mono">go test ./...</code> runs without
                   credentials because Coolify and GitHub are faked. The most
                   useful contributions are bug fixes that come with a failing
-                  test, small gaps in v1, and docs corrected to match the code.
+                  test, small gaps already in scope, and docs corrected to match the code.
                 </p>
               </div>
             </div>
