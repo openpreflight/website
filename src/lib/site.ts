@@ -1,10 +1,17 @@
-/** Shared marketing chrome. Keep claims 2.0-true: GitHub Check Runs CI only. v2.0.0 is released. */
+/**
+ * Shared marketing chrome. Keep claims 2.0-true: GitHub Check Runs CI only.
+ *
+ * VERSION is the single source of truth for the released version. Bump it here
+ * on a release; do not hardcode a tag in a page, or it goes stale silently.
+ */
 
 export const DOCS = "https://docs.openpreflight.xyz";
 export const REPO = "https://github.com/openpreflight/openpreflight";
 export const WEBSITE_REPO = "https://github.com/openpreflight/website";
 export const DOCS_REPO = "https://github.com/openpreflight/docs";
-export const RELEASE = `${REPO}/releases/tag/v2.0.0`;
+export const VERSION = "2.0.2";
+export const RELEASE = `${REPO}/releases/tag/v${VERSION}`;
+export const CHANGELOG = `${REPO}/blob/v${VERSION}/CHANGELOG.md`;
 
 export const CTA = {
   quickstart: `${DOCS}/start/quickstart/`,
@@ -12,7 +19,7 @@ export const CTA = {
 } as const;
 
 export const tagline =
-  "A small CI provider for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit.";
+  "Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run.";
 
 /**
  * The whole site, once. The header nav and the footer both render this, so a

@@ -197,7 +197,7 @@ function html(t) {
 <div class="lede">
   <div class="mark">${MARK}</div>
   <h1>openpreflight</h1>
-  <p class="tagline">A small CI provider for private repos.</p>
+  <p class="tagline">Self-hosted CI without the CI platform.</p>
   <p class="meta">one Go binary · one SQLite file · one Check Run per commit</p>
 </div>
 

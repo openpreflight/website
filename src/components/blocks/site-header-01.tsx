@@ -416,7 +416,7 @@ function SiteHeader01({
                   {brand}
                 </SheetTitle>
                 <SheetDescription>
-                  A small CI provider for private repos.
+                  Self-hosted CI without the CI platform.
                 </SheetDescription>
               </SheetHeader>
               <nav className="mt-8 grid gap-6 overflow-y-auto pb-4" aria-label="Mobile">
