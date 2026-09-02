@@ -35,7 +35,7 @@ const steps = [
   {
     title: 'Enable a binding and push',
     detail:
-      'The binding names the repo and branches. The next commit gets the first Check Run.',
+      'The binding names the repo, branches, and optional path patterns. The next commit gets the first Check Run.',
   },
 ];
 
@@ -154,7 +154,7 @@ const panelSteps = [
         meaningful.
       </Card>
       <Card index={3} title="Override per repo">
-        A binding can change the branch list, the commands, the timeout, the
+        A binding can change the branch list, the path list, the commands, the timeout, the
         check name, and whether logs are shareable. Useful for the one repo
         that does not fit the default.
       </Card>

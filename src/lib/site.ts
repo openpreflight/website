@@ -1,10 +1,10 @@
-/** Shared marketing chrome. Keep claims v1-true: GitHub Check Runs CI only. v1.0.0 is released. */
+/** Shared marketing chrome. Keep claims 2.0-true: GitHub Check Runs CI only. v2.0.0 is released. */
 
 export const DOCS = "https://docs.openpreflight.xyz";
 export const REPO = "https://github.com/openpreflight/openpreflight";
 export const WEBSITE_REPO = "https://github.com/openpreflight/website";
 export const DOCS_REPO = "https://github.com/openpreflight/docs";
-export const RELEASE = `${REPO}/releases/tag/v1.0.0`;
+export const RELEASE = `${REPO}/releases/tag/v2.0.0`;
 
 export const CTA = {
   quickstart: `${DOCS}/start/quickstart/`,

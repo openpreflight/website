@@ -124,9 +124,9 @@ examples/            a sample .ci.yml
         the patch. <code>go test ./...</code> runs offline. GitHub and Coolify
         are faked.
       </Card>
-      <Card index={2} title="A gap in v1" tone="dark">
-        Small things the scope already covers but the code does not do yet. Not
-        features from the Not-in-v1 list.
+      <Card index={2} title="A gap already in scope" tone="dark">
+        Small things the product already covers but the code does not do yet. Not
+        features from the Out of scope list.
       </Card>
       <Card index={3} title="Docs that match the code" tone="dark">
         Corrections where the documentation drifted from behaviour. The website
@@ -147,10 +147,10 @@ examples/            a sample .ci.yml
   <Section>
     <div class="grid gap-4 md:grid-cols-2">
       <Card title="Releases">
-        <strong>v1.0.0</strong> is tagged (29 August 2026). The changelog lives
+        <strong>v2.0.0</strong> is tagged (2 September 2026). The changelog lives
         in the code repo. The <a class="text-primary underline underline-offset-4" href={RELEASE}>GitHub Release</a> has
         linux amd64 and arm64 binaries. Pin the published image with{' '}
-        <code>OPENPREFLIGHT_VERSION=1.0.0</code>.
+        <code>OPENPREFLIGHT_VERSION=2.0.0</code>.
       </Card>
       <Card title="Security reports">
         Vulnerabilities go through <a class="text-primary underline underline-offset-4" href={`${REPO}/blob/main/SECURITY.md`}>SECURITY.md</a>,
@@ -207,13 +207,13 @@ examples/            a sample .ci.yml
           question: 'Who decides what goes in?',
           answer:
             'There is no foundation, no board, and no RFC process to join. Issues and pull requests on the code repository are the whole process, and the scope note in the README is the boundary.',
-          href: `${REPO}#not-in-v1`,
-          linkLabel: 'Not in v1',
+          href: `${REPO}#out-of-scope`,
+          linkLabel: 'Out of scope',
         },
         {
           question: 'What will not be accepted?',
           answer:
-            'Features from the Not-in-v1 list, and product claims the docs do not back. A behaviour change in the binary needs a documentation change alongside it.',
+            'Features from the Out of scope list, and product claims the docs do not back. A behaviour change in the binary needs a documentation change alongside it.',
           href: `${REPO}/blob/main/CONTRIBUTING.md`,
           linkLabel: 'CONTRIBUTING.md',
         },

@@ -125,7 +125,7 @@ const weaknesses = [
   },
   {
     title: 'Monorepos are the worst case',
-    body: 'There is no path filter. A commit touching one directory runs the same three commands as a commit touching all of them.',
+    body: 'A binding can list path patterns and skip when nothing matches. It is still one job and three steps, not a matrix of jobs per directory.',
   },
 ];
 ---
@@ -163,7 +163,7 @@ const weaknesses = [
         the commit checked, on hardware that is already theirs.
       </p>
       <p>
-        <strong>v1.0.0</strong> is out. Linux binaries are on the{' '}
+        <strong>v2.0.0</strong> is out. Linux binaries are on the{' '}
         <a href={RELEASE}>GitHub Release</a>. The ceiling below is still the
         product boundary, not a backlog.
       </p>
@@ -275,7 +275,7 @@ const weaknesses = [
       ))}
     </div>
     <h3 class="mt-16 font-mono text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground">
-      Not in v1 at all
+      Out of scope
     </h3>
     <MarkList class="mt-6" cols={3} items={ceiling} mark="cross" />
     <Callout class="mt-8">
@@ -291,9 +291,9 @@ const weaknesses = [
       class="mt-12"
       items={[
         {
-          question: 'Is v1 released?',
+          question: 'What is the current release?',
           answer:
-            'Yes. <strong>v1.0.0</strong> was tagged 29 August 2026. Linux binaries are on the GitHub Release. What v1 still does not include is listed below. Those things are out of scope, not unfinished.',
+            '<strong>v2.0.0</strong> is out (2 September 2026). Linux binaries are on the GitHub Release. <strong>v1.0.0</strong> was 29 August 2026. What is still out of scope is listed below, not unfinished.',
           href: RELEASE,
           linkLabel: 'GitHub Release',
         },

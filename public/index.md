@@ -8,7 +8,7 @@ Self-hosted. One Go binary and one SQLite file. Register a GitHub App you own, e
 - Docs: https://docs.openpreflight.xyz
 - Source: https://github.com/openpreflight/openpreflight
 - License: Apache-2.0
-- Release: https://github.com/openpreflight/openpreflight/releases/tag/v1.0.0 (v1.0.0, 29 August 2026)
+- Release: https://github.com/openpreflight/openpreflight/releases/tag/v2.0.0 (v2.0.0, 2 September 2026)
 
 ## What it is
 
@@ -22,9 +22,9 @@ Configuration happens in the web UI: register GitHub Apps, bind repos, and mint 
 2. The worker mints an installation token, opens a Check Run, fetches the exact commit, detaches the checkout, and strips the remote before any step runs.
 3. Pipeline steps run in-process, or via `docker run` when `runtime:` is set. The Check Run carries a truncated log tail, and the full log stays on the details page.
 
-## Not in v1
+## Out of scope
 
-These are out of scope for the shipped v1.0.0, not unfinished work:
+These are out of scope, not unfinished work:
 
 - GitHub Actions YAML
 - `actions/runner`

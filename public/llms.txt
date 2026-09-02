@@ -2,12 +2,12 @@
 
 > A small CI provider for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit.
 
-openpreflight is a small CI provider you run yourself. It does not wrap GitHub Actions or `actions/runner`, and it does not create GitHub Apps on your behalf; you register your own. UI, JSON API, webhook receiver, and job runner live in a single process, and secrets are AES-256-GCM encrypted at rest in SQLite.
+openpreflight is a small CI provider you run yourself. It does not wrap GitHub Actions or `actions/runner`. On github.com you can create the App with GitHub's review screen, or paste credentials (paste is how GitHub Enterprise works). UI, JSON API, webhook receiver, and job runner live in a single process, and secrets are AES-256-GCM encrypted at rest in SQLite.
 
 Marketing site: https://openpreflight.xyz  
 Docs: https://docs.openpreflight.xyz  
 Source: https://github.com/openpreflight/openpreflight  
-Release: https://github.com/openpreflight/openpreflight/releases/tag/v1.0.0 (v1.0.0, 29 August 2026)  
+Release: https://github.com/openpreflight/openpreflight/releases/tag/v2.0.0 (v2.0.0, 2 September 2026)  
 License: Apache-2.0
 
 ## Product
@@ -22,7 +22,7 @@ License: Apache-2.0
 - [vs GitHub Actions](https://openpreflight.xyz/compare/github-actions/): Complement, do not replace
 - [Concepts](https://openpreflight.xyz/concepts/): Check Run, Binding, Job
 - [Use cases](https://openpreflight.xyz/use-cases/): Private repos, self-hosted teams, OSS
-- [Product overview (Markdown)](https://openpreflight.xyz/index.md): Positioning, what it does, what is out of scope for v1
+- [Product overview (Markdown)](https://openpreflight.xyz/index.md): Positioning, what it does, what is out of scope
 - [Marketing home](https://openpreflight.xyz/): Human-facing landing page
 
 ## Docs
