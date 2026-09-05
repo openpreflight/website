@@ -13,7 +13,7 @@ import CtaLink from '../../components/marketing/CtaLink.astro';
 import Prose from '../../components/marketing/Prose.astro';
 import Callout from '../../components/marketing/Callout.astro';
 import Faq from '../../components/marketing/Faq.astro';
-import { CTA, DOCS, REPO, RELEASE } from '../../lib/site';
+import { CHANGELOG, CTA, DOCS, RELEASE, VERSION } from '../../lib/site';
 
 const panelSteps = [
   { name: 'install', command: 'npm ci', duration: '8s', width: '19%' },
@@ -142,12 +142,12 @@ const outbound = [
     title="Where it fits"
     description="Full platforms, hosted control planes, and Kubernetes-oriented runners already fill a different slot, and this one does not replace them. Here the worker is the whole product."
   >
-    <Callout class="mt-12" title="v2.1.0 is out">
+    <Callout class="mt-12" title={`v${VERSION} is out`}>
       <p>
         Tagged 5 September 2026.{' '}
         <a class="text-primary underline underline-offset-4" href={RELEASE}>GitHub Release</a>
         {' · '}
-        <a class="text-primary underline underline-offset-4" href={`${REPO}/blob/v2.1.0/CHANGELOG.md`}>Changelog</a>.
+        <a class="text-primary underline underline-offset-4" href={CHANGELOG}>Changelog</a>.
       </p>
     </Callout>
     <div class="mt-10 grid gap-4 lg:grid-cols-2">
@@ -163,7 +163,7 @@ const outbound = [
         <h3 class="text-lg font-semibold tracking-[-.03em]">Look elsewhere when</h3>
         <MarkList class="mt-5" cols={1} items={lookElsewhere} mark="cross" />
         <p class="mt-5 text-sm leading-relaxed text-muted-foreground">
-          Each of those is a real limit rather than a missing feature.{' '}
+          Each of those is a limit the design accepted on purpose.{' '}
           <a class="text-primary underline underline-offset-4" href="/why/">Why this shape</a>{' '}
           works through all of them and names what to reach for instead.
         </p>
@@ -283,7 +283,7 @@ timeout: 15m`}
       <Card title="The Check Run">
         GitHub shows the conclusion and a truncated log tail on the commit, the
         same way it shows any other check. Steps are rendered as a table in that
-        run’s summary rather than as separate runs.
+        run’s summary, not as separate runs.
       </Card>
       <Card title="The details URL">
         <code>GET /runs/&#123;id&#125;</code> on your instance. GitHub never fetches
@@ -320,7 +320,7 @@ timeout: 15m`}
         {
           question: 'What if a repo has no pipeline file?',
           answer:
-            'Commands fall back to the binding’s overrides, then to Node defaults inferred from <code>package.json</code>. With nothing to run at all the check reports <strong>skipped</strong> rather than failed.',
+            'Commands fall back to the binding’s overrides, then to Node defaults inferred from <code>package.json</code>. With nothing to run at all the check reports <strong>skipped</strong>, not failed.',
           href: '/pipeline/',
           linkLabel: 'Pipeline',
         },

@@ -11,7 +11,7 @@ GitHub must reach the webhook, so the worker needs a public HTTPS URL. Everythin
 Marketing site: https://openpreflight.xyz  
 Docs: https://docs.openpreflight.xyz  
 Source: https://github.com/openpreflight/openpreflight  
-Release: https://github.com/openpreflight/openpreflight/releases/tag/v2.0.2 (v2.0.2, 2 September 2026)  
+Release: https://github.com/openpreflight/openpreflight/releases/tag/v2.1.0 (v2.1.0, 5 September 2026)  
 License: Apache-2.0
 
 ## Product
@@ -31,16 +31,16 @@ License: Apache-2.0
 
 ## Docs
 
-- [Quickstart](https://docs.openpreflight.xyz/start/quickstart/): Binary, first-boot wizard, ready for a GitHub App
-- [Configuration](https://docs.openpreflight.xyz/start/configuration/): Environment variables and settings
-- [FAQ](https://docs.openpreflight.xyz/start/faq/): Common questions
-- [Register a GitHub App](https://docs.openpreflight.xyz/setup/github-app/): Permissions and events
-- [Bindings](https://docs.openpreflight.xyz/setup/bindings/): Enable repos and branches
-- [Pipelines](https://docs.openpreflight.xyz/using/pipelines/): Job steps and `runtime:`
-- [API](https://docs.openpreflight.xyz/using/api/): JSON API surface
-- [Architecture](https://docs.openpreflight.xyz/understanding/architecture/): How the binary is structured
-- [Security model](https://docs.openpreflight.xyz/understanding/security-model/): HMAC, encryption, trust boundaries
-- [Deployment](https://docs.openpreflight.xyz/understanding/deployment/): Compose, volumes, reverse proxy
+- [Quickstart](https://docs.openpreflight.xyz/getting-started/quickstart/): Binary, first-boot wizard, ready for a GitHub App
+- [Configuration](https://docs.openpreflight.xyz/configure/configuration/): Environment variables and settings
+- [FAQ](https://docs.openpreflight.xyz/getting-started/faq/): Common questions
+- [Register a GitHub App](https://docs.openpreflight.xyz/configure/github-app/): Permissions and events
+- [Bindings](https://docs.openpreflight.xyz/configure/bindings/): Enable repos and branches
+- [Pipelines](https://docs.openpreflight.xyz/use/pipelines/): Job steps and `runtime:`
+- [API](https://docs.openpreflight.xyz/reference/api/): JSON API surface
+- [Architecture](https://docs.openpreflight.xyz/reference/architecture/): How the binary is structured
+- [Security model](https://docs.openpreflight.xyz/reference/security-model/): HMAC, encryption, trust boundaries
+- [Deployment](https://docs.openpreflight.xyz/deploy/deployment/): Compose, volumes, reverse proxy
 
 ## Source
 
@@ -50,7 +50,7 @@ License: Apache-2.0
 
 ## Optional
 
-- [Coolify setup](https://docs.openpreflight.xyz/setup/coolify/): Optional Coolify inventory / install-worker
-- [Logs](https://docs.openpreflight.xyz/using/logs/): Check Run tails vs full logs
-- [Troubleshooting](https://docs.openpreflight.xyz/using/troubleshooting/): Common failure modes
-- [ADRs](https://docs.openpreflight.xyz/adr/001-database/): Architecture decision records
+- [Coolify setup](https://docs.openpreflight.xyz/deploy/coolify/): Optional Coolify inventory / install-worker
+- [Logs](https://docs.openpreflight.xyz/use/logs/): Check Run tails vs full logs
+- [Troubleshooting](https://docs.openpreflight.xyz/operate/troubleshooting/): Common failure modes
+- [ADRs](https://docs.openpreflight.xyz/reference/decisions/001-database/): Architecture decision records
