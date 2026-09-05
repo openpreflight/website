@@ -8,7 +8,7 @@ Every commit gets a native GitHub Check Run, written by a GitHub App you own. Th
 - Docs: https://docs.openpreflight.xyz
 - Source: https://github.com/openpreflight/openpreflight
 - License: Apache-2.0
-- Release: https://github.com/openpreflight/openpreflight/releases/tag/v2.0.2 (v2.0.2, 2 September 2026)
+- Release: https://github.com/openpreflight/openpreflight/releases/tag/v2.1.0 (v2.1.0, 5 September 2026)
 
 ## What it is
 
@@ -23,7 +23,7 @@ A GitHub event names an immutable SHA, that SHA gets one logical run, and that r
 Two things follow, and they are why a system this small can be trusted with a required check:
 
 - **Force-push correctness is free.** A run binds to a commit, never to a branch, so nothing is ever attached to a moving reference. The old commit keeps its own check, where it is now irrelevant, and there is nothing to cancel.
-- **A required check never hangs.** When a path filter matches nothing, the check still completes, with a `skipped` conclusion rather than no check at all. Branch protection always gets an answer.
+- **A required check never hangs.** When a path filter matches nothing, the check still completes, with a `skipped` conclusion. Branch protection always gets an answer.
 
 ## Privacy boundary
 
@@ -37,7 +37,7 @@ GitHub has to reach the webhook, so the worker needs a public HTTPS URL. That pa
 
 ## Out of scope
 
-These are out of scope, not unfinished work:
+None of these exists, and none of them is planned:
 
 - GitHub Actions YAML
 - `actions/runner`
@@ -46,7 +46,7 @@ These are out of scope, not unfinished work:
 ## Start here
 
 - [Product](https://openpreflight.xyz/product/)
-- [Quickstart](https://docs.openpreflight.xyz/start/quickstart/)
-- [Configuration](https://docs.openpreflight.xyz/start/configuration/)
-- [Register a GitHub App](https://docs.openpreflight.xyz/setup/github-app/)
+- [Quickstart](https://docs.openpreflight.xyz/getting-started/quickstart/)
+- [Configuration](https://docs.openpreflight.xyz/configure/configuration/)
+- [Register a GitHub App](https://docs.openpreflight.xyz/configure/github-app/)
 - [llms.txt](https://openpreflight.xyz/llms.txt): curated index for agents

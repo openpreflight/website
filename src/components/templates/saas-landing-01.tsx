@@ -90,7 +90,7 @@ const gatingGuarantees = [
   },
   {
     title: "A required check never hangs",
-    body: "When a path filter matches nothing, the check still completes \u2014 with a skipped conclusion rather than no check at all. Branch protection sees an answer either way, so a merge is never waiting on a run that was never going to arrive.",
+    body: "When a path filter matches nothing, the check still completes with a skipped conclusion. Branch protection gets an answer either way, so a merge is never left waiting on a run that was never going to arrive.",
   },
 ];
 

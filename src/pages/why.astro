@@ -166,7 +166,7 @@ const weaknesses = [
       <p>
         <strong>v2.1.0</strong> is out. Linux binaries are on the{' '}
         <a href={RELEASE}>GitHub Release</a>. The ceiling described below is
-        where the product stops, rather than a list of things being worked on.
+        where the product stops. Nothing on that list is in progress.
       </p>
     </Prose>
   </Section>
@@ -188,8 +188,8 @@ const weaknesses = [
       <p>
         Runs are gated on the commit the way Zuul does it: trigger on the
         check suite, build the immutable SHA, one live run per commit. The
-        ceiling of that model is written down in ADR 005 rather than discovered
-        later.
+        ceiling of that model is written down in ADR 005, so you can read it
+        before you hit it.
       </p>
     </Prose>
     <Actions>
@@ -322,7 +322,7 @@ const weaknesses = [
         {
           question: 'Does the project use itself for CI?',
           answer:
-            'Yes. All three product repos \u2014 the binary, this site, and the docs \u2014 carry a <code>.ci.yml</code> and get their <code>vet</code> and <code>test</code> checks from a self-hosted instance at <code>ci.openpreflight.xyz</code>. GitHub Actions is kept for exactly one thing: <code>release.yml</code>, which builds multi-architecture images and attaches binaries to a tag. That is publishing, not checking, and it is deliberately outside what this tool does.',
+            'Yes. All three product repos (the binary, this site, and the docs) carry a <code>.ci.yml</code> and get their <code>vet</code> and <code>test</code> checks from a self-hosted instance at <code>ci.openpreflight.xyz</code>. GitHub Actions is kept for exactly one thing: <code>release.yml</code>, which builds multi-architecture images and attaches binaries to a tag. That is publishing, not checking, and it is deliberately outside what this tool does.',
           href: `${DOCS}/getting-started/faq/`,
           linkLabel: 'FAQ',
         },
