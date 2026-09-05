@@ -83,7 +83,7 @@ const operate = [
   >
     <Actions slot="actions">
       <CtaLink href={CTA.quickstart} variant="primary" size="lg">Quickstart</CtaLink>
-      <CtaLink href={`${DOCS}/understanding/deployment/`} variant="outline" size="lg">
+      <CtaLink href={`${DOCS}/deploy/deployment/`} variant="outline" size="lg">
         Deployment
       </CtaLink>
     </Actions>
@@ -211,7 +211,7 @@ docker compose -f compose.prod.yaml up -d`}
         </p>
         <Actions>
           <CtaLink href={CTA.quickstart} variant="primary">Full quickstart</CtaLink>
-          <CtaLink href={`${DOCS}/understanding/operations/`} variant="outline">
+          <CtaLink href={`${DOCS}/operate/operations/`} variant="outline">
             Day-two operations
           </CtaLink>
         </Actions>
@@ -228,35 +228,35 @@ docker compose -f compose.prod.yaml up -d`}
           question: 'What does a restart do to a running job?',
           answer:
             'Nothing in progress survives. There is no checkpointing. On a clean signal the job notices the cancelled context, writes itself <strong>cancelled</strong>, and is not retried on its own. On a kill it stays in progress and the next boot runs it again from the beginning, which opens a second Check Run on that commit.',
-          href: `${DOCS}/understanding/operations/`,
+          href: `${DOCS}/operate/operations/`,
           linkLabel: 'Operations',
         },
         {
           question: 'How do upgrades work?',
           answer:
             'Pull the new image and bring it up. Migrations run on boot and are forward-only. There are no down migrations, so rolling a release back is not supported and the way out of a bad upgrade is the backup you took before it.',
-          href: `${DOCS}/understanding/operations/`,
+          href: `${DOCS}/operate/operations/`,
           linkLabel: 'Operations',
         },
         {
           question: 'How much machine does it need?',
           answer:
             'Less than you would expect for a handful of repos, and it will not stretch further than one box. Every concurrent job holds its own checkout and its own log, so disk scales with concurrency, and there is no cap on checkout size. Size the workspace for your largest repo.',
-          href: `${DOCS}/start/configuration/`,
+          href: `${DOCS}/configure/configuration/`,
           linkLabel: 'Configuration',
         },
         {
           question: 'What cleans up after itself?',
           answer:
             'An hourly pass prunes expired sessions, then old job rows and their log files past the retention window. Queued and running jobs are never pruned. Nothing else is cleaned up automatically.',
-          href: `${DOCS}/understanding/operations/`,
+          href: `${DOCS}/operate/operations/`,
           linkLabel: 'Operations',
         },
         {
           question: 'What should the proxy watch?',
           answer:
             '<code>GET /health</code>. A 503 means the process cannot read SQLite. Honour <code>X-Forwarded-Proto</code> too. Session and CSRF cookies set <code>Secure</code> when that header says https.',
-          href: `${DOCS}/understanding/deployment/`,
+          href: `${DOCS}/deploy/deployment/`,
           linkLabel: 'Deployment',
         },
       ]}

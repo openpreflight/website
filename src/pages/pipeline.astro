@@ -90,7 +90,7 @@ const resolution = [
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Pipeline' }]}
   >
     <Actions slot="actions">
-      <CtaLink href={`${DOCS}/using/pipelines/`} variant="primary" size="lg">Pipeline docs</CtaLink>
+      <CtaLink href={`${DOCS}/use/pipelines/`} variant="primary" size="lg">Pipeline docs</CtaLink>
       <CtaLink href={`${REPO}/blob/main/examples/.ci.yml`} variant="outline" size="lg">
         Example file
       </CtaLink>
@@ -212,7 +212,7 @@ timeout: 15m`}
       <p>
         This page is positioning. The contract (full field list, precedence
         rules, and what each executor guarantees) is{' '}
-        <a href={`${DOCS}/using/pipelines/`}>the pipeline reference</a>.
+        <a href={`${DOCS}/use/pipelines/`}>the pipeline reference</a>.
       </p>
     </Callout>
   </Section>
@@ -251,14 +251,14 @@ timeout: 15m`}
           question: 'How long can a run take?',
           answer:
             'Until the timeout. <code>timeout</code> in the file overrides the binding, which overrides the settings default. A job that exceeds it is cut off and reported.',
-          href: `${DOCS}/start/configuration/`,
+          href: `${DOCS}/configure/configuration/`,
           linkLabel: 'Configuration',
         },
         {
           question: 'How big can a log get?',
           answer:
             'There is a byte cap; the log stops growing at it while the run continues. Logs and their job rows are pruned on a retention window, so history stops at a horizon you set.',
-          href: `${DOCS}/using/logs/`,
+          href: `${DOCS}/use/logs/`,
           linkLabel: 'Logs',
         },
       ]}

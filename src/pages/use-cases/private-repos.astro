@@ -148,8 +148,8 @@ const steps = [
       </Callout>
     </div>
     <Actions>
-      <CtaLink href={`${DOCS}/adr/005-check-suite-gating/`} variant="onDark">ADR 005</CtaLink>
-      <CtaLink href={`${DOCS}/start/configuration/`} variant="onDark">Check name settings</CtaLink>
+      <CtaLink href={`${DOCS}/reference/decisions/005-check-suite-gating/`} variant="onDark">ADR 005</CtaLink>
+      <CtaLink href={`${DOCS}/configure/configuration/`} variant="onDark">Check name settings</CtaLink>
     </Actions>
   </Section>
 
@@ -161,7 +161,7 @@ const steps = [
           question: 'Which branches does it check?',
           answer:
             'Whatever the binding says. The branch list takes exact names or a <code>release/*</code> style prefix, and an empty list means every branch the App sees.',
-          href: `${DOCS}/setup/bindings/`,
+          href: `${DOCS}/configure/bindings/`,
           linkLabel: 'Bindings',
         },
         {
@@ -182,10 +182,10 @@ const steps = [
 
   <Section>
     <div class="grid gap-4 md:grid-cols-2">
-      <Card eyebrow="Docs" href={`${DOCS}/setup/github-app/`} title="Register the App">
+      <Card eyebrow="Docs" href={`${DOCS}/configure/github-app/`} title="Register the App">
         Permissions, events, and the webhook URL to use.
       </Card>
-      <Card eyebrow="Docs" href={`${DOCS}/setup/bindings/`} title="Enable the repos">
+      <Card eyebrow="Docs" href={`${DOCS}/configure/bindings/`} title="Enable the repos">
         Bindings, branch filters, and command overrides.
       </Card>
     </div>

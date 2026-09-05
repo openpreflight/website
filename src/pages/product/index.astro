@@ -142,12 +142,12 @@ const outbound = [
     title="Where it fits"
     description="Full platforms, hosted control planes, and Kubernetes-oriented runners already fill a different slot, and this one does not replace them. Here the worker is the whole product."
   >
-    <Callout class="mt-12" title="v2.0.0 is out">
+    <Callout class="mt-12" title="v2.1.0 is out">
       <p>
-        Tagged 2 September 2026.{' '}
+        Tagged 5 September 2026.{' '}
         <a class="text-primary underline underline-offset-4" href={RELEASE}>GitHub Release</a>
         {' · '}
-        <a class="text-primary underline underline-offset-4" href={`${REPO}/blob/v2.0.0/CHANGELOG.md`}>Changelog</a>.
+        <a class="text-primary underline underline-offset-4" href={`${REPO}/blob/v2.1.0/CHANGELOG.md`}>Changelog</a>.
       </p>
     </Callout>
     <div class="mt-10 grid gap-4 lg:grid-cols-2">
@@ -201,8 +201,8 @@ const outbound = [
     </div>
     <Steps class="mt-16" steps={runSteps} tone="dark" />
     <Actions>
-      <CtaLink href={`${DOCS}/understanding/architecture/`} variant="onDark">Architecture</CtaLink>
-      <CtaLink href={`${DOCS}/adr/005-check-suite-gating/`} variant="onDark">ADR 005</CtaLink>
+      <CtaLink href={`${DOCS}/reference/architecture/`} variant="onDark">Architecture</CtaLink>
+      <CtaLink href={`${DOCS}/reference/decisions/005-check-suite-gating/`} variant="onDark">ADR 005</CtaLink>
     </Actions>
   </Section>
 
@@ -223,7 +223,7 @@ const outbound = [
         Branch protection reads whichever check finished last. Holding to one
         live run per <code>(app, repo, sha)</code> is what makes a required check
         behave under force-pushes and rapid pushes. The argument is in{' '}
-        <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a>.
+        <a href={`${DOCS}/reference/decisions/005-check-suite-gating/`}>ADR 005</a>.
       </p>
     </Callout>
   </Section>
@@ -245,7 +245,7 @@ const outbound = [
         </p>
         <p>
           Resolution order and the full field list live in{' '}
-          <a href={`${DOCS}/using/pipelines/`}>the pipeline docs</a>; the short
+          <a href={`${DOCS}/use/pipelines/`}>the pipeline docs</a>; the short
           version is on <a href="/pipeline/">/pipeline</a>.
         </p>
       </Prose>
@@ -274,7 +274,7 @@ timeout: 15m`}
       keep no second service in sync.
     </p>
     <Actions>
-      <CtaLink href={`${DOCS}/using/api/`} variant="onDark">API reference</CtaLink>
+      <CtaLink href={`${DOCS}/reference/api/`} variant="onDark">API reference</CtaLink>
     </Actions>
   </Section>
 
@@ -297,7 +297,7 @@ timeout: 15m`}
     </Grid>
     <Callout class="mt-8" title="Security">
       Claims here match the published{' '}
-      <a href={`${DOCS}/understanding/security-model/`}>security model</a> and
+      <a href={`${DOCS}/reference/security-model/`}>security model</a> and
       nothing more. The page-length version is <a href="/security/">/security</a>.
     </Callout>
   </Section>
@@ -314,7 +314,7 @@ timeout: 15m`}
           question: 'What does a commit trigger?',
           answer:
             'A check suite, and only a check suite. Never a <code>push</code> event and never <code>pull_request</code>. A suite is already scoped to one commit and one App, so it is the unit of work.',
-          href: `${DOCS}/adr/005-check-suite-gating/`,
+          href: `${DOCS}/reference/decisions/005-check-suite-gating/`,
           linkLabel: 'ADR 005',
         },
         {

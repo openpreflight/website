@@ -1,18 +1,25 @@
-/** Shared marketing chrome. Keep claims 2.0-true: GitHub Check Runs CI only. v2.0.0 is released. */
+/**
+ * Shared marketing chrome. Keep claims 2.0-true: GitHub Check Runs CI only.
+ *
+ * VERSION is the single source of truth for the released version. Bump it here
+ * on a release; do not hardcode a tag in a page, or it goes stale silently.
+ */
 
 export const DOCS = "https://docs.openpreflight.xyz";
 export const REPO = "https://github.com/openpreflight/openpreflight";
 export const WEBSITE_REPO = "https://github.com/openpreflight/website";
 export const DOCS_REPO = "https://github.com/openpreflight/docs";
-export const RELEASE = `${REPO}/releases/tag/v2.0.0`;
+export const VERSION = "2.1.0";
+export const RELEASE = `${REPO}/releases/tag/v${VERSION}`;
+export const CHANGELOG = `${REPO}/blob/v${VERSION}/CHANGELOG.md`;
 
 export const CTA = {
-  quickstart: `${DOCS}/start/quickstart/`,
+  quickstart: `${DOCS}/getting-started/quickstart/`,
   github: REPO,
 } as const;
 
 export const tagline =
-  "A small CI provider for private repos. One Go binary, one SQLite file: register a GitHub App, enable your repos, and get one Check Run per commit.";
+  "Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run.";
 
 /**
  * The whole site, once. The header nav and the footer both render this, so a
@@ -117,6 +124,13 @@ export const siteSections = [
         description: "The reference site. How-to lives there",
       },
       { label: "Quickstart", href: CTA.quickstart, description: "Zero to a first check" },
+      {
+        // Deliberately the docs FAQ and not a page here. One copy: a second one
+        // on the website drifts, which is what the last pass was spent fixing.
+        label: "FAQ",
+        href: `${DOCS}/getting-started/faq/`,
+        description: "What it does not do, answered once",
+      },
       { label: "GitHub", href: REPO, description: "The Go binary" },
       { label: "Releases", href: `${REPO}/releases`, description: "Tagged images and binaries" },
     ],

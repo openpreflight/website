@@ -249,7 +249,7 @@ function SiteHeader01({
   groups = [],
   links = defaultLinks,
   ctaLabel = "Quickstart",
-  ctaHref = "https://docs.openpreflight.xyz/start/quickstart/",
+  ctaHref = "https://docs.openpreflight.xyz/getting-started/quickstart/",
   profileName,
   profileEmail,
   showProfile = false,
@@ -416,7 +416,7 @@ function SiteHeader01({
                   {brand}
                 </SheetTitle>
                 <SheetDescription>
-                  A small CI provider for private repos.
+                  Self-hosted CI without the CI platform.
                 </SheetDescription>
               </SheetHeader>
               <nav className="mt-8 grid gap-6 overflow-y-auto pb-4" aria-label="Mobile">
