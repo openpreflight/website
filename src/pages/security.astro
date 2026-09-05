@@ -35,7 +35,7 @@ const topics = [
   {
     title: 'Sessions and CSRF',
     body: 'Session cookies are HttpOnly, and Secure behind HTTPS. Browser writes need a CSRF token; Bearer callers skip CSRF.',
-    links: [{ label: 'ADR 002', href: `${DOCS}/adr/002-authentication/` }],
+    links: [{ label: 'ADR 002', href: `${DOCS}/reference/decisions/002-authentication/` }],
   },
   {
     title: 'Shareable logs',
@@ -55,7 +55,7 @@ const topics = [
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Security' }]}
   >
     <Actions slot="actions">
-      <CtaLink href={`${DOCS}/understanding/security-model/`} variant="primary" size="lg">
+      <CtaLink href={`${DOCS}/reference/security-model/`} variant="primary" size="lg">
         Security model
       </CtaLink>
       <CtaLink href={`${REPO}/blob/main/SECURITY.md`} variant="outline" size="lg">
@@ -110,7 +110,7 @@ const topics = [
         </p>
         <p>
           Bindings and their overrides are documented in{' '}
-          <a href={`${DOCS}/setup/bindings/`}>enable repos</a>.
+          <a href={`${DOCS}/configure/bindings/`}>enable repos</a>.
         </p>
       </Prose>
       <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">

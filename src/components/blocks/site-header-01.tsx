@@ -249,7 +249,7 @@ function SiteHeader01({
   groups = [],
   links = defaultLinks,
   ctaLabel = "Quickstart",
-  ctaHref = "https://docs.openpreflight.xyz/start/quickstart/",
+  ctaHref = "https://docs.openpreflight.xyz/getting-started/quickstart/",
   profileName,
   profileEmail,
   showProfile = false,

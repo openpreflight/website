@@ -96,8 +96,8 @@ const stack = [
     <Callout class="mt-6" title="The walkthrough lives in the docs">
       <p>
         Exact commands, mounts, and the reverse-proxy notes are in the{' '}
-        <a href={`${DOCS}/start/quickstart/`}>quickstart</a> and{' '}
-        <a href={`${DOCS}/understanding/deployment/`}>deployment</a> pages, which
+        <a href={`${DOCS}/getting-started/quickstart/`}>quickstart</a> and{' '}
+        <a href={`${DOCS}/deploy/deployment/`}>deployment</a> pages, which
         track the code. This page is only the shape of it.
       </p>
     </Callout>
@@ -121,7 +121,7 @@ const stack = [
           question: 'How much history does it keep?',
           answer:
             'A retention window you set. An hourly pass deletes job rows and their log files past it. Queued and running jobs are never pruned, so history does not grow forever.',
-          href: `${DOCS}/understanding/operations/`,
+          href: `${DOCS}/operate/operations/`,
           linkLabel: 'Operations',
         },
         {
@@ -133,7 +133,7 @@ const stack = [
           question: 'Can jobs run on a different machine?',
           answer:
             'Point <code>CI_DOCKER_HOST</code> at another Docker engine and <code>runtime:</code> jobs execute there. That is Docker’s remote API. It is still one worker deciding what runs, not a fleet.',
-          href: `${DOCS}/understanding/deployment/`,
+          href: `${DOCS}/deploy/deployment/`,
           linkLabel: 'Deployment',
         },
       ]}
@@ -168,10 +168,10 @@ const stack = [
 
   <Section badge="Day two" title="What running it involves">
     <div class="grid gap-4 md:grid-cols-2">
-      <Card eyebrow="Docs" href={`${DOCS}/understanding/operations/`} title="Operations">
+      <Card eyebrow="Docs" href={`${DOCS}/operate/operations/`} title="Operations">
         Backups, upgrades, and what a restart does to an in-flight job.
       </Card>
-      <Card eyebrow="Docs" href={`${DOCS}/understanding/deployment/`} title="Deployment">
+      <Card eyebrow="Docs" href={`${DOCS}/deploy/deployment/`} title="Deployment">
         Reverse proxy, volumes, and the environment reference.
       </Card>
     </div>

@@ -14,7 +14,7 @@ export const RELEASE = `${REPO}/releases/tag/v${VERSION}`;
 export const CHANGELOG = `${REPO}/blob/v${VERSION}/CHANGELOG.md`;
 
 export const CTA = {
-  quickstart: `${DOCS}/start/quickstart/`,
+  quickstart: `${DOCS}/getting-started/quickstart/`,
   github: REPO,
 } as const;
 
@@ -124,6 +124,13 @@ export const siteSections = [
         description: "The reference site. How-to lives there",
       },
       { label: "Quickstart", href: CTA.quickstart, description: "Zero to a first check" },
+      {
+        // Deliberately the docs FAQ and not a page here. One copy: a second one
+        // on the website drifts, which is what the last pass was spent fixing.
+        label: "FAQ",
+        href: `${DOCS}/getting-started/faq/`,
+        description: "What it does not do, answered once",
+      },
       { label: "GitHub", href: REPO, description: "The Go binary" },
       { label: "Releases", href: `${REPO}/releases`, description: "Tagged images and binaries" },
     ],

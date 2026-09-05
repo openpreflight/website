@@ -16,21 +16,21 @@ const groups = [
         id: 'check-run',
         term: 'Check Run',
         body: 'GitHub’s status object on a commit. openpreflight creates one per job and writes the conclusion plus a log tail. Producing one is the point of the whole product.',
-        links: [{ label: 'ADR 005', href: `${DOCS}/adr/005-check-suite-gating/` }],
+        links: [{ label: 'ADR 005', href: `${DOCS}/reference/decisions/005-check-suite-gating/` }],
       },
       {
         id: 'check-suite',
         term: 'Check suite',
         body: 'GitHub’s container for the runs on one commit. It is the only thing that triggers work here: never <code>push</code>, never <code>pull_request</code>. A suite is already scoped to one commit and one App.',
-        links: [{ label: 'ADR 005', href: `${DOCS}/adr/005-check-suite-gating/` }],
+        links: [{ label: 'ADR 005', href: `${DOCS}/reference/decisions/005-check-suite-gating/` }],
       },
       {
         id: 'github-app',
         term: 'GitHub App',
         body: 'An App you register, which handles webhooks, installation tokens, and Check Runs. This is not OAuth, and it is not Coolify’s GitHub connector.',
         links: [
-          { label: 'Setup', href: `${DOCS}/setup/github-app/` },
-          { label: 'ADR 003', href: `${DOCS}/adr/003-github-app/` },
+          { label: 'Setup', href: `${DOCS}/configure/github-app/` },
+          { label: 'ADR 003', href: `${DOCS}/reference/decisions/003-github-app/` },
         ],
       },
     ],
@@ -42,13 +42,13 @@ const groups = [
         id: 'binding',
         term: 'Binding',
         body: 'A row that says: this App, this repo, these branches, these optional command overrides. No enabled binding, no job.',
-        links: [{ label: 'Bindings', href: `${DOCS}/setup/bindings/` }],
+        links: [{ label: 'Bindings', href: `${DOCS}/configure/bindings/` }],
       },
       {
         id: 'settings',
         term: 'Settings',
         body: 'One row holding the instance-wide defaults: check name, pipeline file path, timeout, how many jobs run at once, log size and retention. A binding or an App can override most of them.',
-        links: [{ label: 'Configuration', href: `${DOCS}/start/configuration/` }],
+        links: [{ label: 'Configuration', href: `${DOCS}/configure/configuration/` }],
       },
       {
         id: 'pipeline',
@@ -56,7 +56,7 @@ const groups = [
         body: 'Repo file with <code>install</code>, <code>test</code>, <code>build</code>, and optional <code>runtime</code> and <code>timeout</code>. You write the commands yourself; there is no marketplace of named checks.',
         links: [
           { label: 'Pipeline', href: '/pipeline/' },
-          { label: 'Docs', href: `${DOCS}/using/pipelines/` },
+          { label: 'Docs', href: `${DOCS}/use/pipelines/` },
         ],
       },
     ],
@@ -68,7 +68,7 @@ const groups = [
         id: 'job',
         term: 'Job',
         body: 'One queued or running attempt for an <code>(app, repo, sha)</code>. Logs are files under <code>DATA_DIR</code>.',
-        links: [{ label: 'Logs', href: `${DOCS}/using/logs/` }],
+        links: [{ label: 'Logs', href: `${DOCS}/use/logs/` }],
       },
       {
         id: 'workspace',
@@ -80,13 +80,13 @@ const groups = [
         id: 'installation-token',
         term: 'Installation token',
         body: 'A short-lived credential minted per job from the webhook’s installation id. It clones the commit and writes the Check Run, and it is never placed in the job’s environment.',
-        links: [{ label: 'Security model', href: `${DOCS}/understanding/security-model/` }],
+        links: [{ label: 'Security model', href: `${DOCS}/reference/security-model/` }],
       },
       {
         id: 'executor',
         term: 'Executor',
         body: 'Process (default), or <code>docker run</code> when <code>runtime:</code> is set or the job is a fork PR.',
-        links: [{ label: 'ADR 004', href: `${DOCS}/adr/004-docker-executor/` }],
+        links: [{ label: 'ADR 004', href: `${DOCS}/reference/decisions/004-docker-executor/` }],
       },
       {
         id: 'shareable-log',
@@ -110,7 +110,7 @@ const groups = [
     crumbs={[{ label: 'openpreflight', href: '/' }, { label: 'Concepts' }]}
   >
     <Actions slot="actions">
-      <CtaLink href={`${DOCS}/understanding/architecture/`} variant="primary" size="lg">
+      <CtaLink href={`${DOCS}/reference/architecture/`} variant="primary" size="lg">
         Architecture
       </CtaLink>
       <CtaLink href="/product/" variant="outline" size="lg">Product</CtaLink>
@@ -201,7 +201,7 @@ const groups = [
       ]}
     />
     <Actions>
-      <CtaLink href={`${DOCS}/understanding/architecture/`} variant="onDark">
+      <CtaLink href={`${DOCS}/reference/architecture/`} variant="onDark">
         The same loop, at reference depth
       </CtaLink>
     </Actions>

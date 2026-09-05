@@ -24,7 +24,7 @@ const defaultGroups: FooterLinkGroup[] = [
     links: [
       {
         label: "Quickstart",
-        href: "https://docs.openpreflight.xyz/start/quickstart/",
+        href: "https://docs.openpreflight.xyz/getting-started/quickstart/",
       },
       { label: "Documentation", href: "https://docs.openpreflight.xyz" },
       {

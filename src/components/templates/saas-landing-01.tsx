@@ -143,7 +143,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
               </p>
               <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button asChild size="lg" variant="signature">
-                  <a href={`${DOCS}/start/quickstart/`}>
+                  <a href={`${DOCS}/getting-started/quickstart/`}>
                     Quickstart <ArrowRight />
                   </a>
                 </Button>
@@ -261,6 +261,43 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           </div>
         </section>
 
+        <section className="px-5 py-24 sm:px-8 sm:py-32" id="before-after">
+          <div className="mx-auto max-w-7xl">
+            <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
+              Before and after
+            </h2>
+            <p className="mt-5 max-w-2xl text-muted-foreground">
+              The same private GitHub repo, with the Check Run arriving from
+              somewhere else.
+            </p>
+            <div className="mt-10 grid gap-4 md:grid-cols-2">
+              <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
+                <p className="font-mono text-xs text-muted-foreground">Without</p>
+                <h3 className="mt-3 text-xl font-semibold tracking-[-.03em]">
+                  Actions-only private CI
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  Workflow YAML, hosted or self-hosted <code className="font-mono text-xs">actions/runner</code>,
+                  matrices and caches if you need them. This is the right answer
+                  when you want that orchestration layer.
+                </p>
+              </article>
+              <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
+                <p className="font-mono text-xs text-muted-foreground">With</p>
+                <h3 className="mt-3 text-xl font-semibold tracking-[-.03em]">
+                  Worker you host + Check Run
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  One binary, SQLite, a GitHub App you register, and{" "}
+                  <code className="font-mono text-xs">.ci.yml</code>. Logs stay
+                  on your disk. It does not try to be one config that spans
+                  GitLab and Jenkins.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
         <section className="px-5 py-24 sm:px-8 sm:py-32" id="gating">
           <div className="mx-auto max-w-7xl">
             <Badge variant="secondary">
@@ -328,6 +365,57 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
         </section>
 
         <section
+          className="bg-foreground px-5 py-24 text-background sm:px-8 sm:py-32"
+          id="how"
+        >
+          <div className="mx-auto max-w-7xl">
+            <Badge
+              className="border-background/15 bg-background/10 text-background"
+              variant="outline"
+            >
+              <Terminal className="size-3.5" /> How a run happens
+            </Badge>
+            <div className="mt-7 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+              <h2 className="max-w-3xl text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
+                From webhook to Check Run
+              </h2>
+              <p className="max-w-sm text-sm leading-relaxed text-background/60">
+                The webhook has ten seconds to answer, so it validates and
+                enqueues while the worker does the slow part. Only one run is
+                ever live for a given commit.
+              </p>
+            </div>
+            <ol className="mt-14 grid gap-4 lg:grid-cols-3">
+              {runSteps.map((step, index) => (
+                <li
+                  className="flex min-h-56 flex-col rounded-[1.75rem] border border-background/12 bg-background/[.055] p-6 sm:p-8"
+                  key={step.title}
+                >
+                  <span className="font-mono text-xs text-primary">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-6 text-xl font-semibold tracking-[-.03em]">
+                    {step.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-background/60">
+                    {step.detail}
+                  </p>
+                </li>
+              ))}
+            </ol>
+            <Button
+              asChild
+              className="mt-10 border-background/20 bg-transparent text-background hover:bg-background/10"
+              variant="outline"
+            >
+              <a href={`${DOCS}/reference/decisions/005-check-suite-gating/`}>
+                Read ADR 005 <ArrowRight />
+              </a>
+            </Button>
+          </div>
+        </section>
+
+        <section
           className="px-5 py-24 sm:px-8 sm:py-32"
           data-slot="feature-section"
           id="product"
@@ -384,57 +472,6 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           </div>
         </section>
 
-        <section
-          className="bg-foreground px-5 py-24 text-background sm:px-8 sm:py-32"
-          id="how"
-        >
-          <div className="mx-auto max-w-7xl">
-            <Badge
-              className="border-background/15 bg-background/10 text-background"
-              variant="outline"
-            >
-              <Terminal className="size-3.5" /> How a run happens
-            </Badge>
-            <div className="mt-7 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-              <h2 className="max-w-3xl text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                From webhook to Check Run
-              </h2>
-              <p className="max-w-sm text-sm leading-relaxed text-background/60">
-                The webhook has ten seconds to answer, so it validates and
-                enqueues while the worker does the slow part. Only one run is
-                ever live for a given commit.
-              </p>
-            </div>
-            <ol className="mt-14 grid gap-4 lg:grid-cols-3">
-              {runSteps.map((step, index) => (
-                <li
-                  className="flex min-h-56 flex-col rounded-[1.75rem] border border-background/12 bg-background/[.055] p-6 sm:p-8"
-                  key={step.title}
-                >
-                  <span className="font-mono text-xs text-primary">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="mt-6 text-xl font-semibold tracking-[-.03em]">
-                    {step.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-background/60">
-                    {step.detail}
-                  </p>
-                </li>
-              ))}
-            </ol>
-            <Button
-              asChild
-              className="mt-10 border-background/20 bg-transparent text-background hover:bg-background/10"
-              variant="outline"
-            >
-              <a href={`${DOCS}/adr/005-check-suite-gating/`}>
-                Read ADR 005 <ArrowRight />
-              </a>
-            </Button>
-          </div>
-        </section>
-
         <section className="px-5 py-24 sm:px-8 sm:py-32" id="pipeline">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
@@ -457,7 +494,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   failed.
                 </p>
                 <Button asChild className="mt-8" variant="outline">
-                  <a href={`${DOCS}/using/pipelines/`}>
+                  <a href={`${DOCS}/use/pipelines/`}>
                     Pipeline reference <ArrowRight />
                   </a>
                 </Button>
@@ -469,73 +506,6 @@ test: npm test
 build: npm run build
 timeout: 15m`}</code>
               </pre>
-            </div>
-          </div>
-        </section>
-
-        <section className="px-5 pb-8 sm:px-8" id="run">
-          <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-foreground/10 bg-background px-6 py-16 sm:px-10">
-            <div className="mx-auto max-w-2xl text-center">
-              <Badge variant="outline">
-                <Terminal className="size-3.5" /> Run it
-              </Badge>
-              <h2 className="mt-5 text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                One variable and a compose file
-              </h2>
-              <p className="mt-4 text-muted-foreground">
-                You do not clone anything: the file pulls the published image.
-                Then open the UI, run the first-boot wizard, register your GitHub
-                App, and enable the repos you want checks on.
-              </p>
-            </div>
-            <pre className="mx-auto mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-foreground/10 bg-muted/40 p-5 font-mono text-sm leading-relaxed sm:p-6">
-              <code>{`curl -O https://raw.githubusercontent.com/openpreflight/openpreflight/main/compose.prod.yaml
-export CI_SECRET_KEY="$(openssl rand -base64 48)"
-docker compose -f compose.prod.yaml up -d`}</code>
-            </pre>
-            <div className="mt-8 flex justify-center">
-              <Button asChild size="lg" variant="signature">
-                <a href={`${DOCS}/start/quickstart/`}>
-                  Full quickstart <ArrowRight />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <section className="px-5 py-24 sm:px-8 sm:py-32" id="before-after">
-          <div className="mx-auto max-w-7xl">
-            <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-              Before and after
-            </h2>
-            <p className="mt-5 max-w-2xl text-muted-foreground">
-              The same private GitHub repo, with the Check Run arriving from
-              somewhere else.
-            </p>
-            <div className="mt-10 grid gap-4 md:grid-cols-2">
-              <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
-                <p className="font-mono text-xs text-muted-foreground">Without</p>
-                <h3 className="mt-3 text-xl font-semibold tracking-[-.03em]">
-                  Actions-only private CI
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  Workflow YAML, hosted or self-hosted <code className="font-mono text-xs">actions/runner</code>,
-                  matrices and caches if you need them. This is the right answer
-                  when you want that orchestration layer.
-                </p>
-              </article>
-              <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
-                <p className="font-mono text-xs text-muted-foreground">With</p>
-                <h3 className="mt-3 text-xl font-semibold tracking-[-.03em]">
-                  Worker you host + Check Run
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  One binary, SQLite, a GitHub App you register, and{" "}
-                  <code className="font-mono text-xs">.ci.yml</code>. Logs stay
-                  on your disk. It does not try to be one config that spans
-                  GitLab and Jenkins.
-                </p>
-              </article>
             </div>
           </div>
         </section>
@@ -573,16 +543,46 @@ docker compose -f compose.prod.yaml up -d`}</code>
               Woodpecker, Drone, a self-hosted{" "}
               <code className="font-mono text-sm">actions/runner</code>, and
               Jenkins all do more than this. The{" "}
-              <a className="underline underline-offset-4 hover:text-foreground" href={`${DOCS}/start/comparison/`}>
+              <a className="underline underline-offset-4 hover:text-foreground" href={`${DOCS}/getting-started/comparison/`}>
                 comparison
               </a>{" "}
               says when to pick one of them instead. What running this
               costs you day to day is in{" "}
-              <a className="underline underline-offset-4 hover:text-foreground" href={`${DOCS}/understanding/operations/`}>
+              <a className="underline underline-offset-4 hover:text-foreground" href={`${DOCS}/operate/operations/`}>
                 operations
               </a>
               : backups, upgrades, and what a restart does to a running job.
             </p>
+          </div>
+        </section>
+
+        <section className="px-5 pb-24 sm:px-8 sm:pb-32" id="run">
+          <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-foreground/10 bg-background px-6 py-16 sm:px-10">
+            <div className="mx-auto max-w-2xl text-center">
+              <Badge variant="outline">
+                <Terminal className="size-3.5" /> Run it
+              </Badge>
+              <h2 className="mt-5 text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
+                One variable and a compose file
+              </h2>
+              <p className="mt-4 text-muted-foreground">
+                You do not clone anything: the file pulls the published image.
+                Then open the UI, run the first-boot wizard, register your GitHub
+                App, and enable the repos you want checks on.
+              </p>
+            </div>
+            <pre className="mx-auto mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-foreground/10 bg-muted/40 p-5 font-mono text-sm leading-relaxed sm:p-6">
+              <code>{`curl -O https://raw.githubusercontent.com/openpreflight/openpreflight/main/compose.prod.yaml
+export CI_SECRET_KEY="$(openssl rand -base64 48)"
+docker compose -f compose.prod.yaml up -d`}</code>
+            </pre>
+            <div className="mt-8 flex justify-center">
+              <Button asChild size="lg" variant="signature">
+                <a href={`${DOCS}/getting-started/quickstart/`}>
+                  Full quickstart <ArrowRight />
+                </a>
+              </Button>
+            </div>
           </div>
         </section>
 

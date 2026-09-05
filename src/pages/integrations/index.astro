@@ -34,7 +34,7 @@ const surfaces = [
     status: 'Optional',
     title: 'Docker',
     body: 'A reachable engine turns <code>runtime:</code> into <code>docker run</code>. Fork pull requests always use it.',
-    href: `${DOCS}/adr/004-docker-executor/`,
+    href: `${DOCS}/reference/decisions/004-docker-executor/`,
     cta: 'ADR 004',
     primary: false,
   },
@@ -42,7 +42,7 @@ const surfaces = [
     status: 'Optional',
     title: 'Coolify',
     body: 'Server inventory, a repo picker, and an install-worker API. It is not a job runner and is not required.',
-    href: `${DOCS}/setup/coolify/`,
+    href: `${DOCS}/deploy/coolify/`,
     cta: 'Coolify docs',
     primary: false,
   },
@@ -158,7 +158,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
       </Grid>
     </div>
     <Actions>
-      <CtaLink href={`${DOCS}/adr/003-github-app/`} variant="onDark">ADR 003</CtaLink>
+      <CtaLink href={`${DOCS}/reference/decisions/003-github-app/`} variant="onDark">ADR 003</CtaLink>
       <CtaLink href="/integrations/github-app/" variant="onDark">Set one up</CtaLink>
     </Actions>
   </Section>
@@ -171,7 +171,7 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
           question: 'When does Docker get involved?',
           answer:
             'When a pipeline sets <code>runtime:</code>, and for every fork pull request. The engine comes from <code>CI_DOCKER_HOST</code>, else <code>DOCKER_HOST</code>, else the default socket. It can be a different machine, over Docker’s own remote API.',
-          href: `${DOCS}/adr/004-docker-executor/`,
+          href: `${DOCS}/reference/decisions/004-docker-executor/`,
           linkLabel: 'ADR 004',
         },
         {
@@ -188,14 +188,14 @@ const notAdapters = ['GitLab CI', 'Jenkins', 'CircleCI', 'Buildkite', 'Azure Dev
           question: 'What is Coolify used for?',
           answer:
             'Server inventory, a repository picker for the bindings screen, and an install-worker call that creates the compose application for you. Those three things are all it does.',
-          href: `${DOCS}/setup/coolify/`,
+          href: `${DOCS}/deploy/coolify/`,
           linkLabel: 'Coolify',
         },
         {
           question: 'Can Coolify run the jobs?',
           answer:
             'No. A Coolify token cannot start a <code>docker run</code>. To put jobs on another machine you point <code>CI_DOCKER_HOST</code> at that machine’s Docker engine. That is Docker’s remote API, not Coolify’s.',
-          href: `${DOCS}/understanding/deployment/`,
+          href: `${DOCS}/deploy/deployment/`,
           linkLabel: 'Deployment',
         },
       ]}

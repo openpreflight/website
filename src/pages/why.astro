@@ -193,7 +193,7 @@ const weaknesses = [
       </p>
     </Prose>
     <Actions>
-      <CtaLink href={`${DOCS}/adr/005-check-suite-gating/`} variant="onDark">Read ADR 005</CtaLink>
+      <CtaLink href={`${DOCS}/reference/decisions/005-check-suite-gating/`} variant="onDark">Read ADR 005</CtaLink>
     </Actions>
   </Section>
 
@@ -221,7 +221,7 @@ const weaknesses = [
         branch protection, so adding a step never breaks it.
       </p>
       <p>
-        <a href={`${DOCS}/adr/005-check-suite-gating/`}>ADR 005</a> records what
+        <a href={`${DOCS}/reference/decisions/005-check-suite-gating/`}>ADR 005</a> records what
         is borrowed, what is rejected, and where the ceiling is.
       </p>
     </Prose>
@@ -302,28 +302,28 @@ const weaknesses = [
           question: 'Why gate on the check suite instead of push?',
           answer:
             'Gate on the commit, not the push, without importing a second scheduler. Adding a <code>push</code> case would reverse that decision rather than extend it.',
-          href: `${DOCS}/adr/005-check-suite-gating/`,
+          href: `${DOCS}/reference/decisions/005-check-suite-gating/`,
           linkLabel: 'ADR 005',
         },
         {
           question: 'Why is Coolify optional?',
           answer:
             'It is a deployment target and an optional repository source, not the product. Skip it and everything works the same: checks still come from an App you register, and jobs still run here or on any Docker engine you point <code>CI_DOCKER_HOST</code> at.',
-          href: `${DOCS}/setup/coolify/`,
+          href: `${DOCS}/deploy/coolify/`,
           linkLabel: 'Coolify',
         },
         {
           question: 'Does it work with GitHub Enterprise Server?',
           answer:
             'The plumbing is there and it has not been tested against a real instance. Each App row carries an API URL and the git origin is derived from it. What is untested is everything specific to a GHE deployment.',
-          href: `${DOCS}/start/faq/`,
+          href: `${DOCS}/getting-started/faq/`,
           linkLabel: 'FAQ',
         },
         {
           question: 'Does the project use itself for CI?',
           answer:
             'Yes. All three product repos \u2014 the binary, this site, and the docs \u2014 carry a <code>.ci.yml</code> and get their <code>vet</code> and <code>test</code> checks from a self-hosted instance at <code>ci.openpreflight.xyz</code>. GitHub Actions is kept for exactly one thing: <code>release.yml</code>, which builds multi-architecture images and attaches binaries to a tag. That is publishing, not checking, and it is deliberately outside what this tool does.',
-          href: `${DOCS}/start/faq/`,
+          href: `${DOCS}/getting-started/faq/`,
           linkLabel: 'FAQ',
         },
       ]}
