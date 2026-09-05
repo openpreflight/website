@@ -154,7 +154,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                 </Button>
               </div>
               <p className="mt-5 font-mono text-xs text-muted-foreground">
-                Tagged 2 September 2026.{" "}
+                Tagged 5 September 2026.{" "}
                 <a
                   className="underline underline-offset-4 hover:text-foreground"
                   href={RELEASE}

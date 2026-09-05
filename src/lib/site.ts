@@ -9,7 +9,7 @@ export const DOCS = "https://docs.openpreflight.xyz";
 export const REPO = "https://github.com/openpreflight/openpreflight";
 export const WEBSITE_REPO = "https://github.com/openpreflight/website";
 export const DOCS_REPO = "https://github.com/openpreflight/docs";
-export const VERSION = "2.0.2";
+export const VERSION = "2.1.0";
 export const RELEASE = `${REPO}/releases/tag/v${VERSION}`;
 export const CHANGELOG = `${REPO}/blob/v${VERSION}/CHANGELOG.md`;
 
