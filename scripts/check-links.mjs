@@ -40,6 +40,9 @@ const required = [
   'llms.txt',
   'index.md',
   'sitemap-index.xml',
+  'site.webmanifest',
+  'og/product.png',
+  'og/use-cases/private-repos.png',
 ];
 
 const allowedExternalOrigins = [
@@ -146,6 +149,42 @@ if (!home.includes('https://chatgpt.com/?q=')) {
 }
 if (!home.includes('https://x.com/i/grok?text=')) {
   console.error('Ask AI Grok link is missing the text= prompt param.');
+  process.exit(1);
+}
+if (!home.includes('"@type":"Organization"')) {
+  console.error('Home is missing Organization JSON-LD.');
+  process.exit(1);
+}
+if (!home.includes('rel="manifest"')) {
+  console.error('Home is missing the web app manifest link.');
+  process.exit(1);
+}
+
+const notFound = readFileSync(join(dist, '404.html'), 'utf8');
+if (!notFound.includes('noindex, follow')) {
+  console.error('404.html is missing noindex, follow.');
+  process.exit(1);
+}
+
+const sitemap = readFileSync(join(dist, 'sitemap-0.xml'), 'utf8');
+if (!sitemap.includes('<lastmod>')) {
+  console.error('sitemap-0.xml is missing lastmod dates.');
+  process.exit(1);
+}
+
+const robots = readFileSync(join(dist, 'robots.txt'), 'utf8');
+if (!robots.includes('User-agent: ChatGPT-User') || !robots.includes('User-agent: GPTBot')) {
+  console.error('robots.txt is missing ChatGPT-User allow / GPTBot disallow.');
+  process.exit(1);
+}
+
+const product = readFileSync(join(dist, 'product/index.html'), 'utf8');
+if (!product.includes('"@type":"BreadcrumbList"')) {
+  console.error('Product page is missing BreadcrumbList JSON-LD.');
+  process.exit(1);
+}
+if (!product.includes('/og/product.png')) {
+  console.error('Product page is missing its unique og:image.');
   process.exit(1);
 }
 

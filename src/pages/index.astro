@@ -1,27 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { SaasLanding01 } from '../components/templates/saas-landing-01';
-
-const REPO = 'https://github.com/openpreflight/openpreflight';
+import { ORG_ID, SOFTWARE_ID } from '../lib/seo';
+import { REPO, SITE, tagline } from '../lib/site';
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': ['SoftwareApplication', 'SoftwareSourceCode'],
+  '@id': SOFTWARE_ID,
   name: 'openpreflight',
-  description:
-    'Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run.',
+  description: tagline,
   license: 'https://www.apache.org/licenses/LICENSE-2.0',
   codeRepository: REPO,
   programmingLanguage: 'Go',
   applicationCategory: 'DeveloperApplication',
   operatingSystem: 'Linux',
-  url: 'https://openpreflight.xyz',
+  url: SITE,
+  image: `${SITE}/og.png`,
+  publisher: { '@id': ORG_ID },
 };
 ---
 
 <Layout
   title="openpreflight · self-hosted CI without the CI platform"
-  description="Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run."
+  description="Self-hosted CI without the CI platform. Native GitHub Check Runs from one Go binary and one SQLite file on a server you run."
   bare
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
