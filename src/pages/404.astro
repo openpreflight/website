@@ -7,7 +7,11 @@ import CtaLink from '../components/marketing/CtaLink.astro';
 import { DOCS, siteSections } from '../lib/site';
 ---
 
-<MarketingPage title="Not found · openpreflight" description="That URL is not on this site.">
+<MarketingPage
+  title="Not found · openpreflight"
+  description="This URL is not on openpreflight.xyz. Browse the product pages below, or go to the docs."
+  index={false}
+>
   <PageHero
     kicker="404"
     title="Page not found"

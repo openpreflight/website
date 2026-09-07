@@ -1,37 +1,50 @@
 ---
 import '../styles/global.css';
+import {
+  jsonLdScript,
+  ogImagePath,
+  organizationJsonLd,
+  websiteJsonLd,
+} from '../lib/seo';
 
 interface Props {
   title: string;
   description: string;
   bare?: boolean;
+  index?: boolean;
 }
 
-const { title, description, bare = false } = Astro.props;
+const { title, description, bare = false, index = true } = Astro.props;
 const siteOrigin = Astro.site ?? new URL('https://openpreflight.xyz');
 const canonical = new URL(Astro.url.pathname, siteOrigin);
-const ogImage = new URL('/og.png', siteOrigin);
+const ogImage = new URL(ogImagePath(Astro.url.pathname), siteOrigin);
 const llmsTxt = new URL('/llms.txt', siteOrigin);
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const markdownAlternate = new URL('/index.md', siteOrigin);
 const DOCS = 'https://docs.openpreflight.xyz';
 const REPO = 'https://github.com/openpreflight/openpreflight';
-const ogAlt =
-  'openpreflight wordmark, the tagline "A small CI provider for private repos", and a passing Check Run panel.';
+const ogAlt = isHome
+  ? 'openpreflight wordmark, the tagline "A small CI provider for private repos", and a passing Check Run panel.'
+  : title;
+const graph = jsonLdScript([organizationJsonLd(), websiteJsonLd()]);
 ---
 
-<html lang="en">
+<html dir="ltr" lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#2f6f4f" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="apple-mobile-web-app-title" content="openpreflight" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
     <link rel="describedby" href={llmsTxt} />
     {isHome ? (
       <link rel="alternate" type="text/markdown" href={markdownAlternate} title="Markdown" />
@@ -40,7 +53,7 @@ const ogAlt =
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="openpreflight" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={index ? 'index, follow' : 'noindex, follow'} />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
@@ -60,6 +73,8 @@ const ogAlt =
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={ogAlt} />
+
+    <script type="application/ld+json" set:html={graph} />
   </head>
   <body class="font-sans antialiased">
     {

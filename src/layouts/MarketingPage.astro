@@ -7,12 +7,13 @@ import { CTA, footerGroups, navGroups, navLinks, tagline } from '../lib/site';
 interface Props {
   title: string;
   description: string;
+  index?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, index = true } = Astro.props;
 ---
 
-<Layout title={title} description={description} bare>
+<Layout title={title} description={description} bare index={index}>
   <div class="min-h-screen bg-background text-foreground">
     <a class="skip-link" href="#content">Skip to content</a>
     <SiteHeader01

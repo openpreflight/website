@@ -3,6 +3,8 @@
  * Positioning questions, answered inline. Each answer links the doc or ADR
  * that argues it in full. This page never becomes the source of truth.
  */
+import { faqJsonLd, jsonLdScript } from '../../lib/seo';
+
 interface Item {
   question: string;
   answer: string;
@@ -17,11 +19,14 @@ interface Props {
 }
 
 const { items, tone = 'default', class: className = '' } = Astro.props;
+const faqLd = items.length > 0 ? jsonLdScript([faqJsonLd(items)]) : null;
 
 const dividerClass = tone === 'dark' ? 'divide-background/12' : 'divide-foreground/10';
 const borderClass = tone === 'dark' ? 'border-background/12' : 'border-foreground/10';
 const answerClass = tone === 'dark' ? 'text-background/60' : 'text-muted-foreground';
 ---
+
+{faqLd ? <script type="application/ld+json" set:html={faqLd} /> : null}
 
 <dl class={`divide-y border-y ${dividerClass} ${borderClass} ${className}`.trim()}>
   {
