@@ -10,7 +10,7 @@ import CtaLink from '../components/marketing/CtaLink.astro';
 import Prose from '../components/marketing/Prose.astro';
 import Callout from '../components/marketing/Callout.astro';
 import Faq from '../components/marketing/Faq.astro';
-import { DOCS, REPO, RELEASE } from '../lib/site';
+import { DOCS, REPO, RELEASE, VERSION } from '../lib/site';
 
 const positions = [
   {
@@ -164,7 +164,7 @@ const weaknesses = [
         sitting there.
       </p>
       <p>
-        <strong>v2.1.0</strong> is out. Linux binaries are on the{' '}
+        <strong>v{VERSION}</strong> is out. Linux binaries are on the{' '}
         <a href={RELEASE}>GitHub Release</a>. The ceiling described below is
         where the product stops. Nothing on that list is in progress.
       </p>
@@ -294,7 +294,7 @@ const weaknesses = [
         {
           question: 'What is the current release?',
           answer:
-            '<strong>v2.1.0</strong> is out (5 September 2026). Linux binaries are on the GitHub Release. <strong>v1.0.0</strong> was 29 August 2026. What is still out of scope is listed below, not unfinished.',
+            `<strong>v${VERSION}</strong> is out (7 September 2026). Linux binaries are on the GitHub Release. <strong>v1.0.0</strong> was 29 August 2026. What is still out of scope is listed below, not unfinished.`,
           href: RELEASE,
           linkLabel: 'GitHub Release',
         },
