@@ -40,7 +40,7 @@ function ContactForm01({
       id="contact"
       {...props}
     >
-      <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2.25rem] border border-foreground/10 bg-background shadow-[0_45px_120px_-85px_var(--foreground)] lg:grid-cols-[.9fr_1.1fr]">
+      <div className="mx-auto grid w-full max-w-7xl overflow-hidden rounded-[2.25rem] border border-foreground/10 bg-background shadow-[0_45px_120px_-85px_var(--foreground)] lg:grid-cols-[.9fr_1.1fr]">
         <div className="relative overflow-hidden bg-primary p-7 text-primary-foreground sm:p-10 lg:p-12">
           <div className="absolute inset-0 opacity-25 [background-image:radial-gradient(circle_at_15%_15%,white,transparent_32%),linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:auto,44px_44px,44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
           <div className="relative">

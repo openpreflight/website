@@ -8,7 +8,7 @@ Every commit gets a native GitHub Check Run, written by a GitHub App you own. Th
 - Docs: https://docs.openpreflight.xyz
 - Source: https://github.com/openpreflight/openpreflight
 - License: Apache-2.0
-- Release: https://github.com/openpreflight/openpreflight/releases/tag/v2.1.0 (v2.1.0, 5 September 2026)
+- Release: https://github.com/openpreflight/openpreflight/releases/tag/v2.1.2 (v2.1.2, 7 September 2026)
 
 ## What it is
 

@@ -43,7 +43,7 @@ spacing:
   radius-lg: "16px"
   radius-xl: "24px"
   section-y: "5rem"
-  content-max: "72rem"
+  content-max: "80rem"
   reading-max: "42rem"
 
 components:

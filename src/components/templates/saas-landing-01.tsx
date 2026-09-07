@@ -262,7 +262,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
         </section>
 
         <section className="px-5 py-24 sm:px-8 sm:py-32" id="before-after">
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto w-full max-w-7xl">
             <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
               Before and after
             </h2>
@@ -299,7 +299,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
         </section>
 
         <section className="px-5 py-24 sm:px-8 sm:py-32" id="gating">
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto w-full max-w-7xl">
             <Badge variant="secondary">
               <GitCommitHorizontal className="size-3.5" /> The gating model
             </Badge>
@@ -368,7 +368,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           className="bg-foreground px-5 py-24 text-background sm:px-8 sm:py-32"
           id="how"
         >
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto w-full max-w-7xl">
             <Badge
               className="border-background/15 bg-background/10 text-background"
               variant="outline"
@@ -420,7 +420,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           data-slot="feature-section"
           id="product"
         >
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto w-full max-w-7xl">
             <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
               <div>
                 <Badge variant="secondary">
@@ -473,7 +473,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
         </section>
 
         <section className="px-5 py-24 sm:px-8 sm:py-32" id="pipeline">
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto w-full max-w-7xl">
             <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
               <div>
                 <Badge variant="secondary">
@@ -511,7 +511,7 @@ timeout: 15m`}</code>
         </section>
 
         <section className="px-5 py-24 sm:px-8 sm:py-32" id="scope">
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto w-full max-w-7xl">
             <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
               What it isn't
             </h2>
@@ -557,7 +557,7 @@ timeout: 15m`}</code>
         </section>
 
         <section className="px-5 pb-24 sm:px-8 sm:pb-32" id="run">
-          <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-foreground/10 bg-background px-6 py-16 sm:px-10">
+          <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-[2rem] border border-foreground/10 bg-background px-6 py-16 sm:px-10">
             <div className="mx-auto max-w-2xl text-center">
               <Badge variant="outline">
                 <Terminal className="size-3.5" /> Run it
@@ -590,7 +590,7 @@ docker compose -f compose.prod.yaml up -d`}</code>
           className="px-5 pb-24 sm:px-8 sm:pb-32"
           id="contribute"
         >
-          <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2.25rem] border border-foreground/10 bg-background lg:grid-cols-[.9fr_1.1fr]">
+          <div className="mx-auto grid w-full max-w-7xl overflow-hidden rounded-[2.25rem] border border-foreground/10 bg-background lg:grid-cols-[.9fr_1.1fr]">
             <div className="relative overflow-hidden bg-primary p-7 text-primary-foreground sm:p-10 lg:p-12">
               <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_15%_15%,white,transparent_32%),linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:auto,44px_44px,44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
               <div className="relative">
