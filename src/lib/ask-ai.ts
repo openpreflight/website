@@ -52,3 +52,10 @@ export function askAiHref(service: AskAiService, prompt: string): string {
   url.searchParams.set(service.param, prompt);
   return url.href;
 }
+
+const prompt = askAiPrompt();
+
+export const askAiLinks = askAiServices.map((service) => ({
+  label: service.label,
+  href: askAiHref(service, prompt),
+}));

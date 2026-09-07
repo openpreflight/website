@@ -13,6 +13,7 @@ import {
   Terminal,
 } from "lucide-react";
 
+import { AskAiRow } from "@/components/blocks/ask-ai-row";
 import { Footer01 } from "@/components/blocks/footer-01";
 import { SiteHeader01 } from "@/components/blocks/site-header-01";
 import { Badge } from "@/components/ui/badge";
@@ -128,7 +129,8 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           <div aria-hidden="true" className="hero-atmosphere pointer-events-none absolute inset-0 -z-10" />
           <div className="mx-auto w-full max-w-7xl">
             <div className="hero-copy mx-auto max-w-4xl text-center">
-              <p className="hero-kicker font-mono text-sm font-medium tracking-wide text-primary">
+              <AskAiRow />
+              <p className="hero-kicker mt-6 font-mono text-sm font-medium tracking-wide text-primary">
                 v{VERSION} is out
               </p>
               <h1 className="mt-5 text-balance text-[2.75rem] font-semibold leading-[0.95] tracking-[-0.055em] sm:text-6xl lg:text-[4.75rem]">

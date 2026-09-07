@@ -1,16 +1,10 @@
 import * as React from "react";
 import { ArrowUpRight, Code2 } from "lucide-react";
 
+import { AskAiRow } from "@/components/blocks/ask-ai-row";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { askAiHref, askAiPrompt, askAiServices } from "@/lib/ask-ai";
 import { cn } from "@/lib/utils";
-
-const askAiPromptText = askAiPrompt();
-const askAiLinks = askAiServices.map((service) => ({
-  label: service.label,
-  href: askAiHref(service, askAiPromptText),
-}));
 
 type Footer01Props = React.ComponentProps<"footer"> & {
   brand?: string;
@@ -123,33 +117,7 @@ function Footer01({
             ))}
           </nav>
         </div>
-        <nav
-          aria-labelledby="ask-ai-heading"
-          className="mt-14 border-t border-foreground/8 pt-6"
-        >
-          <h3
-            className="text-xs font-semibold uppercase tracking-[.1em] text-muted-foreground"
-            id="ask-ai-heading"
-          >
-            Ask AI about us
-          </h3>
-          <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
-            {askAiLinks.map((service) => (
-              <li key={service.label}>
-                <a
-                  className="text-sm font-medium hover:text-primary"
-                  href={service.href}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <span className="sr-only">Ask about openpreflight on </span>
-                  {service.label}
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <AskAiRow variant="footer" />
         <div className="mt-8 flex flex-col gap-4 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <p>
             openpreflight is Apache-2.0. This site is MIT.
