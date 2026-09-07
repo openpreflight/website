@@ -21,17 +21,16 @@ required asset or an external link outside the allow-list in
 
 ## Brand assets
 
-`design.md` is the brand spec and is deliberately **not** served. The favicons
-and the README banner are generated, not hand-edited:
+`design.md` is the brand spec and is deliberately **not** served. Favicons and
+`og.png` are generated, not hand-edited:
 
 ```bash
 node scripts/gen-icons.mjs    # favicon set + og.png
-node scripts/gen-banner.mjs   # banner-light.png + banner-dark.png
 ```
 
-Both render through headless Chrome, so the output depends on locally installed
-fonts. Commit the regenerated PNGs. The banner pair is embedded by the READMEs
-of all three repos, so do not rename or remove those files.
+That script renders through headless Chrome, so the output depends on locally
+installed fonts. Commit the regenerated PNGs. READMEs use markdown, not a
+banner image.
 
 ## What we will take
 

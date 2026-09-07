@@ -5,6 +5,7 @@
  * on a release; do not hardcode a tag in a page, or it goes stale silently.
  */
 
+export const SITE = "https://openpreflight.xyz";
 export const DOCS = "https://docs.openpreflight.xyz";
 export const REPO = "https://github.com/openpreflight/openpreflight";
 export const WEBSITE_REPO = "https://github.com/openpreflight/website";
@@ -18,6 +19,10 @@ export const CTA = {
   github: REPO,
 } as const;
 
+/**
+ * Opening claim. Same sentence as the blockquote in `public/llms.txt` — change
+ * both, or the Ask AI prompt and the crawler file drift.
+ */
 export const tagline =
   "Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run.";
 

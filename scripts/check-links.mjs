@@ -47,6 +47,10 @@ const allowedExternalOrigins = [
   'https://github.com/openpreflight/',
   'https://docs.openpreflight.xyz',
   'https://www.apache.org/licenses/LICENSE-2.0',
+  'https://chatgpt.com/',
+  'https://claude.ai/',
+  'https://www.perplexity.ai/',
+  'https://x.com/',
 ];
 
 const missing = required.filter((p) => !existsSync(join(dist, p)));
@@ -132,6 +136,16 @@ if (broken.length) {
   console.error('Broken internal links:');
   for (const b of [...new Set(broken)].slice(0, 50)) console.error(`  - ${b}`);
   if (broken.length > 50) console.error(`  … and ${broken.length - 50} more`);
+  process.exit(1);
+}
+
+const home = readFileSync(join(dist, 'index.html'), 'utf8');
+if (!home.includes('https://chatgpt.com/?q=')) {
+  console.error('Ask AI ChatGPT link is missing the q= prompt param.');
+  process.exit(1);
+}
+if (!home.includes('https://x.com/i/grok?text=')) {
+  console.error('Ask AI Grok link is missing the text= prompt param.');
   process.exit(1);
 }
 
