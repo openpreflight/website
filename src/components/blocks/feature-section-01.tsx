@@ -37,7 +37,7 @@ function FeatureSection01({
       id="product"
       {...props}
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto w-full max-w-7xl">
         <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
           <div>
             <Badge variant="secondary">

@@ -53,7 +53,7 @@ function Footer01({
       data-slot="site-footer"
       {...props}
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto w-full max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-[.85fr_2fr]">
           <div>
             <a
