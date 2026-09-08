@@ -5,7 +5,7 @@
 @import "tw-animate-css";
 @import "tailwindcss";
 
-/* Brand: design.md — forest green, olive neutrals, Check Run as hero artifact. */
+/* Brand: design.md: forest green, olive neutrals, Check Run as hero artifact. */
 
 @theme {
   --font-sans: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
@@ -46,7 +46,7 @@
   }
 }
 
-/* Hero entrance — presence, not noise. Disabled by the reduced-motion rule above. */
+/* Hero entrance: presence, not noise. Disabled by the reduced-motion rule above. */
 @keyframes hero-rise {
   from {
     opacity: 0;
@@ -365,8 +365,14 @@ body {
 /* ------------------------------------------------------------------------
    Marketing subpage system
    Sections, cards, and prose that carry the landing page's visual language
-   into /product, /why, /security and the rest. Tokens only — no second accent.
+   into /product, /why, /security and the rest. Tokens only, no second accent.
    ------------------------------------------------------------------------ */
+
+/* Keep long marketing pages legible as distinct bands without changing the
+   calm ground colour or adding decorative surfaces. */
+#content > section + section {
+  border-top: 1px solid var(--border);
+}
 
 /* Softer relative of .hero-atmosphere for inner-page heroes. */
 .page-atmosphere {

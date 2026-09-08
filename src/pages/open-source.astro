@@ -220,7 +220,7 @@ examples/            a sample .ci.yml
         {
           question: 'Does the project use itself for CI?',
           answer:
-            'No. It runs GitHub Actions, and says so. A self-hosted instance can check public repos the same way it checks private ones; that is not CI for this repository. Releases publish multi-arch images, which this tool does not do.',
+            'Yes. The binary, website, and docs repositories each carry a <code>.ci.yml</code> and are checked by a self-hosted openpreflight instance. GitHub Actions remains only for image and release publishing, which openpreflight deliberately does not do.',
           href: `${DOCS}/getting-started/faq/`,
           linkLabel: 'FAQ',
         },

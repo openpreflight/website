@@ -20,7 +20,7 @@ export const CTA = {
 } as const;
 
 /**
- * Opening claim. Same sentence as the blockquote in `public/llms.txt` — change
+ * Opening claim. Same sentence as the blockquote in `public/llms.txt`. Change
  * both, or the Ask AI prompt and the crawler file drift.
  */
 export const tagline =

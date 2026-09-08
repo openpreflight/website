@@ -248,11 +248,11 @@ const weaknesses = [
   <Section
     badge="Where it wins"
     title="What you get for accepting that scope"
-    tone="dark"
+    tone="muted"
   >
     <Grid class="mt-12" cols={3}>
       {strengths.map((item) => (
-        <Card title={item.title} tone="dark">
+        <Card title={item.title}>
           <span set:html={item.body} />
         </Card>
       ))}
