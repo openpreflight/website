@@ -1,7 +1,7 @@
 import { SITE, tagline } from "./site.ts";
 
 /**
- * "Ask AI about us" — four prefilled prompts, as four plain anchors.
+ * "Ask AI about us": four prefilled prompts, as four plain anchors.
  *
  * Same mechanism as any other footer link: a query string, no script, no embed,
  * and nothing leaves the reader's browser until they click.

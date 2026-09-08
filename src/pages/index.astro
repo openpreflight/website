@@ -1,6 +1,6 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { SaasLanding01 } from '../components/templates/saas-landing-01';
+import MarketingPage from '../layouts/MarketingPage.astro';
+import { SaasLandingContent } from '../components/templates/saas-landing-01';
 import { ORG_ID, SOFTWARE_ID } from '../lib/seo';
 import { REPO, SITE, tagline } from '../lib/site';
 
@@ -21,11 +21,10 @@ const jsonLd = {
 };
 ---
 
-<Layout
+<MarketingPage
   title="openpreflight · self-hosted CI without the CI platform"
   description="Self-hosted CI without the CI platform. Native GitHub Check Runs from one Go binary and one SQLite file on a server you run."
-  bare
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  <SaasLanding01 client:load />
-</Layout>
+  <SaasLandingContent />
+</MarketingPage>

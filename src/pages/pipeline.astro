@@ -220,11 +220,11 @@ timeout: 15m`}
   <Section
     badge="Limits"
     title="What a pipeline here cannot do"
-    tone="dark"
+    tone="muted"
     description="Three steps in a fixed order is the whole plan format. None of the following exists, and none of it is coming."
   >
-    <MarkList class="mt-10" cols={3} items={cannot} mark="cross" tone="dark" />
-    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
+    <MarkList class="mt-10" cols={3} items={cannot} mark="cross" />
+    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-muted-foreground">
       Every job is a fresh shallow clone, so nothing is carried between runs or
       handed to a later step. If your build needs any of the above, you want a
       pipeline engine rather than this.{' '}

@@ -1,25 +1,24 @@
-"use client";
-
-import * as React from "react";
 import {
+  Activity,
   ArrowRight,
   Box,
   Check,
-  Code2,
   Database,
-  FileCode2,
-  GitCommitHorizontal,
+  FolderGit,
+  KeyRound,
+  LayoutDashboard,
+  PanelLeft,
+  Server,
+  Settings,
   ShieldCheck,
+  Sun,
   Terminal,
+  Workflow,
 } from "lucide-react";
 
-import { AskAiRow } from "@/components/blocks/ask-ai-row";
-import { Footer01 } from "@/components/blocks/footer-01";
-import { SiteHeader01 } from "@/components/blocks/site-header-01";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { CHANGELOG, CTA, DOCS, REPO, RELEASE, VERSION, footerGroups, navGroups, navLinks, tagline } from "@/lib/site";
+import { DOCS, RELEASE, VERSION } from "@/lib/site";
 const checkSteps = [
   { name: "install", command: "npm ci", duration: "8s", width: "19%" },
   { name: "test", command: "go test ./...", duration: "21s", width: "50%" },
@@ -65,36 +64,6 @@ const runSteps = [
   },
 ];
 
-const gatingChain = [
-  {
-    label: "GitHub event",
-    detail: "A check suite is requested for a commit you pushed.",
-  },
-  {
-    label: "Immutable SHA",
-    detail: "The run binds to that commit, never to the branch name.",
-  },
-  {
-    label: "One logical run",
-    detail: "Same repo, same commit, same pipeline means one run, not two.",
-  },
-  {
-    label: "One Check Run",
-    detail: "Your App writes the result back, with the full log behind it.",
-  },
-];
-
-const gatingGuarantees = [
-  {
-    title: "Force-push correctness is free",
-    body: "Nothing is ever attached to a moving reference, so a force-push does not need to cancel anything. The old commit's check stays on the old commit, where it is now simply irrelevant, and the new commit gets its own.",
-  },
-  {
-    title: "A required check never hangs",
-    body: "When a path filter matches nothing, the check still completes with a skipped conclusion. Branch protection gets an answer either way, so a merge is never left waiting on a run that was never going to arrive.",
-  },
-];
-
 const outOfScope = [
   "GitHub Actions YAML",
   "actions/runner",
@@ -103,25 +72,31 @@ const outOfScope = [
   "Artifacts",
 ];
 
-function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
+const jobsPreview = [
+  ["running", "acme/api", "refs/heads/main · 3e004c8b", "138m46s", "23h ago"],
+  ["passed", "acme/api", "refs/heads/release/2.2 · 7f55a534", "5m24s", "23h ago"],
+  ["failed", "acme/web", "refs/heads/main · 2e02ad12", "4m02s", "23h ago"],
+  ["passed", "acme/worker", "refs/heads/main · 2a44cc5d", "1m23s", "23h ago"],
+  ["passed", "acme/api", "refs/heads/main · 917e9213", "2m36s", "1d ago"],
+  ["skipped", "acme/web", "refs/heads/release/2.2 · 5e1d058f", "5m51s", "1d ago"],
+  ["error", "acme/worker", "refs/heads/main · b0c8c08c", "4m25s", "1d ago"],
+  ["cancelled", "acme/api", "refs/heads/main · 4621cbaf", "6m01s", "1d ago"],
+  ["passed", "acme/web", "refs/heads/main · b3a1473e", "6m13s", "1d ago"],
+  ["failed", "acme/worker", "refs/heads/release/2.2 · a9195c61", "4m18s", "1d ago"],
+] as const;
+
+const statusClass: Record<string, string> = {
+  passed: "bg-[#7cc79c] text-[#102018]",
+  failed: "border border-[#e0857b]/25 bg-[#e0857b]/10 text-[#e0857b]",
+  error: "border border-[#e0857b]/25 bg-[#e0857b]/10 text-[#e0857b]",
+  running: "bg-white/[.07] text-[#e8ebe6]",
+  skipped: "text-white/55",
+  cancelled: "text-white/55",
+};
+
+function SaasLandingContent() {
   return (
-    <div
-      className={cn("min-h-screen bg-background text-foreground", className)}
-      data-slot="saas-landing-template"
-      {...props}
-    >
-      <a className="skip-link" href="#content">
-        Skip to content
-      </a>
-      <SiteHeader01
-        brand="openpreflight"
-        groups={navGroups}
-        links={navLinks}
-        ctaLabel="Quickstart"
-        ctaHref={CTA.quickstart}
-        showProfile={false}
-      />
-      <main id="content">
+    <>
         <section
           className="hero relative overflow-hidden px-5 pb-16 pt-14 sm:px-8 sm:pb-24 sm:pt-20"
           id="top"
@@ -129,8 +104,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           <div aria-hidden="true" className="hero-atmosphere pointer-events-none absolute inset-0 -z-10" />
           <div className="mx-auto w-full max-w-7xl">
             <div className="hero-copy mx-auto max-w-4xl text-center">
-              <AskAiRow />
-              <p className="hero-kicker mt-6 font-mono text-sm font-medium tracking-wide text-primary">
+              <p className="hero-kicker font-mono text-sm font-medium tracking-wide text-primary">
                 v{VERSION} is out
               </p>
               <h1 className="mt-5 text-balance text-[2.75rem] font-semibold leading-[0.95] tracking-[-0.055em] sm:text-6xl lg:text-[4.75rem]">
@@ -150,30 +124,22 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                   </a>
                 </Button>
                 <Button asChild size="lg" variant="outline">
-                  <a href={REPO}>
-                    <Code2 /> View source
+                  <a href="#how">
+                    See how it works <ArrowRight />
                   </a>
                 </Button>
               </div>
               <p className="mt-5 font-mono text-xs text-muted-foreground">
-                Tagged 5 September 2026.{" "}
                 <a
                   className="underline underline-offset-4 hover:text-foreground"
                   href={RELEASE}
                 >
-                  Linux binaries
-                </a>
-                {" · "}
-                <a
-                  className="underline underline-offset-4 hover:text-foreground"
-                  href={CHANGELOG}
-                >
-                  Changelog
+                  Download v{VERSION} Linux binaries
                 </a>
               </p>
             </div>
 
-            <figure className="hero-panel relative mx-auto mt-14 w-full sm:mt-16">
+            <figure className="hero-panel relative mx-auto mt-14 w-full max-w-5xl sm:mt-16">
               <div aria-hidden="true" className="hero-panel-glow pointer-events-none absolute -inset-10 -z-10" />
               <div className="overflow-hidden rounded-2xl border border-[#2a2f2a] bg-[#121412] text-left text-[#e8ebe6] shadow-[0_40px_100px_-60px_color-mix(in_srgb,var(--primary)_55%,transparent)]">
                 <div className="flex h-11 items-center gap-2.5 border-b border-white/10 bg-white/[0.03] px-4 sm:px-6 lg:px-8">
@@ -263,18 +229,18 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           </div>
         </section>
 
-        <section className="px-5 py-24 sm:px-8 sm:py-32" id="before-after">
+        <section className="bg-muted/25 px-5 py-24 sm:px-8 sm:py-32" id="comparison">
           <div className="mx-auto w-full max-w-7xl">
             <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-              Before and after
+              Which CI layer do you need?
             </h2>
             <p className="mt-5 max-w-2xl text-muted-foreground">
-              The same private GitHub repo, with the Check Run arriving from
-              somewhere else.
+              Both approaches put a Check Run on the same private repository.
+              The difference is how much orchestration you need.
             </p>
             <div className="mt-10 grid gap-4 md:grid-cols-2">
               <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
-                <p className="font-mono text-xs text-muted-foreground">Without</p>
+                <p className="font-mono text-xs text-muted-foreground">Orchestration</p>
                 <h3 className="mt-3 text-xl font-semibold tracking-[-.03em]">
                   Actions-only private CI
                 </h3>
@@ -285,7 +251,7 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                 </p>
               </article>
               <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
-                <p className="font-mono text-xs text-muted-foreground">With</p>
+                <p className="font-mono text-xs text-muted-foreground">Just the check</p>
                 <h3 className="mt-3 text-xl font-semibold tracking-[-.03em]">
                   Worker you host + Check Run
                 </h3>
@@ -297,72 +263,6 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                 </p>
               </article>
             </div>
-          </div>
-        </section>
-
-        <section className="px-5 py-24 sm:px-8 sm:py-32" id="gating">
-          <div className="mx-auto w-full max-w-7xl">
-            <Badge variant="secondary">
-              <GitCommitHorizontal className="size-3.5" /> The gating model
-            </Badge>
-            <div className="mt-7 grid gap-6 lg:grid-cols-[.9fr_1.1fr] lg:items-end">
-              <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                One commit, one check
-              </h2>
-              <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Most of what a CI platform does is decide what to run, when, and
-                whether an earlier answer still counts. Gating on the commit
-                instead of the push makes those questions go away, which is the
-                reason a system this small can be trusted with a required check.
-              </p>
-            </div>
-
-            <ol className="mt-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              {gatingChain.map(({ label, detail }, index) => (
-                <li
-                  className="rounded-[1.75rem] border border-foreground/10 bg-background p-6 sm:p-7"
-                  key={label}
-                >
-                  <span className="font-mono text-xs text-muted-foreground">
-                    0{index + 1}
-                  </span>
-                  <h3 className="mt-8 text-lg font-semibold tracking-[-.03em]">
-                    {label}
-                  </h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
-                    {detail}
-                  </p>
-                </li>
-              ))}
-            </ol>
-
-            <div className="mt-4 grid gap-4 md:grid-cols-2">
-              {gatingGuarantees.map(({ title, body }) => (
-                <article
-                  className="rounded-[1.75rem] border border-primary/25 bg-primary/[0.04] p-6 sm:p-8"
-                  key={title}
-                >
-                  <span className="grid size-11 place-items-center rounded-2xl bg-primary/10 text-primary">
-                    <Check className="size-5" />
-                  </span>
-                  <h3 className="mt-8 text-xl font-semibold tracking-[-.03em]">
-                    {title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {body}
-                  </p>
-                </article>
-              ))}
-            </div>
-
-            <p className="mt-8 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              <ShieldCheck className="mr-1.5 inline size-4 -translate-y-px text-primary" />
-              GitHub has to reach the webhook, so the worker needs a public
-              HTTPS URL. That part is not private, and pretending otherwise
-              would be dishonest. What stays yours is everything the run
-              touches: builds, source, secrets and logs never leave
-              infrastructure you control.
-            </p>
           </div>
         </section>
 
@@ -410,8 +310,8 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
               className="mt-10 border-background/20 bg-transparent text-background hover:bg-background/10"
               variant="outline"
             >
-              <a href={`${DOCS}/reference/decisions/005-check-suite-gating/`}>
-                Read ADR 005 <ArrowRight />
+              <a href="/product/">
+                Gating and run details <ArrowRight />
               </a>
             </Button>
           </div>
@@ -423,16 +323,16 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
           id="product"
         >
           <div className="mx-auto w-full max-w-7xl">
-            <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+            <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
               <div>
                 <Badge variant="secondary">
                   <Box className="size-3.5" /> The smallest useful version
                 </Badge>
                 <h2 className="mt-6 text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                  Where it fits
+                  Where it fits, and where it doesn&apos;t
                 </h2>
               </div>
-              <div className="lg:pb-2">
+              <div className="lg:pt-14">
                 <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
                   Full platforms, hosted control planes, and Kubernetes-oriented
                   runners already exist for teams that need them. openpreflight
@@ -448,117 +348,174 @@ function SaasLanding01({ className, ...props }: React.ComponentProps<"div">) {
                 </Button>
               </div>
             </div>
-            <div className="mt-14 grid gap-4 md:grid-cols-3">
-              {pillars.map(({ icon: Icon, title, description }, index) => (
+            <figure className="mt-14">
+              <div className="flex min-h-[32rem] overflow-hidden rounded-[1.25rem] border border-[#2a2f2a] bg-[#121412] text-[#e8ebe6] shadow-[0_40px_100px_-70px_color-mix(in_srgb,var(--primary)_45%,transparent)] md:aspect-video md:min-h-0">
+                <aside className="hidden w-[14.2%] min-w-36 shrink-0 flex-col border-r border-white/10 bg-[#161916] md:flex">
+                  <div className="flex h-10 items-center gap-2 border-b border-white/10 px-2.5">
+                    <img alt="" className="size-5 rounded-md" height={20} src="/favicon.svg" width={20} />
+                    <span className="truncate text-[0.65rem] font-semibold">openpreflight</span>
+                  </div>
+                  <div className="flex-1 p-1.5">
+                    <p className="px-1.5 py-1 font-mono text-[0.45rem] text-white/35">Workspace</p>
+                    {[
+                      { icon: LayoutDashboard, label: "Overview" },
+                      { icon: Workflow, label: "Jobs" },
+                      { icon: FolderGit, label: "Repos" },
+                      { icon: Activity, label: "Status" },
+                    ].map(({ icon: Icon, label }) => (
+                      <span
+                        className={`mt-0.5 flex items-center gap-2 rounded px-1.5 py-1 text-[0.55rem] ${label === "Jobs" ? "bg-[#243028] text-white" : "text-white/60"}`}
+                        key={label}
+                      >
+                        <Icon className="size-2.5" />
+                        {label}
+                        {label === "Jobs" && (
+                          <span className="ml-auto rounded bg-white/[.06] px-1.5 py-0.5">1</span>
+                        )}
+                      </span>
+                    ))}
+                    <p className="mt-3 px-1.5 py-1 font-mono text-[0.45rem] text-white/35">Setup</p>
+                    {[
+                      { icon: KeyRound, label: "GitHub Apps" },
+                      { icon: Server, label: "Coolify" },
+                    ].map(({ icon: Icon, label }) => (
+                      <span className="mt-0.5 flex items-center gap-2 rounded px-1.5 py-1 text-[0.55rem] text-white/60" key={label}>
+                        <Icon className="size-2.5" />
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="space-y-0.5 p-1.5">
+                    <span className="flex items-center gap-2 px-1.5 py-1 text-[0.55rem] text-white/60">
+                      <Settings className="size-2.5" /> Settings
+                    </span>
+                    <span className="flex items-center gap-2 px-1.5 py-1 text-[0.55rem] text-white/60">
+                      <Sun className="size-2.5" /> System
+                    </span>
+                    <div className="rounded border border-white/10 px-2 py-1.5 font-mono text-[0.45rem] text-white/40">
+                      Docker reachable<br />admin
+                    </div>
+                  </div>
+                </aside>
+                <div className="min-w-0 flex-1">
+                  <div className="flex h-10 items-center gap-3 border-b border-white/10 px-3">
+                    <PanelLeft className="size-2.5 text-white/45" />
+                    <span className="text-[0.55rem] text-white/65">Jobs</span>
+                  </div>
+                  <div className="p-4 sm:p-5">
+                    <h3 className="text-base font-semibold tracking-[-.03em]">Jobs</h3>
+                    <p className="mt-1 text-[0.55rem] text-white/40">
+                      Every run this worker has taken, newest first. Retention is 14 days.
+                    </p>
+                    <div className="mt-5 overflow-hidden rounded-lg border border-white/10 bg-white/[.025]">
+                      <div className="flex items-center gap-2 border-b border-white/10 px-2.5 py-2">
+                        <span className="text-[0.45rem] text-white/40">Status</span>
+                        <span className="w-24 rounded border border-white/10 bg-white/[.025] px-2 py-1 text-[0.45rem] text-white/45">
+                          All statuses
+                        </span>
+                        <span className="hidden text-[0.45rem] text-white/40 sm:inline">Repo</span>
+                        <span className="hidden w-28 rounded border border-white/10 bg-white/[.025] px-2 py-1 font-mono text-[0.45rem] text-white/35 sm:inline">
+                          owner/name
+                        </span>
+                        <span className="ml-auto rounded bg-[#7cc79c] px-2 py-1 text-[0.45rem] font-semibold text-[#102018]">
+                          Filter
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-[4.5rem_minmax(0,1fr)_3.5rem] gap-2 border-b border-white/10 px-2.5 py-2 font-mono text-[0.42rem] text-white/35 lg:grid-cols-[4.5rem_minmax(0,1fr)_5rem_3.5rem_3.5rem_5rem]">
+                        <span>Status</span><span>Repo</span>
+                        <span className="hidden lg:block">Event</span>
+                        <span className="hidden lg:block">Took</span>
+                        <span>When</span><span className="hidden lg:block" />
+                      </div>
+                      <div className="divide-y divide-white/10">
+                        {jobsPreview.map(([status, repo, ref, took, when], index) => (
+                          <div
+                            className={`grid grid-cols-[4.5rem_minmax(0,1fr)_3.5rem] items-center gap-2 px-2.5 py-2 lg:grid-cols-[4.5rem_minmax(0,1fr)_5rem_3.5rem_3.5rem_5rem] ${index > 4 ? "hidden xl:grid" : ""}`}
+                            key={`${repo}-${ref}`}
+                          >
+                            <span className={`w-fit rounded px-1.5 py-0.5 font-mono text-[0.42rem] ${statusClass[status]}`}>
+                              {status}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="truncate font-mono text-[0.52rem]">{repo}</p>
+                              <p className="truncate font-mono text-[0.42rem] text-white/35">{ref}</p>
+                              {(status === "failed" || status === "error") && (
+                                <p className="truncate text-[0.4rem] text-[#e0857b]/65">
+                                  {status === "failed" ? "Step test: exited 1" : "clone failed: authentication required"}
+                                </p>
+                              )}
+                            </div>
+                            <span className="hidden font-mono text-[0.45rem] text-white/40 lg:block">check_suite</span>
+                            <span className="hidden font-mono text-[0.45rem] text-white/55 lg:block">{took}</span>
+                            <span className="text-[0.45rem] text-white/40">{when}</span>
+                            <span className="hidden items-center justify-end gap-2 text-[0.42rem] text-white/55 lg:flex">
+                              <span className="rounded border border-white/10 px-1.5 py-1">Logs</span>
+                              <span>Re-run</span>
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <figcaption className="mt-3 font-mono text-[0.65rem] text-muted-foreground">
+                Sanitized interface preview. Repository names and run data are illustrative.
+              </figcaption>
+            </figure>
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
+              {pillars.map(({ icon: Icon, title, description }) => (
                 <article
-                  className="rounded-[1.75rem] border border-foreground/10 bg-background p-6 sm:p-8"
+                  className="rounded-[1.5rem] border border-foreground/10 bg-background p-5"
                   key={title}
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="grid size-11 place-items-center rounded-2xl bg-primary/10 text-primary">
-                      <Icon className="size-5" />
-                    </span>
-                    <span className="font-mono text-xs text-muted-foreground">
-                      0{index + 1}
-                    </span>
-                  </div>
-                  <h3 className="mt-12 text-xl font-semibold tracking-[-.03em]">
-                    {title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {description}
-                  </p>
+                  <span className="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary">
+                    <Icon className="size-4" />
+                  </span>
+                  <h3 className="mt-5 text-base font-semibold tracking-[-.02em]">{title}</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{description}</p>
                 </article>
               ))}
             </div>
-          </div>
-        </section>
-
-        <section className="px-5 py-24 sm:px-8 sm:py-32" id="pipeline">
-          <div className="mx-auto w-full max-w-7xl">
-            <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-              <div>
-                <Badge variant="secondary">
-                  <FileCode2 className="size-3.5" /> Pipeline
-                </Badge>
-                <h2 className="mt-6 text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                  A <code className="font-mono text-[0.85em]">.ci.yml</code>, if
-                  you want one
-                </h2>
-                <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                  Set <code className="font-mono text-sm">runtime</code> to run
-                  steps in a container, or omit it to run them in the worker
-                  process. If the repo has no file, commands come from the
-                  binding overrides first, then from Node defaults in{" "}
-                  <code className="font-mono text-sm">package.json</code>. When
-                  there is nothing to run at all, the check reports{" "}
-                  <strong className="text-foreground">skipped</strong> instead of
-                  failed.
+            <div className="mt-16 border-t border-foreground/10 pt-10">
+              <div className="grid gap-5 lg:grid-cols-[.8fr_1.2fr]">
+                <h3 className="text-2xl font-semibold tracking-[-.04em]">
+                  What it isn&apos;t
+                </h3>
+                <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  This is a small Check Runs worker, not an orchestration
+                  platform. If any of these are requirements, use a fuller CI
+                  system instead.
                 </p>
-                <Button asChild className="mt-8" variant="outline">
-                  <a href={`${DOCS}/use/pipelines/`}>
-                    Pipeline reference <ArrowRight />
+              </div>
+              <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {outOfScope.map((item) => (
+                  <li
+                    className="flex items-center gap-3 rounded-2xl border border-foreground/10 px-4 py-3 text-sm text-muted-foreground"
+                    key={item}
+                  >
+                    <span className="font-mono text-muted-foreground/70">✕</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button asChild variant="outline">
+                  <a href="/why/">
+                    Full scope and trade-offs <ArrowRight />
+                  </a>
+                </Button>
+                <Button asChild variant="outline">
+                  <a href="/pipeline/">
+                    Pipeline model <ArrowRight />
                   </a>
                 </Button>
               </div>
-              <pre className="overflow-x-auto rounded-[1.5rem] border border-foreground/10 bg-[#121412] p-6 font-mono text-sm leading-relaxed text-[#e8ebe6] sm:p-8">
-                <code>{`runtime: node:24
-install: npm ci
-test: npm test
-build: npm run build
-timeout: 15m`}</code>
-              </pre>
             </div>
           </div>
         </section>
 
-        <section className="px-5 py-24 sm:px-8 sm:py-32" id="scope">
-          <div className="mx-auto w-full max-w-7xl">
-            <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-              What it isn't
-            </h2>
-            <p className="mt-5 max-w-2xl text-muted-foreground">
-              Actions is an orchestration layer and openpreflight is a small
-              Check Runs runner you host, so this does not replace it. The two
-              can sit on the same repository. See{" "}
-              <a
-                className="underline underline-offset-4 hover:text-foreground"
-                href="/compare/github-actions/"
-              >
-                openpreflight and GitHub Actions
-              </a>
-              . If any of these are requirements for you, this is the wrong
-              tool. None of them are in this product:
-            </p>
-            <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {outOfScope.map((item) => (
-                <li
-                  className="flex items-center gap-3 rounded-2xl border border-foreground/10 px-4 py-3 text-sm text-muted-foreground"
-                  key={item}
-                >
-                  <span className="font-mono text-muted-foreground/70">✕</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-8 max-w-2xl text-muted-foreground">
-              Woodpecker, Drone, a self-hosted{" "}
-              <code className="font-mono text-sm">actions/runner</code>, and
-              Jenkins all do more than this. The{" "}
-              <a className="underline underline-offset-4 hover:text-foreground" href={`${DOCS}/getting-started/comparison/`}>
-                comparison
-              </a>{" "}
-              says when to pick one of them instead. What running this
-              costs you day to day is in{" "}
-              <a className="underline underline-offset-4 hover:text-foreground" href={`${DOCS}/operate/operations/`}>
-                operations
-              </a>
-              : backups, upgrades, and what a restart does to a running job.
-            </p>
-          </div>
-        </section>
-
-        <section className="px-5 pb-24 sm:px-8 sm:pb-32" id="run">
+        <section className="px-5 py-24 sm:px-8 sm:py-32" id="run">
           <div className="mx-auto w-full max-w-7xl overflow-hidden rounded-[2rem] border border-foreground/10 bg-background px-6 py-16 sm:px-10">
             <div className="mx-auto max-w-2xl text-center">
               <Badge variant="outline">
@@ -587,60 +544,8 @@ docker compose -f compose.prod.yaml up -d`}</code>
             </div>
           </div>
         </section>
-
-        <section
-          className="px-5 pb-24 sm:px-8 sm:pb-32"
-          id="contribute"
-        >
-          <div className="mx-auto grid w-full max-w-7xl overflow-hidden rounded-[2.25rem] border border-foreground/10 bg-background lg:grid-cols-[.9fr_1.1fr]">
-            <div className="relative overflow-hidden bg-primary p-7 text-primary-foreground sm:p-10 lg:p-12">
-              <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_15%_15%,white,transparent_32%),linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:auto,44px_44px,44px_44px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
-              <div className="relative">
-                <Badge
-                  className="border-white/20 bg-white/10 text-white"
-                  variant="outline"
-                >
-                  Contributing
-                </Badge>
-                <h2 className="mt-7 text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                  The test suite runs offline
-                </h2>
-                <p className="mt-5 max-w-md text-sm leading-relaxed text-primary-foreground/75">
-                  <code className="font-mono">go test ./...</code> runs without
-                  credentials because Coolify and GitHub are faked. The most
-                  useful contributions are bug fixes that come with a failing
-                  test, small gaps already in scope, and docs corrected to match the code.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col justify-center gap-4 p-7 sm:p-10 lg:p-12">
-              <Button asChild className="justify-between" size="lg" variant="outline">
-                <a href={`${REPO}/blob/main/CONTRIBUTING.md`}>
-                  CONTRIBUTING.md <ArrowRight />
-                </a>
-              </Button>
-              <Button asChild className="justify-between" size="lg" variant="outline">
-                <a href={`${REPO}/issues/new/choose`}>
-                  Issue templates <ArrowRight />
-                </a>
-              </Button>
-              <Button asChild className="justify-between" size="lg" variant="outline">
-                <a href={`${DOCS}/contributing/development/`}>
-                  Development guide <ArrowRight />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer01
-        brand="openpreflight"
-        description={tagline}
-        groups={footerGroups}
-        showNewsletter={false}
-      />
-    </div>
+    </>
   );
 }
 
-export { SaasLanding01 };
+export { SaasLandingContent };

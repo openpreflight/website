@@ -7,9 +7,8 @@ import Card from '../../components/marketing/Card.astro';
 import Actions from '../../components/marketing/Actions.astro';
 import CtaLink from '../../components/marketing/CtaLink.astro';
 import Callout from '../../components/marketing/Callout.astro';
-import Prose from '../../components/marketing/Prose.astro';
 import CheckRunPanel from '../../components/marketing/CheckRunPanel.astro';
-import { CTA, REPO } from '../../lib/site';
+import { CTA } from '../../lib/site';
 
 const panelSteps = [
   { name: 'install', command: 'npm ci', duration: '7s', width: '24%' },
@@ -65,43 +64,13 @@ const panelSteps = [
     </Grid>
   </Section>
 
-  <Section badge="Then what" title="If you want to poke at the code">
-    <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-center">
-      <Prose>
-        <p>
-          The test suite runs offline, so you can reproduce a bug without
-          asking anyone for credentials. The list on the right is what tends to
-          be most useful once you are in there.
-        </p>
-      </Prose>
-      <div class="rounded-[1.5rem] border border-foreground/10 p-6 sm:p-7">
-        <h3 class="text-lg font-semibold tracking-[-.03em]">Useful contributions</h3>
-        <ul class="mt-5 space-y-3">
-          {
-            [
-              'A bug report with a failing test',
-              'A gap already in scope the code does not cover yet',
-              'Docs corrected to match the code',
-            ].map((item) => (
-              <li class="flex items-start gap-2.5 text-sm leading-relaxed text-muted-foreground">
-                <span aria-hidden="true" class="mt-0.5 font-mono text-primary">✓</span>
-                {item}
-              </li>
-            ))
-          }
-        </ul>
-        <a
-          class="mt-6 inline-block font-mono text-xs text-primary underline underline-offset-4"
-          href={`${REPO}/blob/main/CONTRIBUTING.md`}
-        >
-          CONTRIBUTING.md →
-        </a>
-      </div>
-    </div>
-    <Callout class="mt-8" title="This is not a hosted CI">
+  <Section badge="Contributing" title="The project guidance lives in one place">
+    <Callout class="mt-12" title="This is not a hosted CI">
       <p>
         Every instance is one someone runs, bound to repos they chose. The
-        <a href={CTA.quickstart}>quickstart</a> is how you get one.
+        <a href={CTA.quickstart}>quickstart</a> is how you get one. For the
+        offline test loop and useful contribution types, use the canonical{' '}
+        <a href="/open-source/">open-source page</a>.
       </p>
     </Callout>
     <Actions>

@@ -260,21 +260,21 @@ timeout: 15m`}
     </div>
   </Section>
 
-  <Section badge="Surfaces" title="Four ways into the same process" tone="dark">
+  <Section badge="Surfaces" title="Four ways into the same process" tone="muted">
     <Grid class="mt-12" cols={4}>
       {surfaces.map((item) => (
-        <Card title={item.title} tone="dark">
+        <Card title={item.title}>
           <span set:html={item.body} />
         </Card>
       ))}
     </Grid>
-    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-background/60">
+    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-muted-foreground">
       The HTML UI and the JSON API come out of the same handlers, so anything
       you can click you can also script. You deploy no separate frontend and
       keep no second service in sync.
     </p>
     <Actions>
-      <CtaLink href={`${DOCS}/reference/api/`} variant="onDark">API reference</CtaLink>
+      <CtaLink href={`${DOCS}/reference/api/`} variant="outline">API reference</CtaLink>
     </Actions>
   </Section>
 

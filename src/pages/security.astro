@@ -196,17 +196,17 @@ const topics = [
     </Callout>
   </Section>
 
-  <Section badge="Reporting" title="Found something?" tone="dark">
+  <Section badge="Reporting" title="Found something?" tone="muted">
     <div class="mt-10 max-w-2xl">
-      <p class="text-base leading-relaxed text-background/65">
+      <p class="text-base leading-relaxed text-muted-foreground">
         Report vulnerabilities the way SECURITY.md describes: private reporting
         on the GitHub repository, or email. Please do not use the public issue
         tracker.
       </p>
     </div>
     <Actions>
-      <CtaLink href={`${REPO}/blob/main/SECURITY.md`} variant="onDark">SECURITY.md</CtaLink>
-      <CtaLink arrow={false} href="mailto:security@openpreflight.xyz" variant="onDark">
+      <CtaLink href={`${REPO}/blob/main/SECURITY.md`} variant="primary">SECURITY.md</CtaLink>
+      <CtaLink arrow={false} href="mailto:security@openpreflight.xyz" variant="outline">
         security@openpreflight.xyz
       </CtaLink>
     </Actions>

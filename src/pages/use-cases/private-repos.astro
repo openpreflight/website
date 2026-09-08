@@ -121,23 +121,23 @@ const steps = [
     </Callout>
   </Section>
 
-  <Section badge="Branch protection" title="Making it a check people cannot merge past" tone="dark">
+  <Section badge="Branch protection" title="Making it a check people cannot merge past" tone="muted">
     <div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-start">
       <div>
-        <p class="text-base leading-relaxed text-background/65">
+        <p class="text-base leading-relaxed text-muted-foreground">
           One job produces one Check Run, and its steps are rendered as a table
           inside that run rather than as separate checks. That is what makes it
           usable as a required status: there is exactly one entry to tick in
           branch protection, and adding a step to your pipeline later never
           breaks the rule.
         </p>
-        <p class="mt-4 text-base leading-relaxed text-background/65">
+        <p class="mt-4 text-base leading-relaxed text-muted-foreground">
           Holding to one live run per commit matters here too. Without it, a
           force-push or a fast second commit can leave two runs of the same name
           racing, and branch protection reads whichever finished last.
         </p>
       </div>
-      <Callout tone="muted">
+      <Callout>
         <p>
           <strong>Pick the check name before you rely on it.</strong> GitHub
           matches a required status check by name, so renaming one strands the
@@ -148,8 +148,8 @@ const steps = [
       </Callout>
     </div>
     <Actions>
-      <CtaLink href={`${DOCS}/reference/decisions/005-check-suite-gating/`} variant="onDark">ADR 005</CtaLink>
-      <CtaLink href={`${DOCS}/configure/configuration/`} variant="onDark">Check name settings</CtaLink>
+      <CtaLink href={`${DOCS}/reference/decisions/005-check-suite-gating/`} variant="primary">ADR 005</CtaLink>
+      <CtaLink href={`${DOCS}/configure/configuration/`} variant="outline">Check name settings</CtaLink>
     </Actions>
   </Section>
 
