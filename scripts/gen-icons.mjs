@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -12,12 +12,15 @@ async function png(size, out) {
 }
 
 const websitePublic = join(root, 'public');
-const docsPublic = join(root, '../docs/public');
+const docsRoot = join(root, '../docs');
+const docsPublic = join(docsRoot, 'public');
+const operatorLogo = join(
+  root,
+  '../openpreflight/internal/web/assets/brand/logo.svg',
+);
 
 await png(32, join(websitePublic, 'favicon-32.png'));
 await png(180, join(websitePublic, 'apple-touch-icon.png'));
-await png(32, join(docsPublic, 'favicon-32.png'));
-await png(180, join(docsPublic, 'apple-touch-icon.png'));
 
 // Multi-size ICO: 16 + 32 + 48 as PNG frames (browsers accept PNG-in-ICO).
 const sizes = [16, 32, 48];
@@ -55,11 +58,18 @@ function buildIco(buffers, dims) {
 
 const ico = buildIco(pngBuffers, sizes);
 writeFileSync(join(websitePublic, 'favicon.ico'), ico);
-writeFileSync(join(docsPublic, 'favicon.ico'), ico);
 
-// Docs SVG + logos (mark only)
-writeFileSync(join(docsPublic, 'favicon.svg'), svg);
-writeFileSync(join(root, '../docs/src/assets/logo-light.svg'), svg);
-writeFileSync(join(root, '../docs/src/assets/logo-dark.svg'), svg);
+if (existsSync(docsRoot)) {
+  await png(32, join(docsPublic, 'favicon-32.png'));
+  await png(180, join(docsPublic, 'apple-touch-icon.png'));
+  writeFileSync(join(docsPublic, 'favicon.ico'), ico);
+  writeFileSync(join(docsPublic, 'favicon.svg'), svg);
+  writeFileSync(join(docsRoot, 'src/assets/logo-light.svg'), svg);
+  writeFileSync(join(docsRoot, 'src/assets/logo-dark.svg'), svg);
+}
 
-console.log('Icons written for website/ and docs/');
+if (existsSync(operatorLogo)) {
+  writeFileSync(operatorLogo, svg);
+}
+
+console.log('Brand icons generated and available sibling projects synchronized.');
