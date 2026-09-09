@@ -10,6 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check-links": "node scripts/check-links.mjs",
+    "check-brand": "node scripts/check-stale-geometry.mjs",
+    "brand": "node scripts/gen-icons.mjs && node scripts/gen-og.mjs && node scripts/gen-banner.mjs",
     "astro": "astro"
   },
   "dependencies": {

@@ -21,16 +21,17 @@ required asset or an external link outside the allow-list in
 
 ## Brand assets
 
-`design.md` is the brand spec and is deliberately **not** served. Favicons and
-`og.png` are generated, not hand-edited:
+`design.md` is the brand spec and is deliberately **not** served.
+`public/favicon.svg` is the canonical mark; raster assets are generated:
 
 ```bash
-node scripts/gen-icons.mjs    # favicon set + og.png
+pnpm run brand
+pnpm run check-brand
 ```
 
-That script renders through headless Chrome, so the output depends on locally
-installed fonts. Commit the regenerated PNGs. READMEs use markdown, not a
-banner image.
+Favicon, Open Graph, and README banner generation all use Sharp. Available
+sibling docs and operator worktrees are synchronized; commit regenerated
+assets with source changes.
 
 ## What we will take
 

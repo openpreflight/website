@@ -50,18 +50,21 @@ npm run dev
 - `src/styles/global.css`: product-green palette, JetBrains Mono, light/dark
   via `prefers-color-scheme`
 - `public/`: favicon set, `og.png`, `robots.txt`
-- `scripts/`: `gen-icons.mjs` (favicons)
+- `scripts/`: reproducible favicon, Open Graph, and README banner generation
 
 ## Brand images
 
-Favicons and `og.png` are generated here and copied into `docs/public/` so
-there is one source of each.
+`public/favicon.svg` is the mark source. The generators create the favicon
+set, static Open Graph image, and README banners; available sibling docs and
+operator worktrees are synchronized automatically.
 
 ```bash
-node scripts/gen-icons.mjs    # favicons -> website/public/ and ../docs/public/
+pnpm run brand
+pnpm run check-brand
 ```
 
-READMEs use markdown, not a banner PNG.
+All brand generators use Sharp. Available sibling docs and operator worktrees
+are synchronized; commit regenerated PNGs with their source changes.
 
 ## Editing the copy
 
