@@ -15,8 +15,8 @@ One Go binary · one SQLite file · one Check Run per commit
 The marketing site, published at **https://openpreflight.xyz**. Astro +
 Tailwind v4, static output. Positioning pages plus a branded 404; how-to lives
 on [docs.openpreflight.xyz](https://docs.openpreflight.xyz). The product it
-describes is **v2.1.2**
-([GitHub Release](https://github.com/openpreflight/openpreflight/releases/tag/v2.1.2)).
+describes is **v2.1.3**
+([GitHub Release](https://github.com/openpreflight/openpreflight/releases/tag/v2.1.3)).
 
 Reference documentation lives on a separate site,
 [openpreflight/docs](https://github.com/openpreflight/docs), at
