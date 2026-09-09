@@ -99,7 +99,7 @@ const defaultLinks: SiteHeaderLink[] = [
 
 function BrandMark() {
   return (
-    <span className="grid size-9 place-items-center overflow-hidden rounded-xl bg-primary text-primary-foreground shadow-[0_10px_30px_-16px_var(--primary)]">
+    <span className="grid size-9 place-items-center shadow-[0_10px_30px_-16px_var(--primary)]">
       <img alt="" className="size-9" height={36} src="/favicon.svg" width={36} />
     </span>
   );

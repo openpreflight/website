@@ -352,7 +352,7 @@ function SaasLandingContent() {
               <div className="flex min-h-[32rem] overflow-hidden rounded-[1.25rem] border border-[#2a2f2a] bg-[#121412] text-[#e8ebe6] shadow-[0_40px_100px_-70px_color-mix(in_srgb,var(--primary)_45%,transparent)] md:aspect-video md:min-h-0">
                 <aside className="hidden w-[14.2%] min-w-36 shrink-0 flex-col border-r border-white/10 bg-[#161916] md:flex">
                   <div className="flex h-10 items-center gap-2 border-b border-white/10 px-2.5">
-                    <img alt="" className="size-5 rounded-md" height={20} src="/favicon.svg" width={20} />
+                    <img alt="" className="size-5" height={20} src="/favicon.svg" width={20} />
                     <span className="truncate text-[0.65rem] font-semibold">openpreflight</span>
                   </div>
                   <div className="flex-1 p-1.5">
