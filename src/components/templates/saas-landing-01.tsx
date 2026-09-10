@@ -51,7 +51,7 @@ const runSteps = [
   {
     title: "Webhook in",
     detail:
-      "GitHub notifies your endpoint. HMAC is verified, the binding is checked, and the job is queued — the webhook answers 202 within ten seconds.",
+      "GitHub notifies your endpoint. HMAC is verified, the binding is checked, and the job is queued. The webhook answers 202 within ten seconds.",
   },
   {
     title: "Clean checkout",
@@ -61,7 +61,7 @@ const runSteps = [
   {
     title: "Local execution",
     detail:
-      "Shell or docker run executes on your disk under a timeout. Stdout streams to the native GitHub Check Run; the full log stays on your details page.",
+      "Shell or docker run executes on your disk under a timeout. Stdout goes to the native GitHub Check Run; the full log stays on your details page.",
   },
 ];
 
@@ -138,14 +138,14 @@ function SaasLandingContent() {
                 <span className="text-primary">CI platform.</span>
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Ditch runner fleets, YAML spaghetti, and hosted minute caps.
-                Run native GitHub Check Runs from a single Go binary on a $5
-                VPS you already own.
+                No runner fleet to operate, and no billed Actions minutes. A
+                GitHub App you own writes Check Runs from one Go binary on a VPS
+                you already pay for.
               </p>
               <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button asChild size="lg" variant="signature">
                   <a href={CTA.quickstart}>
-                    Get started in 2 minutes <ArrowRight />
+                    Quickstart <ArrowRight />
                   </a>
                 </Button>
                 <Button asChild size="lg" variant="outline">
@@ -249,11 +249,13 @@ function SaasLandingContent() {
         <section className="bg-muted/25 px-5 py-24 sm:px-8 sm:py-32" id="comparison">
           <div className="mx-auto w-full max-w-7xl">
             <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-              Same checks. Far less YAML.
+              Check Runs without the workflow boilerplate
             </h2>
             <p className="mt-5 max-w-2xl text-muted-foreground">
-              Skip checkout actions, setup steps, cache keys, and permission
-              blocks. Write the commands you already run locally.
+              Put the install, test, and build commands you already run locally
+              in <code className="font-mono text-xs">.ci.yml</code>. No checkout
+              action, no <code className="font-mono text-xs">setup-*</code>{" "}
+              steps, no cache keys.
             </p>
             <div className="mt-10 grid gap-4 lg:grid-cols-2">
               <article className="overflow-hidden rounded-[1.75rem] border border-foreground/10 bg-background">
@@ -287,9 +289,8 @@ function SaasLandingContent() {
                   Keep GitHub Actions if
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  You need matrix builds, cross-repo artifact staging, or
-                  multi-platform runners. That orchestration layer is the right
-                  tool when you actually need it.
+                  You need matrices, cross-repo artifacts, or multi-platform
+                  runners. Keep that orchestration layer when you need it.
                 </p>
               </article>
               <article className="rounded-[1.5rem] border border-foreground/10 p-6">
@@ -297,9 +298,9 @@ function SaasLandingContent() {
                   Use openpreflight if
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  You want pull requests gated by simple test and build commands
-                  without operating an entire CI platform — one binary, SQLite,
-                  and a GitHub App you own.
+                  You want pull requests gated by simple test and build
+                  commands, without operating a full CI platform. One binary,
+                  SQLite, and a GitHub App you own.
                 </p>
               </article>
             </div>
@@ -368,14 +369,14 @@ function SaasLandingContent() {
                   <Box className="size-3.5" /> The smallest useful version
                 </Badge>
                 <h2 className="mt-6 text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                  Your checks. Your disk. Your App.
+                  A private-repo gate on a box you already run
                 </h2>
               </div>
               <div className="lg:pt-14">
                 <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                  Full platforms already exist for teams that need them.
-                  openpreflight is for private repos that just need a gate: a
-                  binary and a SQLite file on a box you already pay for.
+                  Fuller platforms exist when you need them. openpreflight is
+                  for the case where a private repo just needs a gate: a binary
+                  and a SQLite file on hardware you already pay for.
                 </p>
                 <Button asChild className="mt-6" variant="outline">
                   <a href="/product/">
@@ -523,19 +524,19 @@ function SaasLandingContent() {
                 <Terminal className="size-3.5" /> Run it
               </Badge>
               <h2 className="mt-5 text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                Docker Compose in three lines
+                Start with Docker Compose
               </h2>
               <p className="mt-4 text-muted-foreground">
                 The published image is the Go binary. Pull it, open the UI, run
                 the first-boot wizard, register your GitHub App, and enable the
-                repos you want checks on.
+                repos that should get checks.
               </p>
             </div>
             <pre className="mx-auto mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-foreground/10 bg-muted/40 p-5 font-mono text-sm leading-relaxed sm:p-6">
               <code>{composeSnippet}</code>
             </pre>
             <p className="mx-auto mt-5 max-w-3xl text-center font-mono text-xs text-muted-foreground">
-              Prefer a raw binary?{" "}
+              Or run the release binary:{" "}
               <a
                 className="underline underline-offset-4 hover:text-foreground"
                 href={RELEASE}

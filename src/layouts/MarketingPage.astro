@@ -11,6 +11,27 @@ interface Props {
 }
 
 const { title, description, index = true } = Astro.props;
+
+let githubStars: number | null = null;
+try {
+  const res = await fetch(
+    'https://api.github.com/repos/openpreflight/openpreflight',
+    {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        'User-Agent': 'openpreflight-website',
+      },
+    },
+  );
+  if (res.ok) {
+    const data = (await res.json()) as { stargazers_count?: number };
+    if (typeof data.stargazers_count === 'number') {
+      githubStars = data.stargazers_count;
+    }
+  }
+} catch {
+  githubStars = null;
+}
 ---
 
 <Layout title={title} description={description} bare index={index}>
@@ -28,9 +49,10 @@ const { title, description, index = true } = Astro.props;
     <main id="content"><slot /></main>
     <Footer01
       brand="openpreflight"
-      description="Self-hosted. Your server, your logs, your repos."
+      description="Self-hosted. The runner and the logs stay on your server."
       groups={footerGroups}
       showNewsletter={false}
+      githubStars={githubStars}
     />
   </div>
 </Layout>
