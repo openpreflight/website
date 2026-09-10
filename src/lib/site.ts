@@ -10,6 +10,10 @@ export const DOCS = "https://docs.openpreflight.xyz";
 export const REPO = "https://github.com/openpreflight/openpreflight";
 export const WEBSITE_REPO = "https://github.com/openpreflight/website";
 export const DOCS_REPO = "https://github.com/openpreflight/docs";
+export const PRODUCT_HUNT =
+  "https://www.producthunt.com/products/openpreflight?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-openpreflight";
+export const PRODUCT_HUNT_BADGE =
+  "https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1244953&theme=light&t=1789004638189";
 export const VERSION = "2.1.3";
 export const RELEASE = `${REPO}/releases/tag/v${VERSION}`;
 export const CHANGELOG = `${REPO}/blob/v${VERSION}/CHANGELOG.md`;
