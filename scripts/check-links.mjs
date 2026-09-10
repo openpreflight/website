@@ -50,10 +50,8 @@ const allowedExternalOrigins = [
   'https://github.com/openpreflight/',
   'https://docs.openpreflight.xyz',
   'https://www.apache.org/licenses/LICENSE-2.0',
-  'https://chatgpt.com/',
-  'https://claude.ai/',
-  'https://www.perplexity.ai/',
-  'https://x.com/',
+  'https://www.producthunt.com/',
+  'https://api.producthunt.com/',
 ];
 
 const missing = required.filter((p) => !existsSync(join(dist, p)));
@@ -143,12 +141,8 @@ if (broken.length) {
 }
 
 const home = readFileSync(join(dist, 'index.html'), 'utf8');
-if (!home.includes('https://chatgpt.com/?q=')) {
-  console.error('Ask AI ChatGPT link is missing the q= prompt param.');
-  process.exit(1);
-}
-if (!home.includes('https://x.com/i/grok?text=')) {
-  console.error('Ask AI Grok link is missing the text= prompt param.');
+if (!home.includes('https://www.producthunt.com/products/openpreflight')) {
+  console.error('Home is missing the Product Hunt badge link.');
   process.exit(1);
 }
 if (!home.includes('"@type":"Organization"')) {
