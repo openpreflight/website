@@ -2,7 +2,7 @@
 import Layout from './Layout.astro';
 import { SiteHeader01 } from '../components/blocks/site-header-01';
 import { Footer01 } from '../components/blocks/footer-01';
-import { CTA, footerGroups, navGroups, navLinks, tagline } from '../lib/site';
+import { CTA, footerGroups, navGroups, navLinks } from '../lib/site';
 
 interface Props {
   title: string;
@@ -28,7 +28,7 @@ const { title, description, index = true } = Astro.props;
     <main id="content"><slot /></main>
     <Footer01
       brand="openpreflight"
-      description={tagline}
+      description="Self-hosted. Your server, your logs, your repos."
       groups={footerGroups}
       showNewsletter={false}
     />

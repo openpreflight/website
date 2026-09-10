@@ -1,10 +1,9 @@
 import * as React from "react";
 import { ArrowUpRight, Code2 } from "lucide-react";
 
-import { AskAiRow } from "@/components/blocks/ask-ai-row";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PRODUCT_HUNT, PRODUCT_HUNT_BADGE } from "@/lib/site";
+import { CTA, DOCS, PRODUCT_HUNT, PRODUCT_HUNT_BADGE, REPO } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type Footer01Props = React.ComponentProps<"footer"> & {
@@ -26,16 +25,20 @@ const defaultGroups: FooterLinkGroup[] = [
     links: [
       {
         label: "Quickstart",
-        href: "https://docs.openpreflight.xyz/getting-started/quickstart/",
+        href: CTA.quickstart,
       },
-      { label: "Documentation", href: "https://docs.openpreflight.xyz" },
+      { label: "Documentation", href: DOCS },
       {
         label: "GitHub",
-        href: "https://github.com/openpreflight/openpreflight",
+        href: REPO,
       },
     ],
   },
 ];
+
+const composeSnippet = `curl -O https://raw.githubusercontent.com/openpreflight/openpreflight/main/compose.prod.yaml
+export CI_SECRET_KEY="$(openssl rand -base64 48)"
+docker compose -f compose.prod.yaml up -d`;
 
 function Footer01({
   brand = "openpreflight",
@@ -131,7 +134,43 @@ function Footer01({
             ))}
           </nav>
         </div>
-        <AskAiRow variant="footer" />
+        <div className="mt-14 border-t border-foreground/8 pt-6">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+              <a
+                className="inline-flex"
+                href={REPO}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <img
+                  alt="GitHub stars"
+                  height={20}
+                  src="https://img.shields.io/github/stars/openpreflight/openpreflight?style=flat&label=GitHub&color=24292f"
+                  width={110}
+                />
+              </a>
+              <a className="text-sm font-medium hover:text-primary" href={DOCS}>
+                Docs
+              </a>
+              <a
+                className="text-sm font-medium hover:text-primary"
+                href={`${REPO}/blob/main/LICENSE`}
+              >
+                Apache-2.0
+              </a>
+              <a
+                className="text-sm font-medium hover:text-primary"
+                href={CTA.quickstart}
+              >
+                Quickstart
+              </a>
+            </div>
+            <pre className="max-w-xl overflow-x-auto rounded-xl border border-foreground/10 bg-muted/40 px-4 py-3 font-mono text-[0.7rem] leading-relaxed text-muted-foreground">
+              <code>{composeSnippet}</code>
+            </pre>
+          </div>
+        </div>
         <div className="mt-8 flex flex-col gap-4 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <p>
             openpreflight is Apache-2.0. This site is MIT.

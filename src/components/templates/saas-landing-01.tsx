@@ -18,7 +18,8 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DOCS, RELEASE, VERSION } from "@/lib/site";
+import { CTA, RELEASE, REPO, VERSION } from "@/lib/site";
+
 const checkSteps = [
   { name: "install", command: "npm ci", duration: "8s", width: "19%" },
   { name: "test", command: "go test ./...", duration: "21s", width: "50%" },
@@ -48,28 +49,20 @@ const pillars = [
 
 const runSteps = [
   {
-    title: "Webhook validates and enqueues",
+    title: "Webhook in",
     detail:
-      "GitHub POSTs /webhook/{slug}. openpreflight verifies the HMAC, checks that the binding is enabled and the branch is allowed, then answers 202 within ten seconds.",
+      "GitHub notifies your endpoint. HMAC is verified, the binding is checked, and the job is queued — the webhook answers 202 within ten seconds.",
   },
   {
-    title: "Worker opens a Check Run",
+    title: "Clean checkout",
     detail:
-      "The worker mints an installation token and creates the Check Run. It then fetches the exact commit, detaches the checkout, and strips the remote before any step runs.",
+      "The worker opens a Check Run, fetches the exact commit, detaches the checkout, and strips remote credentials before any step runs.",
   },
   {
-    title: "Pipeline runs under a timeout",
+    title: "Local execution",
     detail:
-      "Steps run in-process, or via docker run when runtime: is set. The Check Run carries a truncated log tail, and the full log stays on the details page.",
+      "Shell or docker run executes on your disk under a timeout. Stdout streams to the native GitHub Check Run; the full log stays on your details page.",
   },
-];
-
-const outOfScope = [
-  "GitHub Actions YAML",
-  "actions/runner",
-  "Matrices",
-  "Caches",
-  "Artifacts",
 ];
 
 const jobsPreview = [
@@ -94,6 +87,39 @@ const statusClass: Record<string, string> = {
   cancelled: "text-white/55",
 };
 
+const actionsYaml = `name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  checks: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+          cache: true
+      - run: go test ./...
+      - run: go build ./...`;
+
+const ciYml = `install: npm ci
+test: go test ./...
+build: go build ./...`;
+
+const composeSnippet = `curl -O https://raw.githubusercontent.com/openpreflight/openpreflight/main/compose.prod.yaml
+export CI_SECRET_KEY="$(openssl rand -base64 48)"
+docker compose -f compose.prod.yaml up -d`;
+
 function SaasLandingContent() {
   return (
     <>
@@ -112,31 +138,22 @@ function SaasLandingContent() {
                 <span className="text-primary">CI platform.</span>
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Every commit gets a native GitHub Check Run, written by a
-                GitHub App you own. There is no workflow engine and no runner
-                fleet to operate: one Go binary and one SQLite file on a
-                server you already run.
+                Ditch runner fleets, YAML spaghetti, and hosted minute caps.
+                Run native GitHub Check Runs from a single Go binary on a $5
+                VPS you already own.
               </p>
               <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button asChild size="lg" variant="signature">
-                  <a href={`${DOCS}/getting-started/quickstart/`}>
-                    Quickstart <ArrowRight />
+                  <a href={CTA.quickstart}>
+                    Get started in 2 minutes <ArrowRight />
                   </a>
                 </Button>
                 <Button asChild size="lg" variant="outline">
-                  <a href="#how">
-                    See how it works <ArrowRight />
+                  <a href={REPO}>
+                    View on GitHub <ArrowRight />
                   </a>
                 </Button>
               </div>
-              <p className="mt-5 font-mono text-xs text-muted-foreground">
-                <a
-                  className="underline underline-offset-4 hover:text-foreground"
-                  href={RELEASE}
-                >
-                  Download v{VERSION} Linux binaries
-                </a>
-              </p>
             </div>
 
             <figure className="hero-panel relative mx-auto mt-14 w-full max-w-5xl sm:mt-16">
@@ -232,34 +249,57 @@ function SaasLandingContent() {
         <section className="bg-muted/25 px-5 py-24 sm:px-8 sm:py-32" id="comparison">
           <div className="mx-auto w-full max-w-7xl">
             <h2 className="text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-              Which CI layer do you need?
+              Same checks. Far less YAML.
             </h2>
             <p className="mt-5 max-w-2xl text-muted-foreground">
-              Both approaches put a Check Run on the same private repository.
-              The difference is how much orchestration you need.
+              Skip checkout actions, setup steps, cache keys, and permission
+              blocks. Write the commands you already run locally.
             </p>
+            <div className="mt-10 grid gap-4 lg:grid-cols-2">
+              <article className="overflow-hidden rounded-[1.75rem] border border-foreground/10 bg-background">
+                <div className="flex items-center justify-between gap-3 border-b border-foreground/10 px-5 py-3">
+                  <p className="font-mono text-xs text-muted-foreground">
+                    .github/workflows/ci.yml
+                  </p>
+                  <span className="font-mono text-[0.65rem] uppercase tracking-[0.06em] text-muted-foreground">
+                    GitHub Actions
+                  </span>
+                </div>
+                <pre className="overflow-x-auto p-5 font-mono text-[0.72rem] leading-relaxed text-muted-foreground sm:p-6 sm:text-xs">
+                  <code>{actionsYaml}</code>
+                </pre>
+              </article>
+              <article className="overflow-hidden rounded-[1.75rem] border border-primary/35 bg-background">
+                <div className="flex items-center justify-between gap-3 border-b border-primary/20 bg-primary/5 px-5 py-3">
+                  <p className="font-mono text-xs text-foreground">.ci.yml</p>
+                  <span className="font-mono text-[0.65rem] uppercase tracking-[0.06em] text-primary">
+                    openpreflight
+                  </span>
+                </div>
+                <pre className="overflow-x-auto p-5 font-mono text-[0.72rem] leading-relaxed text-foreground sm:p-6 sm:text-xs">
+                  <code>{ciYml}</code>
+                </pre>
+              </article>
+            </div>
             <div className="mt-10 grid gap-4 md:grid-cols-2">
-              <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
-                <p className="font-mono text-xs text-muted-foreground">Orchestration</p>
-                <h3 className="mt-3 text-xl font-semibold tracking-[-.03em]">
-                  Actions-only private CI
+              <article className="rounded-[1.5rem] border border-foreground/10 p-6">
+                <h3 className="text-lg font-semibold tracking-[-.03em]">
+                  Keep GitHub Actions if
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  Workflow YAML, hosted or self-hosted <code className="font-mono text-xs">actions/runner</code>,
-                  matrices and caches if you need them. This is the right answer
-                  when you want that orchestration layer.
+                  You need matrix builds, cross-repo artifact staging, or
+                  multi-platform runners. That orchestration layer is the right
+                  tool when you actually need it.
                 </p>
               </article>
-              <article className="rounded-[1.75rem] border border-foreground/10 p-6 sm:p-8">
-                <p className="font-mono text-xs text-muted-foreground">Just the check</p>
-                <h3 className="mt-3 text-xl font-semibold tracking-[-.03em]">
-                  Worker you host + Check Run
+              <article className="rounded-[1.5rem] border border-foreground/10 p-6">
+                <h3 className="text-lg font-semibold tracking-[-.03em]">
+                  Use openpreflight if
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  One binary, SQLite, a GitHub App you register, and{" "}
-                  <code className="font-mono text-xs">.ci.yml</code>. Logs stay
-                  on your disk. It does not try to be one config that spans
-                  GitLab and Jenkins.
+                  You want pull requests gated by simple test and build commands
+                  without operating an entire CI platform — one binary, SQLite,
+                  and a GitHub App you own.
                 </p>
               </article>
             </div>
@@ -282,9 +322,8 @@ function SaasLandingContent() {
                 From webhook to Check Run
               </h2>
               <p className="max-w-sm text-sm leading-relaxed text-background/60">
-                The webhook has ten seconds to answer, so it validates and
-                enqueues while the worker does the slow part. Only one run is
-                ever live for a given commit.
+                Only one run is ever live for a given commit. The webhook stays
+                fast; the worker does the slow part.
               </p>
             </div>
             <ol className="mt-14 grid gap-4 lg:grid-cols-3">
@@ -329,17 +368,14 @@ function SaasLandingContent() {
                   <Box className="size-3.5" /> The smallest useful version
                 </Badge>
                 <h2 className="mt-6 text-balance text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                  Where it fits, and where it doesn&apos;t
+                  Your checks. Your disk. Your App.
                 </h2>
               </div>
               <div className="lg:pt-14">
                 <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                  Full platforms, hosted control planes, and Kubernetes-oriented
-                  runners already exist for teams that need them. openpreflight
-                  is for the case where you just want a private repo checked: a
-                  binary and a SQLite file on a box you already pay for. You
-                  write the same commands you run locally, and skip the workflow
-                  language entirely.
+                  Full platforms already exist for teams that need them.
+                  openpreflight is for private repos that just need a gate: a
+                  binary and a SQLite file on a box you already pay for.
                 </p>
                 <Button asChild className="mt-6" variant="outline">
                   <a href="/product/">
@@ -477,41 +513,6 @@ function SaasLandingContent() {
                 </article>
               ))}
             </div>
-            <div className="mt-16 border-t border-foreground/10 pt-10">
-              <div className="grid gap-5 lg:grid-cols-[.8fr_1.2fr]">
-                <h3 className="text-2xl font-semibold tracking-[-.04em]">
-                  What it isn&apos;t
-                </h3>
-                <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                  This is a small Check Runs worker, not an orchestration
-                  platform. If any of these are requirements, use a fuller CI
-                  system instead.
-                </p>
-              </div>
-              <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {outOfScope.map((item) => (
-                  <li
-                    className="flex items-center gap-3 rounded-2xl border border-foreground/10 px-4 py-3 text-sm text-muted-foreground"
-                    key={item}
-                  >
-                    <span className="font-mono text-muted-foreground/70">✕</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button asChild variant="outline">
-                  <a href="/why/">
-                    Full scope and trade-offs <ArrowRight />
-                  </a>
-                </Button>
-                <Button asChild variant="outline">
-                  <a href="/pipeline/">
-                    Pipeline model <ArrowRight />
-                  </a>
-                </Button>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -522,22 +523,29 @@ function SaasLandingContent() {
                 <Terminal className="size-3.5" /> Run it
               </Badge>
               <h2 className="mt-5 text-4xl font-semibold tracking-[-.05em] sm:text-5xl">
-                One variable and a compose file
+                Docker Compose in three lines
               </h2>
               <p className="mt-4 text-muted-foreground">
-                You do not clone anything: the file pulls the published image.
-                Then open the UI, run the first-boot wizard, register your GitHub
-                App, and enable the repos you want checks on.
+                The published image is the Go binary. Pull it, open the UI, run
+                the first-boot wizard, register your GitHub App, and enable the
+                repos you want checks on.
               </p>
             </div>
             <pre className="mx-auto mt-10 max-w-3xl overflow-x-auto rounded-2xl border border-foreground/10 bg-muted/40 p-5 font-mono text-sm leading-relaxed sm:p-6">
-              <code>{`curl -O https://raw.githubusercontent.com/openpreflight/openpreflight/main/compose.prod.yaml
-export CI_SECRET_KEY="$(openssl rand -base64 48)"
-docker compose -f compose.prod.yaml up -d`}</code>
+              <code>{composeSnippet}</code>
             </pre>
+            <p className="mx-auto mt-5 max-w-3xl text-center font-mono text-xs text-muted-foreground">
+              Prefer a raw binary?{" "}
+              <a
+                className="underline underline-offset-4 hover:text-foreground"
+                href={RELEASE}
+              >
+                Download v{VERSION} Linux binaries
+              </a>
+            </p>
             <div className="mt-8 flex justify-center">
               <Button asChild size="lg" variant="signature">
-                <a href={`${DOCS}/getting-started/quickstart/`}>
+                <a href={CTA.quickstart}>
                   Full quickstart <ArrowRight />
                 </a>
               </Button>

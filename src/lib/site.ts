@@ -25,7 +25,7 @@ export const CTA = {
 
 /**
  * Opening claim. Same sentence as the blockquote in `public/llms.txt`. Change
- * both, or the Ask AI prompt and the crawler file drift.
+ * both, or the crawler file drifts from the site.
  */
 export const tagline =
   "Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run.";
