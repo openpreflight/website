@@ -3,6 +3,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
+import brand from '../src/lib/brand.json' with { type: 'json' };
+
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const WIDTH = 1280;
 const HEIGHT = 400;
@@ -49,8 +51,8 @@ function banner(theme) {
   ${canonicalMark}
 
   <text x="72" y="194" fill="${t.ink}" font-family="Inter, Arial, sans-serif" font-size="50" font-weight="650" letter-spacing="-2">openpreflight</text>
-  <text x="72" y="238" fill="${t.ink}" font-family="Inter, Arial, sans-serif" font-size="23">Self-hosted CI without the CI platform.</text>
-  <text x="72" y="280" fill="${t.muted}" font-family="JetBrains Mono, Menlo, monospace" font-size="13">one Go binary · one SQLite file · one Check Run per commit</text>
+  <text x="72" y="238" fill="${t.ink}" font-family="Inter, Arial, sans-serif" font-size="23">${brand.headline}</text>
+  <text x="72" y="280" fill="${t.muted}" font-family="JetBrains Mono, Menlo, monospace" font-size="13">${brand.subline}</text>
 
   <rect x="650" y="56" width="558" height="208" rx="12" fill="${t.raised}" stroke="${t.edge}"/>
   <path d="M650 90 H1208" stroke="${t.edge}"/>

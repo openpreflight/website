@@ -5,15 +5,13 @@
  * on a release; do not hardcode a tag in a page, or it goes stale silently.
  */
 
+import brand from "./brand.json";
+
 export const SITE = "https://openpreflight.xyz";
 export const DOCS = "https://docs.openpreflight.xyz";
 export const REPO = "https://github.com/openpreflight/openpreflight";
 export const WEBSITE_REPO = "https://github.com/openpreflight/website";
 export const DOCS_REPO = "https://github.com/openpreflight/docs";
-export const PRODUCT_HUNT =
-  "https://www.producthunt.com/products/openpreflight?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-openpreflight";
-export const PRODUCT_HUNT_BADGE =
-  "https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1244953&theme=light&t=1789004638189";
 export const VERSION = "2.1.3";
 export const RELEASE = `${REPO}/releases/tag/v${VERSION}`;
 export const CHANGELOG = `${REPO}/blob/v${VERSION}/CHANGELOG.md`;
@@ -24,15 +22,21 @@ export const CTA = {
 } as const;
 
 /**
- * Opening claim. Same sentence as the blockquote in `public/llms.txt`. Change
- * both, or the crawler file drifts from the site.
+ * Opening claim, once. `src/lib/brand.json` is the only copy: the OG and banner
+ * generators (plain .mjs) and this module both import it, and check-links
+ * asserts `public/llms.txt` and `public/index.md` still quote it.
  */
-export const tagline =
-  "Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run.";
+export const headline = brand.headline;
+export const tagline = brand.tagline;
+export const subline = brand.subline;
+
+/** The quickstart three-liner. Rendered on the homepage and on /self-hosted/. */
+export const INSTALL = brand.install;
 
 /**
- * The whole site, once. The header nav and the footer both render this, so a
- * page cannot exist without being reachable from every other page.
+ * The whole site, once. The footer renders every group and sits on every page,
+ * so a page cannot exist without being reachable from every other page. The
+ * header carries a short top-level subset; `src/lib/og.ts` derives the OG cards.
  */
 export const siteSections = [
   {
@@ -145,17 +149,6 @@ export const siteSections = [
     ],
   },
 ] as const;
-
-/** Groups the header opens as megamenus. */
-export const navGroups = siteSections.filter(
-  (section) => section.title !== "Reference",
-);
-
-/** Header renders these as icons on the right, not as center nav text. */
-export const navLinks = [
-  { label: "Docs", href: DOCS },
-  { label: "GitHub", href: REPO },
-];
 
 export const footerGroups = siteSections.map((section) => ({
   title: section.title,

@@ -1,6 +1,6 @@
 # openpreflight
 
-Self-hosted CI without the CI platform.
+GitHub Checks, run on your own server.
 
 Every commit gets a native GitHub Check Run, written by a GitHub App you own. There is no workflow engine and no runner fleet to operate: one Go binary and one SQLite file on a server you already run, with the full logs served from your own host.
 

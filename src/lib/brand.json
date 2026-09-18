@@ -1,0 +1,6 @@
+{
+  "headline": "GitHub Checks, run on your own server.",
+  "tagline": "GitHub Checks, run on your own server. Gate private pull requests with one Go binary and one SQLite file, without Actions minutes or a runner fleet.",
+  "subline": "one Go binary · one SQLite file · one Check Run per commit",
+  "install": "curl -O https://raw.githubusercontent.com/openpreflight/openpreflight/main/compose.prod.yaml\nexport CI_SECRET_KEY=\"$(openssl rand -base64 48)\"\ndocker compose -f compose.prod.yaml up -d"
+}

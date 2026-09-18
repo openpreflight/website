@@ -312,22 +312,14 @@ const weaknesses = [
           href: `${DOCS}/deploy/coolify/`,
           linkLabel: 'Coolify',
         },
-        {
-          question: 'Does it work with GitHub Enterprise Server?',
-          answer:
-            'The plumbing is there and it has not been tested against a real instance. Each App row carries an API URL and the git origin is derived from it. What is untested is everything specific to a GHE deployment.',
-          href: `${DOCS}/getting-started/faq/`,
-          linkLabel: 'FAQ',
-        },
-        {
-          question: 'Does the project use itself for CI?',
-          answer:
-            'Yes. All three product repos (the binary, this site, and the docs) carry a <code>.ci.yml</code> and get their <code>vet</code> and <code>test</code> checks from a self-hosted instance at <code>ci.openpreflight.xyz</code>. GitHub Actions is kept for exactly one thing: <code>release.yml</code>, which builds multi-architecture images and attaches binaries to a tag. That is publishing, not checking, and it is deliberately outside what this tool does.',
-          href: `${DOCS}/getting-started/faq/`,
-          linkLabel: 'FAQ',
-        },
       ]}
     />
+    <p class="mt-8 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+      GitHub Enterprise Server is answered on{' '}
+      <a class="text-primary underline underline-offset-4" href="/integrations/github-app/">the GitHub App page</a>, and
+      whether the project runs its own checks on{' '}
+      <a class="text-primary underline underline-offset-4" href="/open-source/">open source</a>.
+    </p>
   </Section>
 
 </MarketingPage>

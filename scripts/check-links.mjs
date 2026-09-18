@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 /**
  * Fail CI if expected website routes/assets are missing from dist/, if built
- * HTML links to an internal path that was not emitted, or if an off-site href
- * is outside the known-good origin allow-list.
+ * HTML links to an internal path that was not emitted, if an off-site href is
+ * outside the known-good origin allow-list, or if the static crawler files have
+ * drifted from the brand strings in `src/lib/brand.json`.
  */
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import brand from '../src/lib/brand.json' with { type: 'json' };
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
@@ -50,8 +53,6 @@ const allowedExternalOrigins = [
   'https://github.com/openpreflight/',
   'https://docs.openpreflight.xyz',
   'https://www.apache.org/licenses/LICENSE-2.0',
-  'https://www.producthunt.com/',
-  'https://api.producthunt.com/',
 ];
 
 const missing = required.filter((p) => !existsSync(join(dist, p)));
@@ -141,10 +142,6 @@ if (broken.length) {
 }
 
 const home = readFileSync(join(dist, 'index.html'), 'utf8');
-if (!home.includes('https://www.producthunt.com/products/openpreflight')) {
-  console.error('Home is missing the Product Hunt badge link.');
-  process.exit(1);
-}
 if (!home.includes('"@type":"Organization"')) {
   console.error('Home is missing Organization JSON-LD.');
   process.exit(1);
@@ -182,6 +179,18 @@ if (!product.includes('/og/product.png')) {
   process.exit(1);
 }
 
+const llms = readFileSync(join(dist, 'llms.txt'), 'utf8');
+if (!llms.includes(brand.tagline)) {
+  console.error('llms.txt no longer quotes the tagline in src/lib/brand.json.');
+  process.exit(1);
+}
+
+const indexMd = readFileSync(join(dist, 'index.md'), 'utf8');
+if (!indexMd.includes(brand.headline)) {
+  console.error('index.md no longer quotes the headline in src/lib/brand.json.');
+  process.exit(1);
+}
+
 console.log(
-  `OK: ${required.length} required paths present; no broken internal hrefs; external allow-list clean.`,
+  `OK: ${required.length} required paths present; no broken internal hrefs; external allow-list clean; brand strings in sync.`,
 );

@@ -1,6 +1,6 @@
 # openpreflight
 
-> Self-hosted CI without the CI platform: every commit gets a native GitHub Check Run, written by a GitHub App you own, from one Go binary and one SQLite file on a server you already run.
+> GitHub Checks, run on your own server. Gate private pull requests with one Go binary and one SQLite file, without Actions minutes or a runner fleet.
 
 openpreflight is a CI provider you run yourself. It does not wrap GitHub Actions or `actions/runner`. Reporting happens through GitHub's own Check Runs API, so the result is a native check on the commit rather than a status posted by a bot.
 

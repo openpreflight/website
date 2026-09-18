@@ -6,6 +6,7 @@ import {
   organizationJsonLd,
   websiteJsonLd,
 } from '../lib/seo';
+import { headline } from '../lib/site';
 
 interface Props {
   title: string;
@@ -24,7 +25,7 @@ const markdownAlternate = new URL('/index.md', siteOrigin);
 const DOCS = 'https://docs.openpreflight.xyz';
 const REPO = 'https://github.com/openpreflight/openpreflight';
 const ogAlt = isHome
-  ? 'openpreflight wordmark, the tagline "A small CI provider for private repos", and a passing Check Run panel.'
+  ? `openpreflight wordmark, the tagline "${headline}", and a passing Check Run panel.`
   : title;
 const graph = jsonLdScript([organizationJsonLd(), websiteJsonLd()]);
 ---

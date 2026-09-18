@@ -3,7 +3,7 @@ import { ArrowUpRight, Code2, Star } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CTA, DOCS, PRODUCT_HUNT, PRODUCT_HUNT_BADGE, REPO } from "@/lib/site";
+import { CTA, DOCS, REPO } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type Footer01Props = React.ComponentProps<"footer"> & {
@@ -91,20 +91,6 @@ function Footer01({
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
               {description}
             </p>
-            <a
-              className="mt-5 inline-block"
-              href={PRODUCT_HUNT}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                alt="openpreflight - Self-hosted CI without the CI platform. | Product Hunt"
-                className="h-8 w-auto"
-                height={32}
-                src={PRODUCT_HUNT_BADGE}
-                width={148}
-              />
-            </a>
             {showNewsletter ? (
               <form className="mt-7 flex max-w-sm gap-2">
                 <Input
