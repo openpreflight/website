@@ -33,8 +33,8 @@ const topics = [
     body: 'Fork PRs are skipped by default. Opting in requires a reachable Docker engine and a <code>default_runtime</code>. Fork jobs always run in Docker.',
   },
   {
-    title: 'Sessions and CSRF',
-    body: 'Session cookies are HttpOnly, and Secure behind HTTPS. Browser writes need a CSRF token; Bearer callers skip CSRF.',
+    title: 'Sign-in and sessions',
+    body: 'Session cookies are HttpOnly, and Secure behind HTTPS. Browser writes need a CSRF token; Bearer callers skip CSRF. The database keeps only a SHA-256 of each session token, sign-in allows five attempts a minute, and a fresh instance will not create its admin without the setup token from its own log.',
     links: [{ label: 'ADR 002', href: `${DOCS}/reference/decisions/002-authentication/` }],
   },
   {
