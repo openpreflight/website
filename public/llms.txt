@@ -32,11 +32,11 @@ License: Apache-2.0
 ## Docs
 
 - [Quickstart](https://docs.openpreflight.xyz/getting-started/quickstart/): Binary, first-boot wizard, ready for a GitHub App
-- [Configuration](https://docs.openpreflight.xyz/configure/configuration/): Environment variables and settings
-- [FAQ](https://docs.openpreflight.xyz/getting-started/faq/): Common questions
+- [Configuration](https://docs.openpreflight.xyz/reference/configuration/): Environment variables, settings, binding fields, pipeline keys
+- [Overview](https://docs.openpreflight.xyz/getting-started/overview/): What openpreflight does, and its limits
 - [Register a GitHub App](https://docs.openpreflight.xyz/configure/github-app/): Permissions and events
-- [Bindings](https://docs.openpreflight.xyz/configure/bindings/): Enable repos and branches
-- [Pipelines](https://docs.openpreflight.xyz/use/pipelines/): Job steps and `runtime:`
+- [Bindings](https://docs.openpreflight.xyz/configure/bindings/): Add repositories and branches
+- [Pipelines](https://docs.openpreflight.xyz/configure/pipelines/): Job steps and `runtime:`
 - [API](https://docs.openpreflight.xyz/reference/api/): JSON API surface
 - [Architecture](https://docs.openpreflight.xyz/reference/architecture/): How the binary is structured
 - [Security model](https://docs.openpreflight.xyz/reference/security-model/): HMAC, encryption, trust boundaries

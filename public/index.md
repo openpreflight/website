@@ -47,6 +47,6 @@ None of these exists, and none of them is planned:
 
 - [Product](https://openpreflight.xyz/product/)
 - [Quickstart](https://docs.openpreflight.xyz/getting-started/quickstart/)
-- [Configuration](https://docs.openpreflight.xyz/configure/configuration/)
+- [Configuration](https://docs.openpreflight.xyz/reference/configuration/)
 - [Register a GitHub App](https://docs.openpreflight.xyz/configure/github-app/)
 - [llms.txt](https://openpreflight.xyz/llms.txt): curated index for agents

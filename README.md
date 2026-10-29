@@ -4,9 +4,9 @@
 
 # openpreflight website
 
-**A small CI provider for private repos.**
+**A small CI provider for private repositories.**
 
-One Go binary · one SQLite file · one Check Run per commit
+One Go binary · one SQLite file · one Check Run for each commit
 
 [Website](https://openpreflight.xyz) · [Docs](https://docs.openpreflight.xyz) · [Source](https://github.com/openpreflight/openpreflight)
 
