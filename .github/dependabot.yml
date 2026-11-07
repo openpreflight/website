@@ -4,6 +4,10 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # react and react-dom must be the same version; apart, the build fails (#30).
+    groups:
+      react:
+        patterns: [react, react-dom, "@types/react", "@types/react-dom"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
